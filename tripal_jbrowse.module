@@ -1,0 +1,50 @@
+<?php
+/**
+ * @file
+ * Core functions of this module.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function tripal_jbrowse_theme($existing, $type, $theme, $path) {
+
+  $items = array(
+    'node__jbrowse_instance' => array(
+      // Don't specify the path in the template name.
+      // Unless you have your template inside a directory within this module.
+      'template' =>  'theme/node--jbrowse-instance',
+      'variables' => array('node' => (object)array()),
+    ),
+  );
+
+  return $items;
+}
+
+/**
+ * Implements node preprocess hook.
+ */
+function tripal_jbrowse_preprocess_node(&$vars) {
+
+  if ($vars['node']->type == 'jbrowse_instance') {
+    $path = $vars['node']->field_jburl['und'][0]['url'];
+
+    $files = array(
+      'combination_tracks.css',
+      'faceted_track_selector.css',
+      'icons.css',
+      'maker.css',
+      'sequence.css',
+      'tristate.css',
+      'export_dialog.css',
+      'file_dialog.css',
+      'hierarchical_track_selector.css',
+      'main.css',
+      'menubar.css',
+      'track_styles.css'
+    );
+    foreach ($files as $filename) {
+      $sheets = drupal_add_css($path . '/' . $filename, array('group' => CSS_THEME, 'type' => 'external'));
+    }
+  }
+}
