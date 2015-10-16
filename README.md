@@ -1,0 +1,2 @@
+# Tripal JBrowse
+This module provides integration between Drupal/Tripal sites and pre-existing GMOD Jbrowse instances. This is done through creation of a "Jbrowse Instance" content type in Tripal that provides form elements for describing the JBrowse instance you want to display. The specified instance is then given it's own page/url and displayed within an iFrame. Functionality is provided to allow the start location and tracks to be displayed for each Jbrowse instance described.
