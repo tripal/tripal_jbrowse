@@ -88,6 +88,12 @@
   $url = "$url/?q=loc=$location&tracks=$tracks";
 ?>
 
+<style>
+iframe {
+  min-height: 600px;
+}
+</style>
+
 <div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
 
   <?php if (!$page): ?>

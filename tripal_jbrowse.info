@@ -2,3 +2,5 @@ name = Tripal-JBrowse Integration
 description = Integrates existing JBrowse instances into Tripal sites.
 core = 7.x
 package = Tripal Extensions
+
+dependencies[] = link
