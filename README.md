@@ -20,3 +20,4 @@ This allows you to create a page for each JBrowse Instance you want to embed in 
 ## Future Work
 1. Embed JBrowse natively (not inside an iFrame) --depends on https://github.com/GMOD/jbrowse/issues/777
 2. Create a Drupal 7 field (perhaps a Tripal3 TripalField) which embeds a JBrowse on Tripal content pages.
+NOTE: This module is already Tripal 3 compatible. The next version will continue to use a node for the JBrowse instance page since it is simply a page and not biological content.
