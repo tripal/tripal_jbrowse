@@ -8,7 +8,7 @@ This module provides integration between Drupal/Tripal sites and pre-existing GM
 1. First install the link module.
 2. Then install this module as you would any other Drupal module ([Drupal Documentation](https://www.drupal.org/documentation/install/modules-themes/modules-7))
 
-##Functionality
+## Functionality
 This module creates a "JBrowse Instance" content type with fields (uses the Drupal Field API) for specifying the URL of the pre-existing JBrowse instance, the start location and the tracks to display by default. There is extensive documentation in the add/edit.
 
 ![Screenshot of Add/Edit Form](https://github.com/UofS-Pulse-Binfo/tripal_jbrowse/blob/7.x-2.1.x/theme/images/tripal_jbrowse.edit_form.screenshot.png)
