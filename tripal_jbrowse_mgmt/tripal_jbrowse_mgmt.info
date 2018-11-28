@@ -1,0 +1,8 @@
+name = Hardwoods Jbrowse
+description = Create JBrowse instances.
+core = 7.x
+
+dependecies[] = tripal
+; Not on the drupal repository but a required dependency!
+; Use `git clone https://github.com/statonlab/tripal_jbrowse_instace.git` to download
+; dependecies[] = tripal_jbrowse_instance
