@@ -1,0 +1,102 @@
+<?php
+
+/**
+ * Create the schema.
+ *
+ * @return array
+ */
+function tripal_jbrowse_mgmt_schema() {
+  $schema = [];
+
+  $schema['tripal_jbrowse_mgmt_instances'] = [
+    'description' => 'Hardwoods site JBrowse instances.',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'description' => 'Primary key',
+        'not null' => TRUE,
+      ],
+      'uid' => [
+        'type' => 'int',
+        'description' => 'Submitter\'s User id',
+        'not null' => TRUE,
+      ],
+      'organism_id' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+      'title' => [
+        'type' => 'varchar',
+        'length' => 255,
+      ],
+      'description' => [
+        'type' => 'text',
+        'not null' => FALSE,
+      ],
+      'file' => [
+        'type' => 'text',
+        'not null' => FALSE,
+      ],
+      'created_at' => [
+        'type' => 'int',
+        'not null' => 'true',
+      ],
+    ],
+    'primary key' => [
+      'id',
+    ],
+  ];
+
+  $schema['tripal_jbrowse_mgmt_tracks'] = [
+    'description' => 'Hardwoods site JBrowse tracks.',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'description' => 'Primary key',
+        'not null' => TRUE,
+      ],
+      'uid' => [
+        'type' => 'int',
+        'description' => 'Submitter\'s User id',
+        'not null' => TRUE,
+      ],
+      'instance_id' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+      'organism_id' => [
+        'type' => 'int',
+        'not null' => FALSE,
+      ],
+      'label' => [
+        'type' => 'varchar',
+        'length' => 255,
+      ],
+      'track_type' => [
+        'type' => 'varchar',
+        'length' => 255,
+      ],
+      'file_type' => [
+        'type' => 'varchar',
+        'length' => 255,
+      ],
+      'file' => [
+        'type' => 'text',
+      ],
+      'created_at' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+      'is_deleted' => [
+        'type' => 'int',
+        'not null' => FALSE,
+        'default' => 0,
+      ],
+    ],
+    'primary key' => [
+      'id',
+    ],
+  ];
+
+  return $schema;
+}
