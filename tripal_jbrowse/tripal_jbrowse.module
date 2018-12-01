@@ -20,3 +20,37 @@ function tripal_jbrowse_theme($existing, $type, $theme, $path) {
 
   return $items;
 }
+
+/**
+ * Implements node preprocess hook.
+ */
+function tripal_jbrowse_preprocess_node(&$vars) {
+
+  if ($vars['node']->type == 'jbrowse_instance') {
+
+    $node = $vars['node'];
+
+    // Determine the URL of the JBrowse based on the node properties
+    $vars['url_prefix'] = $node->field_jburl['und'][0]['url'];
+    $vars['location'] = (!empty($node->field_jbloc)) ? $node->field_jbloc['und'][0]['safe_value'] : '';
+    $vars['tracks'] = (!empty($node->field_jbtracks)) ? $node->field_jbtracks['und'][0]['safe_value'] : '';
+    $vars['url'] = $vars['url_prefix'] . "/?q=loc=" . $vars['location'] . "&tracks=" . $vars['tracks'];
+
+    // Add inline JS for jbrowse to display an error.
+    drupal_add_js('
+      window.onerror=function(msg){
+          if( document.body )
+              document.body.setAttribute("JSError",msg);
+      }
+      if(window.process&&process.versions&&process.versions.electron) {
+          window.electronRequire = require;
+          delete window.require;
+      }', 'inline');
+
+    // Currently hardcoding the path just to get it working ;-)
+    // My JBrowse is just unpacked in the files directory as you can see below.
+    // @error failing to load chunks. Look into how to set root path for webpack?
+    drupal_add_js('sites/default/files/JBrowse-1.14.1/dist/main.bundle.js');
+
+  }
+}
