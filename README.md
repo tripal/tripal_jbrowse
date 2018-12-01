@@ -8,10 +8,10 @@ This package of modules integrates [GMOD JBrowse](https://jbrowse.org/) into you
 
 ## Quick Start
 1. Download and unpack this package in your Drupal modules directory (i.e `sites/all/modules`).
-2. Enable Tripal JBrowse Management through `http://[your site]/admin/modules`.
+2. Enable "Tripal JBrowse Management" submodule through `http://[your site]/admin/modules`.
 3. Create a JBrowse instance for your species of interest using the **Admin > Tripal > Tripal JBrowse Management** user interface.
-4. Enable Tripal JBrowse through `http://[your site]/admin/modules`.
-5. Create an embeded JBrowse page at **Add Content > JBrowse** Instance supplying the information for the instance created in step 3.
+4. Enable "Tripal JBrowse Integration" submodule through `http://[your site]/admin/modules`.
+5. Create an embeded JBrowse page at **Add Content > JBrowse Instance** by supplying the information for the instance created in step 3.
 
 ## Documentation
 
