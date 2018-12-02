@@ -82,10 +82,15 @@
 <?php
   // Determine the URL of the JBrowse based on the node properties
   $url = $node->field_jburl['und'][0]['url'];
-  $location = (!empty($node->field_jbloc)) ? $node->field_jbloc['und'][0]['safe_value'] : '';
-  $tracks = (!empty($node->field_jbtracks)) ? $node->field_jbtracks['und'][0]['safe_value'] : '';
 
-  $url = "$url/?q=loc=$location&tracks=$tracks";
+  $parts = array();
+  $parts['data'] = (!empty($node->field_datadir['und'][0])) ? 'data='.$node->field_datadir['und'][0]['safe_value'] : '';
+  $parts['loc'] = (!empty($node->field_jbloc['und'][0])) ? 'loc='.$node->field_jbloc['und'][0]['safe_value'] : '';
+  $parts['tracks'] = (!empty($node->field_jbtracks['und'][0])) ? 'tracks='.$node->field_jbtracks['und'][0]['safe_value'] : '';
+
+  if ($parts) {
+    $url = "$url/?q=" . implode('&', $parts);
+  }
 ?>
 
 <style>
