@@ -3,7 +3,7 @@
  * @file
  * Install the module.
  *
- * Creates the JBrowse Instance content type using the method from 
+ * Creates the JBrowse Instance content type using the method from
  * http://www.thecarneyeffect.co.uk/creating-custom-content-type-adding-fields-programmatically-drupal-7
  */
 
@@ -39,9 +39,10 @@ function tripal_jbrowse_install() {
 
   // add peristant variables that control settings
   variable_set('additional_settings__active_tab_' . $name, 'edit-menu');
-  variable_set('node_preview_' . $name, 2);
+  variable_set('node_preview_' . $name, 0);
   variable_set('node_options_' . $name, array(0 => 'status', 1 => 'promote'));
   variable_set('node_submitted_' . $name, 0);
+  variable_set('comment_' . $name, 0);
   variable_set('menu_options_' . $name, array());
   variable_set('menu_parent_' . $name, 'main-menu:0');
 
@@ -114,214 +115,289 @@ function tripal_jbrowse_uninstall() {
  *  new node type.
  */
 function _jbrowse_installed_fields() {
-  return array(
-    'field_jburl' => array(
-  'translatable' => '0',
-  'entity_types' => array(),
-  'settings' => array(
-    'attributes' => array(
-      'target' => 'default',
-      'class' => '',
-      'rel' => '',
+  $fields = array();
+
+  // JBrowse URL:
+  $fields['field_jburl'] = array(
+    'translatable' => '0',
+    'entity_types' => array(),
+    'settings' => array(
+      'attributes' => array(
+        'target' => 'default',
+        'class' => '',
+        'rel' => '',
+      ),
+      'url' => 0,
+      'title' => 'optional',
+      'title_value' => '',
+      'title_maxlength' => 128,
+      'enable_tokens' => 1,
+      'display' => array(
+        'url_cutoff' => 80,
+      ),
     ),
-    'url' => 0,
-    'title' => 'optional',
-    'title_value' => '',
-    'title_maxlength' => 128,
-    'enable_tokens' => 1,
-    'display' => array(
-      'url_cutoff' => 80,
+    'storage' => array(
+      'type' => 'field_sql_storage',
+      'settings' => array(),
+      'module' => 'field_sql_storage',
+      'active' => '1',
+      'details' => array(
+        'sql' => array(
+          'FIELD_LOAD_CURRENT' => array(
+            'field_data_field_jburl' => array(
+              'url' => 'field_jburl_url',
+              'title' => 'field_jburl_title',
+              'attributes' => 'field_jburl_attributes',
+            ),
+          ),
+          'FIELD_LOAD_REVISION' => array(
+            'field_revision_field_jburl' => array(
+              'url' => 'field_jburl_url',
+              'title' => 'field_jburl_title',
+              'attributes' => 'field_jburl_attributes',
+            ),
+          ),
+        ),
+      ),
     ),
-  ),
-  'storage' => array(
-    'type' => 'field_sql_storage',
-    'settings' => array(),
-    'module' => 'field_sql_storage',
+    'foreign keys' => array(),
+    'indexes' => array(),
+    'field_name' => 'field_jburl',
+    'type' => 'link_field',
+    'module' => 'link',
     'active' => '1',
-    'details' => array(
-      'sql' => array(
-        'FIELD_LOAD_CURRENT' => array(
-          'field_data_field_jburl' => array(
-            'url' => 'field_jburl_url',
-            'title' => 'field_jburl_title',
-            'attributes' => 'field_jburl_attributes',
-          ),
-        ),
-        'FIELD_LOAD_REVISION' => array(
-          'field_revision_field_jburl' => array(
-            'url' => 'field_jburl_url',
-            'title' => 'field_jburl_title',
-            'attributes' => 'field_jburl_attributes',
-          ),
-        ),
+    'locked' => '0',
+    'cardinality' => '1',
+    'deleted' => '0',
+    'columns' => array(
+      'url' => array(
+        'type' => 'varchar',
+        'length' => 2048,
+        'not null' => FALSE,
+        'sortable' => TRUE,
+      ),
+      'title' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'sortable' => TRUE,
+      ),
+      'attributes' => array(
+        'type' => 'text',
+        'size' => 'medium',
+        'not null' => FALSE,
       ),
     ),
-  ),
-  'foreign keys' => array(),
-  'indexes' => array(),
-  'field_name' => 'field_jburl',
-  'type' => 'link_field',
-  'module' => 'link',
-  'active' => '1',
-  'locked' => '0',
-  'cardinality' => '1',
-  'deleted' => '0',
-  'columns' => array(
-    'url' => array(
-      'type' => 'varchar',
-      'length' => 2048,
-      'not null' => FALSE,
-      'sortable' => TRUE,
-    ),
-    'title' => array(
-      'type' => 'varchar',
-      'length' => 255,
-      'not null' => FALSE,
-      'sortable' => TRUE,
-    ),
-    'attributes' => array(
-      'type' => 'text',
-      'size' => 'medium',
-      'not null' => FALSE,
-    ),
-  ),
-  'bundles' => array(
-    'node' => array(
-      'jbrowse_instance',
-    ),
-  ),
-),
-    'field_jbloc' => array(
-  'translatable' => '0',
-  'entity_types' => array(),
-  'settings' => array(
-    'max_length' => '255',
-  ),
-  'storage' => array(
-    'type' => 'field_sql_storage',
-    'settings' => array(),
-    'module' => 'field_sql_storage',
-    'active' => '1',
-    'details' => array(
-      'sql' => array(
-        'FIELD_LOAD_CURRENT' => array(
-          'field_data_field_jbloc' => array(
-            'value' => 'field_jbloc_value',
-            'format' => 'field_jbloc_format',
-          ),
-        ),
-        'FIELD_LOAD_REVISION' => array(
-          'field_revision_field_jbloc' => array(
-            'value' => 'field_jbloc_value',
-            'format' => 'field_jbloc_format',
-          ),
-        ),
+    'bundles' => array(
+      'node' => array(
+        'jbrowse_instance',
       ),
     ),
-  ),
-  'foreign keys' => array(
-    'format' => array(
-      'table' => 'filter_format',
-      'columns' => array(
-        'format' => 'format',
-      ),
-    ),
-  ),
-  'indexes' => array(
-    'format' => array(
-      'format',
-    ),
-  ),
-  'field_name' => 'field_jbloc',
-  'type' => 'text',
-  'module' => 'text',
-  'active' => '1',
-  'locked' => '0',
-  'cardinality' => '1',
-  'deleted' => '0',
-  'columns' => array(
-    'value' => array(
-      'type' => 'varchar',
-      'length' => '255',
-      'not null' => FALSE,
-    ),
-    'format' => array(
-      'type' => 'varchar',
-      'length' => 255,
-      'not null' => FALSE,
-    ),
-  ),
-  'bundles' => array(
-    'node' => array(
-      'jbrowse_instance',
-    ),
-  ),
-),
-    'field_jbtracks' => array(
-  'translatable' => '0',
-  'entity_types' => array(),
-  'settings' => array(),
-  'storage' => array(
-    'type' => 'field_sql_storage',
-    'settings' => array(),
-    'module' => 'field_sql_storage',
-    'active' => '1',
-    'details' => array(
-      'sql' => array(
-        'FIELD_LOAD_CURRENT' => array(
-          'field_data_field_jbtracks' => array(
-            'value' => 'field_jbtracks_value',
-            'format' => 'field_jbtracks_format',
-          ),
-        ),
-        'FIELD_LOAD_REVISION' => array(
-          'field_revision_field_jbtracks' => array(
-            'value' => 'field_jbtracks_value',
-            'format' => 'field_jbtracks_format',
-          ),
-        ),
-      ),
-    ),
-  ),
-  'foreign keys' => array(
-    'format' => array(
-      'table' => 'filter_format',
-      'columns' => array(
-        'format' => 'format',
-      ),
-    ),
-  ),
-  'indexes' => array(
-    'format' => array(
-      'format',
-    ),
-  ),
-  'field_name' => 'field_jbtracks',
-  'type' => 'text_long',
-  'module' => 'text',
-  'active' => '1',
-  'locked' => '0',
-  'cardinality' => '1',
-  'deleted' => '0',
-  'columns' => array(
-    'value' => array(
-      'type' => 'text',
-      'size' => 'big',
-      'not null' => FALSE,
-    ),
-    'format' => array(
-      'type' => 'varchar',
-      'length' => 255,
-      'not null' => FALSE,
-    ),
-  ),
-  'bundles' => array(
-    'node' => array(
-      'jbrowse_instance',
-    ),
-  ),
-),
   );
+
+  // Data directory.
+  $fields['field_datadir'] = array(
+    'translatable' => '0',
+    'entity_types' => array(),
+    'settings' => array(
+      'max_length' => '255',
+    ),
+    'storage' => array(
+      'type' => 'field_sql_storage',
+      'settings' => array(),
+      'module' => 'field_sql_storage',
+      'active' => '1',
+      'details' => array(
+        'sql' => array(
+          'FIELD_LOAD_CURRENT' => array(
+            'field_data_field_datadir' => array(
+              'value' => 'field_datadir_value',
+              'format' => 'field_datadir_format',
+            ),
+          ),
+          'FIELD_LOAD_REVISION' => array(
+            'field_revision_field_datadir' => array(
+              'value' => 'field_datadir_value',
+              'format' => 'field_datadir_format',
+            ),
+          ),
+        ),
+      ),
+    ),
+    'foreign keys' => array(
+      'format' => array(
+        'table' => 'filter_format',
+        'columns' => array(
+          'format' => 'format',
+        ),
+      ),
+    ),
+    'indexes' => array(
+      'format' => array(
+        'format',
+      ),
+    ),
+    'field_name' => 'field_datadir',
+    'type' => 'text',
+    'module' => 'text',
+    'active' => '1',
+    'locked' => '0',
+    'cardinality' => '1',
+    'deleted' => '0',
+    'columns' => array(
+      'value' => array(
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => FALSE,
+      ),
+      'format' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+      ),
+    ),
+    'bundles' => array(
+      'node' => array(
+        'jbrowse_instance',
+      ),
+    ),
+  );
+
+  // Start location.
+  $fields['field_jbloc'] = array(
+    'translatable' => '0',
+    'entity_types' => array(),
+    'settings' => array(
+      'max_length' => '255',
+    ),
+    'storage' => array(
+      'type' => 'field_sql_storage',
+      'settings' => array(),
+      'module' => 'field_sql_storage',
+      'active' => '1',
+      'details' => array(
+        'sql' => array(
+          'FIELD_LOAD_CURRENT' => array(
+            'field_data_field_jbloc' => array(
+              'value' => 'field_jbloc_value',
+              'format' => 'field_jbloc_format',
+            ),
+          ),
+          'FIELD_LOAD_REVISION' => array(
+            'field_revision_field_jbloc' => array(
+              'value' => 'field_jbloc_value',
+              'format' => 'field_jbloc_format',
+            ),
+          ),
+        ),
+      ),
+    ),
+    'foreign keys' => array(
+      'format' => array(
+        'table' => 'filter_format',
+        'columns' => array(
+          'format' => 'format',
+        ),
+      ),
+    ),
+    'indexes' => array(
+      'format' => array(
+        'format',
+      ),
+    ),
+    'field_name' => 'field_jbloc',
+    'type' => 'text',
+    'module' => 'text',
+    'active' => '1',
+    'locked' => '0',
+    'cardinality' => '1',
+    'deleted' => '0',
+    'columns' => array(
+      'value' => array(
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => FALSE,
+      ),
+      'format' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+      ),
+    ),
+    'bundles' => array(
+      'node' => array(
+        'jbrowse_instance',
+      ),
+    ),
+  );
+
+  // Default tracks.
+  $fields['field_jbtracks'] = array(
+    'translatable' => '0',
+    'entity_types' => array(),
+    'settings' => array(),
+    'storage' => array(
+      'type' => 'field_sql_storage',
+      'settings' => array(),
+      'module' => 'field_sql_storage',
+      'active' => '1',
+      'details' => array(
+        'sql' => array(
+          'FIELD_LOAD_CURRENT' => array(
+            'field_data_field_jbtracks' => array(
+              'value' => 'field_jbtracks_value',
+              'format' => 'field_jbtracks_format',
+            ),
+          ),
+          'FIELD_LOAD_REVISION' => array(
+            'field_revision_field_jbtracks' => array(
+              'value' => 'field_jbtracks_value',
+              'format' => 'field_jbtracks_format',
+            ),
+          ),
+        ),
+      ),
+    ),
+    'foreign keys' => array(
+      'format' => array(
+        'table' => 'filter_format',
+        'columns' => array(
+          'format' => 'format',
+        ),
+      ),
+    ),
+    'indexes' => array(
+      'format' => array(
+        'format',
+      ),
+    ),
+    'field_name' => 'field_jbtracks',
+    'type' => 'text_long',
+    'module' => 'text',
+    'active' => '1',
+    'locked' => '0',
+    'cardinality' => '1',
+    'deleted' => '0',
+    'columns' => array(
+      'value' => array(
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => FALSE,
+      ),
+      'format' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+      ),
+    ),
+    'bundles' => array(
+      'node' => array(
+        'jbrowse_instance',
+      ),
+    ),
+  );
+
+  return $fields;
 }
 
 /**
@@ -332,134 +408,181 @@ function _jbrowse_installed_fields() {
  *  node type.
  */
 function _jbrowse_installed_instances() {
-  return array(
-    'field_jburl' => array(
-  'label' => 'Existing JBrowse URL',
-  'widget' => array(
-    'weight' => '1',
-    'type' => 'link_field',
-    'module' => 'link',
-    'active' => 0,
-    'settings' => array(),
-  ),
-  'settings' => array(
-    'validate_url' => 1,
-    'url' => 0,
-    'title' => 'none',
-    'title_value' => '',
-    'title_maxlength' => '128',
-    'enable_tokens' => 0,
-    'display' => array(
-      'url_cutoff' => '',
-    ),
-    'attributes' => array(
-      'target' => '_blank',
-      'rel' => '',
-      'class' => '',
-      'configurable_title' => 0,
-      'title' => '',
-    ),
-    'rel_remove' => 'default',
-    'user_register_form' => FALSE,
-  ),
-  'display' => array(
-    'default' => array(
-      'label' => 'above',
-      'type' => 'link_default',
-      'settings' => array(),
+  $instances = array();
+
+  // JBrowse URL:
+  $instances['field_jburl'] = array(
+    'label' => 'Existing JBrowse URL',
+    'widget' => array(
+      'weight' => '1',
+      'type' => 'link_field',
       'module' => 'link',
-      'weight' => 3,
-    ),
-    'teaser' => array(
-      'type' => 'hidden',
-      'label' => 'above',
+      'active' => 0,
       'settings' => array(),
-      'weight' => 0,
     ),
-  ),
-  'required' => 1,
-  'description' => 'The URL for the existing JBrowse you wish to integrate into this page. This URL should not include any query parameters.',
-  'default_value' => NULL,
-  'field_name' => 'field_jburl',
-  'entity_type' => 'node',
-  'bundle' => 'jbrowse_instance',
-  'deleted' => '0',
-),
-    'field_jbloc' => array(
-  'label' => 'Start Location',
-  'widget' => array(
-    'weight' => '3',
-    'type' => 'text_textfield',
-    'module' => 'text',
-    'active' => 1,
     'settings' => array(
-      'size' => '60',
+      'validate_url' => 1,
+      'url' => 0,
+      'title' => 'none',
+      'title_value' => '',
+      'title_maxlength' => '128',
+      'enable_tokens' => 0,
+      'display' => array(
+        'url_cutoff' => '',
+      ),
+      'attributes' => array(
+        'target' => '_blank',
+        'rel' => '',
+        'class' => '',
+        'configurable_title' => 0,
+        'title' => '',
+      ),
+      'rel_remove' => 'default',
+      'user_register_form' => FALSE,
     ),
-  ),
-  'settings' => array(
-    'text_processing' => '0',
-    'user_register_form' => FALSE,
-  ),
-  'display' => array(
-    'default' => array(
-      'label' => 'above',
-      'type' => 'text_default',
-      'settings' => array(),
-      'module' => 'text',
-      'weight' => 1,
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'type' => 'link_default',
+        'settings' => array(),
+        'module' => 'link',
+        'weight' => 3,
+      ),
+      'teaser' => array(
+        'type' => 'hidden',
+        'label' => 'above',
+        'settings' => array(),
+        'weight' => 0,
+      ),
     ),
-    'teaser' => array(
-      'type' => 'hidden',
-      'label' => 'above',
-      'settings' => array(),
-      'weight' => 0,
-    ),
-  ),
-  'required' => 0,
-  'description' => "<p>The initial genomic position which will be visible in the viewing field. Possible input strings are:</p>\r\n<strong>\"Chromosome\"+\":\"+ start point + \"..\" + end point</strong>\r\n<p>A chromosome name/ID followed by “:”, starting position, “..” and end position of the genome to be viewed in the browser is used as an input. Chromosome ID can be either a string or a mix of string and numbers. “CHR” to indicate chromosome may or may not be used. Strings are not case-sensitive. If the chromosome ID is found in the database reference sequence (RefSeq), the chromosome will be shown from the starting position to the end position given in URL.</p>\r\n<pre>     ctgA:100..200</pre>\r\n<p>Chromosome ctgA will be displayed from position 100 to 200.</p>\r\nOR <strong>start point + \"..\" + end point</strong>\r\n<p>A string of numerical value, “..” and another numerical value is given with the loc option. JBrowse navigates through the currently selected chromosome from the first numerical value, start point, to the second numerical value, end point.</p>\r\n<pre>     200..600</pre>\r\n<p>Displays position 200 to 600 of the current chromosome.</p>\r\nOR <strong>center base</strong>\r\n<p>If only one numerical value is given as an input, JBrowse treats the input as the center position. Then an arbitrary region of the currently selected gene is displayed in the viewing field with the given input position as basepair position on which to center the view.</p>\r\nOR <strong>feature name/ID</strong>\r\n<p>If a string or a mix of string and numbers are entered as an input, JBrowse treats the input as a feature name/ID of a gene. If the ID exists in the database RefSeq, JBrowser displays an arbitrary region of the feature from the the position 0, starting position of the gene, to a certain end point.</p>\r\n<pre>     ctgA</pre>\r\n<p>Displays an arbitrary region from the ctgA reference.</p>",
-  'default_value' => NULL,
-  'field_name' => 'field_jbloc',
-  'entity_type' => 'node',
-  'bundle' => 'jbrowse_instance',
-  'deleted' => '0',
-),
-    'field_jbtracks' => array(
-  'label' => 'Tracks to Display',
-  'widget' => array(
-    'weight' => '4',
-    'type' => 'text_textarea',
-    'module' => 'text',
-    'active' => 1,
-    'settings' => array(
-      'rows' => '2',
-    ),
-  ),
-  'settings' => array(
-    'text_processing' => '0',
-    'user_register_form' => FALSE,
-  ),
-  'display' => array(
-    'default' => array(
-      'label' => 'above',
-      'type' => 'text_default',
-      'settings' => array(),
-      'module' => 'text',
-      'weight' => 2,
-    ),
-    'teaser' => array(
-      'type' => 'hidden',
-      'label' => 'above',
-      'settings' => array(),
-      'weight' => 0,
-    ),
-  ),
-  'required' => 0,
-  'description' => "<p>A comma-delimited strings containing track names, each of which should correspond to the \"label\" element of the track information dictionaries that are currently viewed in the viewing field.</p>\r\n<pre>     DNA,knownGene,ccdsGene,snp131,pgWatson,simpleRepeat</pre>",
-  'default_value' => NULL,
-  'field_name' => 'field_jbtracks',
-  'entity_type' => 'node',
-  'bundle' => 'jbrowse_instance',
-  'deleted' => '0',
-),
+    'required' => 1,
+    'description' => 'The URL for the existing JBrowse you wish to integrate into this page. This URL should not include any query parameters.',
+    'default_value' => NULL,
+    'field_name' => 'field_jburl',
+    'entity_type' => 'node',
+    'bundle' => 'jbrowse_instance',
+    'deleted' => '0',
   );
+
+  // Data Directory:
+  $instances['field_datadir'] = array(
+    'label' => 'Data Directory',
+    'widget' => array(
+      'weight' => '3',
+      'type' => 'text_textfield',
+      'module' => 'text',
+      'active' => 1,
+      'settings' => array(
+        'size' => '60',
+      ),
+    ),
+    'settings' => array(
+      'text_processing' => '0',
+      'user_register_form' => FALSE,
+    ),
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'type' => 'text_default',
+        'settings' => array(),
+        'module' => 'text',
+        'weight' => 1,
+      ),
+      'teaser' => array(
+        'type' => 'hidden',
+        'label' => 'above',
+        'settings' => array(),
+        'weight' => 0,
+      ),
+    ),
+    'required' => 0,
+    'description' => '<p>The relative path for the data directory of the JBrowse instance you want to display. For example, to display the volvox sample data you would enter "sample_data/json/volvox" here. </p>',
+    'default_value' => NULL,
+    'field_name' => 'field_datadir',
+    'entity_type' => 'node',
+    'bundle' => 'jbrowse_instance',
+    'deleted' => '0',
+  );
+
+  // Start Location:
+  $instances['field_jbloc'] = array(
+    'label' => 'Start Location',
+    'widget' => array(
+      'weight' => '3',
+      'type' => 'text_textfield',
+      'module' => 'text',
+      'active' => 1,
+      'settings' => array(
+        'size' => '60',
+      ),
+    ),
+    'settings' => array(
+      'text_processing' => '0',
+      'user_register_form' => FALSE,
+    ),
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'type' => 'text_default',
+        'settings' => array(),
+        'module' => 'text',
+        'weight' => 1,
+      ),
+      'teaser' => array(
+        'type' => 'hidden',
+        'label' => 'above',
+        'settings' => array(),
+        'weight' => 0,
+      ),
+    ),
+    'required' => 0,
+    'description' => "<p>The initial genomic position which will be visible in the viewing field. Possible input strings are:</p>\r\n<strong>\"Chromosome\"+\":\"+ start point + \"..\" + end point</strong>\r\n<p>A chromosome name/ID followed by “:”, starting position, “..” and end position of the genome to be viewed in the browser is used as an input. Chromosome ID can be either a string or a mix of string and numbers. “CHR” to indicate chromosome may or may not be used. Strings are not case-sensitive. If the chromosome ID is found in the database reference sequence (RefSeq), the chromosome will be shown from the starting position to the end position given in URL.</p>\r\n<pre>     ctgA:100..200</pre>\r\n<p>Chromosome ctgA will be displayed from position 100 to 200.</p>\r\nOR <strong>start point + \"..\" + end point</strong>\r\n<p>A string of numerical value, “..” and another numerical value is given with the loc option. JBrowse navigates through the currently selected chromosome from the first numerical value, start point, to the second numerical value, end point.</p>\r\n<pre>     200..600</pre>\r\n<p>Displays position 200 to 600 of the current chromosome.</p>\r\nOR <strong>center base</strong>\r\n<p>If only one numerical value is given as an input, JBrowse treats the input as the center position. Then an arbitrary region of the currently selected gene is displayed in the viewing field with the given input position as basepair position on which to center the view.</p>\r\nOR <strong>feature name/ID</strong>\r\n<p>If a string or a mix of string and numbers are entered as an input, JBrowse treats the input as a feature name/ID of a gene. If the ID exists in the database RefSeq, JBrowser displays an arbitrary region of the feature from the the position 0, starting position of the gene, to a certain end point.</p>\r\n<pre>     ctgA</pre>\r\n<p>Displays an arbitrary region from the ctgA reference.</p>",
+    'default_value' => NULL,
+    'field_name' => 'field_jbloc',
+    'entity_type' => 'node',
+    'bundle' => 'jbrowse_instance',
+    'deleted' => '0',
+  );
+
+  // Default Tracks:
+  $instances['field_jbtracks'] = array(
+    'label' => 'Tracks to Display',
+    'widget' => array(
+      'weight' => '4',
+      'type' => 'text_textarea',
+      'module' => 'text',
+      'active' => 1,
+      'settings' => array(
+        'rows' => '2',
+      ),
+    ),
+    'settings' => array(
+      'text_processing' => '0',
+      'user_register_form' => FALSE,
+    ),
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'type' => 'text_default',
+        'settings' => array(),
+        'module' => 'text',
+        'weight' => 2,
+      ),
+      'teaser' => array(
+        'type' => 'hidden',
+        'label' => 'above',
+        'settings' => array(),
+        'weight' => 0,
+      ),
+    ),
+    'required' => 0,
+    'description' => "<p>A comma-delimited strings containing track names, each of which should correspond to the \"label\" element of the track information dictionaries that are currently viewed in the viewing field.</p>\r\n<pre>     DNA,knownGene,ccdsGene,snp131,pgWatson,simpleRepeat</pre>",
+    'default_value' => NULL,
+    'field_name' => 'field_jbtracks',
+    'entity_type' => 'node',
+    'bundle' => 'jbrowse_instance',
+    'deleted' => '0',
+  );
+
+  return $instances;
 }
