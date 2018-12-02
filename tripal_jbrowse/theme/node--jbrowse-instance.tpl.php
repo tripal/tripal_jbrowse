@@ -84,9 +84,9 @@
   $url = $node->field_jburl['und'][0]['url'];
 
   $parts = array();
-  $parts['data'] = (!empty($node->field_datadir['und'][0])) ? 'data='.$node->field_datadir['und'][0]['safe_value'] : '';
   $parts['loc'] = (!empty($node->field_jbloc['und'][0])) ? 'loc='.$node->field_jbloc['und'][0]['safe_value'] : '';
   $parts['tracks'] = (!empty($node->field_jbtracks['und'][0])) ? 'tracks='.$node->field_jbtracks['und'][0]['safe_value'] : '';
+  $parts['data'] = (!empty($node->field_datadir['und'][0])) ? 'data='.$node->field_datadir['und'][0]['safe_value'] : '';
 
   if ($parts) {
     $url = "$url/?q=" . implode('&', $parts);
