@@ -85,4 +85,48 @@ class jbrowseInstanceNodeTest extends TripalTestCase {
     $user = drupal_anonymous_user();
   }
 
+  /**
+   * Update an existing Blast Database Node.
+   */
+  public function testJBrowseInstanceNodeUpdate() {
+    module_load_include('inc', 'node', 'node.pages');
+
+    // Log in the god user.
+    global $user;
+    $user = user_load(1);
+
+    // Create the node in the first place.
+    $seeder = \Tests\DatabaseSeeders\JBrowseInstanceNodeSeeder::seed();
+    $node = $seeder->getNode();
+
+    // Now use the form to edit it :-)
+    // Specifically, we will change the name, url and data directory.
+    $faker = Factory::create();
+    $form_state = array('values' => array());
+    $form_state['values']['title'] = $faker->words(5, true);
+    $form_state['values']['field_jburl']['und'][0]['url'] = 'https://jbrowse.org/code/JBrowse-1.15.4/';
+    $form_state['values']['field_datadir']['und'][0] = 'sample_data/json/modencode';
+    $form_state['values']['op'] = t('Save');
+
+    // Execute the node creation form.
+    drupal_form_submit('jbrowse_instance_node_form', $form_state, $node);
+
+    // Retrieve any errors.
+    $errors = form_get_errors();
+    // Assert that there must not be any.
+    $this->assertEmpty($errors, 'Form submission returned the following errors:'.print_r($errors,TRUE));
+
+    // Check that there is a test jbrowse instance.
+    $result = db_query('SELECT * FROM {node} WHERE title=:name',
+      array(':name' => $form_state['values']['title']));
+    $this->assertEquals(1, $result->rowCount(), 'Unable to select the JBrowse Instance using the name.');
+
+    // log out the god user.
+    $user = drupal_anonymous_user();
+  }
+
+  /**
+   * Test deleting a node.
+   * NOTE: We cannot test this via drupal_form_submit() since it requires a confirmation.
+   */
 }
