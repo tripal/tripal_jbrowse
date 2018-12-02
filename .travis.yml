@@ -1,0 +1,20 @@
+language: php
+
+# Add php version so composer doesn't complain
+php:
+  - 7.1
+
+services:
+  - docker
+
+env:
+  - DRUPAL_ROOT=/var/www/html
+
+before_script:
+  - docker pull statonlab/tripal3
+
+script:
+  - docker run -it -d --rm --name tripal -v "$(pwd)":/modules/tripal_jbrowse statonlab/tripal3
+  - sleep 30 # We pause here so postgres and apache complete booting up
+  - docker exec -it tripal drush pm-enable -y tripal_jbrowse
+  - docker exec -it tripal bash -c "cd /modules/tripal_jbrowse && composer install && DRUPAL_ROOT=/var/www/html ./vendor/bin/phpunit"
