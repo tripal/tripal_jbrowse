@@ -40,5 +40,49 @@ class jbrowseInstanceNodeTest extends TripalTestCase {
       'The "Tracks to Display" field is not attached to the JBrowse Instance node type.');
   }
 
+  /**
+   * Test Creating a JBrowse Instance Node.
+   *
+   * Note: We can't test this by submitting the form via PUT because it requires
+   *  permission to access /node/add/jbrowse_instance; however, we don't yet have a
+   *  way to do this with TripalTestSuite. Furthermore, testing HTTP Requests
+   *  would not give us access to the data added via the test due to database
+   *  transactions.
+   */
+  public function testJBrowseInstanceNodeCreate() {
+    module_load_include('inc', 'node', 'node.pages');
+
+    // Log in the god user.
+    global $user;
+    $user = user_load(1);
+    $node = array('type' => 'jbrowse_instance');
+
+    // Fill in the form.
+    $faker = Factory::create();
+    $form_state = array('values' => array());
+    $form_state['values']['title'] = $faker->words(3, true);
+    $form_state['values']['field_jburl']['und'][0]['url'] = 'https://jbrowse.org/code/JBrowse-1.15.4/';
+    $form_state['values']['field_datadir']['und'][0] = 'sample_data/json/volvox';
+    $form_state['values']['field_jbloc']['und'][0] = 'ctgA:1..11000';
+    $form_state['values']['field_jbtracks']['und'][0] = 'DNA,Genes,volvox-sorted-vcf,volvox_microarray_bw_density,volvox_bb';
+    $form_state['values']['op'] = t('Save');
+
+    // Execute the node creation form.
+    drupal_form_submit('jbrowse_instance_node_form', $form_state, (object) $node);
+
+    // Retrieve any errors.
+    $errors = form_get_errors();
+
+    // Assert that there must not be any.
+    $this->assertEmpty($errors, 'Form submission returned the following errors:'.print_r($errors,TRUE));
+
+    // Check that there is a test jbrowse instance.
+    $result = db_query('SELECT * FROM {node} WHERE title=:name',
+      array(':name' => $form_state['values']['title']));
+    $this->assertEquals(1, $result->rowCount(), 'Unable to select the JBrowse Instance using the name.');
+
+    // log out the god user.
+    $user = drupal_anonymous_user();
+  }
 
 }
