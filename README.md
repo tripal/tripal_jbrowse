@@ -19,7 +19,7 @@ Please visit our [online documentation](https://tripal_jbrowse.readthedocs.io/) 
 
 ## License & Acknowledgements
 
-This module is open-source and licensed under GPLv3. [Read full license](LICENSE).
+This module is open-source and licensed under GPLv3. [Read full license](LICENSE.txt).
 
 **Authors:**
 
