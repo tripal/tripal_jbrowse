@@ -17,3 +17,15 @@ This package of modules integrates [GMOD JBrowse](https://jbrowse.org/) into you
 
 Please visit our [online documentation](https://tripal_jbrowse.readthedocs.io/) to learn more about installation, usage and features.
 
+## License & Acknowledgements
+
+This module is open-source and licensed under GPLv3. [Read full license](LICENSE).
+
+**Authors:**
+
+- Lacey-Anne Sanderson (@laceysanderson)
+- Abdullah Almsaeed (@almasaeed2010)
+- Joe West (@jwest60)
+- Other contributors (https://github.com/tripal/tripal_jbrowse/graphs/contributors)
+
+*Copyright 2018 University of Saskatchewan and University of Tennessee Knoxville.* 
