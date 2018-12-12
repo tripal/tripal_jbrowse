@@ -474,7 +474,7 @@ function tripal_jbrowse_mgmt_get_track_list_file_path($instance) {
  *
  * @return array
  */
-function hardwoods_get_track_types() {
+function tripal_jbrowse_mgmt_get_track_types() {
   return [
     'FeatureTrack',
     'CanvasFeatures',

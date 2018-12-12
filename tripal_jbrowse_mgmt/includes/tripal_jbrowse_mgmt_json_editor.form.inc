@@ -76,7 +76,7 @@ function tripal_jbrowse_mgmt_json_editor_form($form, &$form_state, $track_id) {
       'See the jborwse documentation for information about types'
     ),
     '#options' => drupal_map_assoc(
-      hardwoods_get_track_types()
+      tripal_jbrowse_mgmt_get_track_types()
     ),
     '#default_value' => $track_type,
   ];

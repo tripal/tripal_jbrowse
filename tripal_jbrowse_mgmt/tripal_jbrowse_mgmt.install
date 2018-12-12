@@ -9,7 +9,7 @@ function tripal_jbrowse_mgmt_schema() {
   $schema = [];
 
   $schema['tripal_jbrowse_mgmt_instances'] = [
-    'description' => 'Hardwoods site JBrowse instances.',
+    'description' => 'JBrowse instances.',
     'fields' => [
       'id' => [
         'type' => 'serial',
@@ -48,7 +48,7 @@ function tripal_jbrowse_mgmt_schema() {
   ];
 
   $schema['tripal_jbrowse_mgmt_tracks'] = [
-    'description' => 'Hardwoods site JBrowse tracks.',
+    'description' => 'JBrowse tracks.',
     'fields' => [
       'id' => [
         'type' => 'serial',
