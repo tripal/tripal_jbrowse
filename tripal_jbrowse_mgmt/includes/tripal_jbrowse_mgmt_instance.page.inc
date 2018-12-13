@@ -69,10 +69,10 @@ function tripal_jbrowse_mgmt_instance_page($instance_id) {
           $track->file_type,
           $track->user->name,
           date('m/d/Y', $track->created_at),
-          l('Manage Track', 'admin/tripal_jbrowse_mgmt/tracks/' . $track->id),
+          l('Manage Track', 'admin/tripal/extension/tripal_jbrowse/management/tracks/' . $track->id),
           l(
             'Delete Track',
-            'admin/tripal_jbrowse_mgmt/tracks/' . $track->id . '/delete'
+            'admin/tripal/extension/tripal_jbrowse/management/tracks/' . $track->id . '/delete'
           ),
         ];
       },

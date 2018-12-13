@@ -35,7 +35,7 @@ function tripal_jbrowse_mgmt_delete_instance_form(
     '#type' => 'markup',
     '#markup' => l(
       'Cancel',
-      'admin/tripal_jbrowse_mgmt/instances'
+      'admin/tripal/extension/tripal_jbrowse/management/instances'
     ),
   ];
 
@@ -79,5 +79,5 @@ function tripal_jbrowse_mgmt_delete_instance_form_submit($form, &$form_state) {
     'warning'
   );
 
-  drupal_goto('admin/tripal_jbrowse_mgmt/instance/' . $instance_id);
+  drupal_goto('admin/tripal/extension/tripal_jbrowse/management/instance/' . $instance_id);
 }

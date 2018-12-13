@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Create and manage JBrowse instances.
@@ -14,9 +15,9 @@ require_once 'includes/tripal_jbrowse_mgmt_commands.inc';
 function tripal_jbrowse_mgmt_menu() {
   $items = [];
 
-  // Admin forms
-  $items['admin/tripal_jbrowse_mgmt'] = [
-    'title' => 'JBrowse',
+  // Admin forms.
+  $items['admin/tripal/extension/tripal_jbrowse/management'] = [
+    'title' => 'Tripal JBrowse Management',
     'description' => 'List JBrowse settings',
     'page callback' => 'tripal_jbrowse_mgmt_instances_page',
     'page arguments' => ['tripal_jbrowse_mgmt_configure_form'],
@@ -25,12 +26,7 @@ function tripal_jbrowse_mgmt_menu() {
     'type' => MENU_NORMAL_ITEM,
   ];
 
-  $items['admin/tripal_jbrowse_mgmt/list'] = [
-    'title' => 'List Instances',
-    'type' => MENU_DEFAULT_LOCAL_TASK,
-  ];
-
-  $items['admin/tripal_jbrowse_mgmt/configure'] = [
+  $items['admin/tripal/extension/tripal_jbrowse/management/configure'] = [
     'title' => 'Settings',
     'description' => 'List and create JBrowse instances.',
     'page callback' => 'drupal_get_form',
@@ -40,7 +36,7 @@ function tripal_jbrowse_mgmt_menu() {
     'type' => MENU_LOCAL_TASK,
   ];
 
-  $items['admin/tripal_jbrowse_mgmt/instances/add'] = [
+  $items['admin/tripal/extension/tripal_jbrowse/management/instances/add'] = [
     'title' => 'Add New Instance',
     'description' => 'List and create JBrowse instances.',
     'page callback' => 'drupal_get_form',
@@ -50,54 +46,54 @@ function tripal_jbrowse_mgmt_menu() {
     'type' => MENU_LOCAL_ACTION,
   ];
 
-  $items['admin/tripal_jbrowse_mgmt/instances/%'] = [
+  $items['admin/tripal/extension/tripal_jbrowse/management/instances/%'] = [
     'title' => 'Manage Instance',
     'description' => 'View an instance and manage its tracks.',
     'page callback' => 'tripal_jbrowse_mgmt_instance_page',
-    'page arguments' => [3],
+    'page arguments' => [6],
     'access arguments' => ['administer tripal_jbrowse_mgmt'],
     'file' => 'includes/tripal_jbrowse_mgmt_instance.page.inc',
     'type' => MENU_CALLBACK,
   ];
 
-  $items['admin/tripal_jbrowse_mgmt/instances/%/delete'] = [
+  $items['admin/tripal/extension/tripal_jbrowse/management/instances/%/delete'] = [
     'title' => 'Delete an instance',
     'description' => 'Confirm deleting an instance.',
     'page callback' => 'drupal_get_form',
-    'page arguments' => ['tripal_jbrowse_mgmt_delete_instance_form', 3],
+    'page arguments' => ['tripal_jbrowse_mgmt_delete_instance_form', 6],
     'access arguments' => ['administer tripal_jbrowse_mgmt'],
     'file' => 'includes/tripal_jbrowse_mgmt_delete_instance.form.inc',
     'type' => MENU_LOCAL_ACTION,
   ];
 
-  $items['admin/tripal_jbrowse_mgmt/instances/%/add_track'] = [
+  $items['admin/tripal/extension/tripal_jbrowse/management/instances/%/add_track'] = [
     'title' => 'Add New Track',
     'description' => 'Add new track to a jbrowse instance.',
     'page callback' => 'drupal_get_form',
-    'page arguments' => ['tripal_jbrowse_mgmt_add_track_form', 3],
+    'page arguments' => ['tripal_jbrowse_mgmt_add_track_form', 6],
     'access arguments' => ['administer tripal_jbrowse_mgmt'],
     'file' => 'includes/tripal_jbrowse_mgmt_tracks.form.inc',
     'type' => MENU_LOCAL_ACTION,
   ];
 
-  $items['admin/tripal_jbrowse_mgmt/tracks/%'] = [
+  $items['admin/tripal/extension/tripal_jbrowse/management/tracks/%'] = [
     'title' => 'Edit Track',
     'description' => 'Edit tracks.',
     'page callback' => 'drupal_get_form',
-    'page arguments' => ['tripal_jbrowse_mgmt_json_editor_form', 3],
+    'page arguments' => ['tripal_jbrowse_mgmt_json_editor_form', 6],
     'access arguments' => ['administer tripal_jbrowse_mgmt'],
     'file' => 'includes/tripal_jbrowse_mgmt_json_editor.form.inc',
     'type' => MENU_CALLBACK,
   ];
 
-    $items['admin/tripal_jbrowse_mgmt/tracks/%/delete'] = [
-      'title' => 'Delete Track',
-      'page callback' => 'drupal_get_form',
-      'page arguments' => ['tripal_jbrowse_mgmt_delete_track_form', 3],
-      'access arguments' => ['administer tripal_jbrowse_mgmt'],
-      'file' => 'includes/tripal_jbrowse_mgmt_tracks.form.inc',
-      'type' => MENU_LOCAL_ACTION,
-    ];
+  $items['admin/tripal/extension/tripal_jbrowse/management/tracks/%/delete'] = [
+    'title' => 'Delete Track',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => ['tripal_jbrowse_mgmt_delete_track_form', 6],
+    'access arguments' => ['administer tripal_jbrowse_mgmt'],
+    'file' => 'includes/tripal_jbrowse_mgmt_tracks.form.inc',
+    'type' => MENU_LOCAL_ACTION,
+  ];
 
   return $items;
 }
