@@ -1,4 +1,4 @@
-name = Tripal Jbrowse Management
+name = Tripal JBrowse Management
 description = Create JBrowse instances and manage tracks.
 core = 7.x
 
