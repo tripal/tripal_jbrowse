@@ -109,7 +109,7 @@ function tripal_jbrowse_mgmt_permission() {
   $items = [];
 
   $items['configure tripal_jbrowse_mgmt'] = [
-    'title' => t('configure tripal_jbrowse_mgmt'),
+    'title' => t('Configure Tripal JBrowse Management'),
   ];
 
   $items['administer tripal_jbrowse_mgmt'] = [
