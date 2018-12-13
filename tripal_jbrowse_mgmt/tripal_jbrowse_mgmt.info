@@ -1,5 +1,5 @@
-name = Hardwoods Jbrowse
-description = Create JBrowse instances.
+name = Tripal JBrowse Management
+description = Create JBrowse instances and manage tracks.
 core = 7.x
 
 dependecies[] = tripal

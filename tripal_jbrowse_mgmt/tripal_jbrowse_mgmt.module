@@ -20,7 +20,7 @@ function tripal_jbrowse_mgmt_menu() {
     'description' => 'List JBrowse settings',
     'page callback' => 'tripal_jbrowse_mgmt_instances_page',
     'page arguments' => ['tripal_jbrowse_mgmt_configure_form'],
-    'access arguments' => ['administer hardwoods jbrowse'],
+    'access arguments' => ['administer tripal_jbrowse_mgmt'],
     'file' => 'includes/tripal_jbrowse_mgmt_list.page.inc',
     'type' => MENU_NORMAL_ITEM,
   ];
@@ -35,7 +35,7 @@ function tripal_jbrowse_mgmt_menu() {
     'description' => 'List and create JBrowse instances.',
     'page callback' => 'drupal_get_form',
     'page arguments' => ['tripal_jbrowse_mgmt_configure_form'],
-    'access arguments' => ['configure hardwoods jbrowse'],
+    'access arguments' => ['configure tripal_jbrowse_mgmt'],
     'file' => 'includes/tripal_jbrowse_mgmt_configure.form.inc',
     'type' => MENU_LOCAL_TASK,
   ];
@@ -45,7 +45,7 @@ function tripal_jbrowse_mgmt_menu() {
     'description' => 'List and create JBrowse instances.',
     'page callback' => 'drupal_get_form',
     'page arguments' => ['tripal_jbrowse_mgmt_add_form'],
-    'access arguments' => ['administer hardwoods jbrowse'],
+    'access arguments' => ['administer tripal_jbrowse_mgmt'],
     'file' => 'includes/tripal_jbrowse_mgmt_add.form.inc',
     'type' => MENU_LOCAL_ACTION,
   ];
@@ -55,7 +55,7 @@ function tripal_jbrowse_mgmt_menu() {
     'description' => 'View an instance and manage its tracks.',
     'page callback' => 'tripal_jbrowse_mgmt_instance_page',
     'page arguments' => [3],
-    'access arguments' => ['administer hardwoods jbrowse'],
+    'access arguments' => ['administer tripal_jbrowse_mgmt'],
     'file' => 'includes/tripal_jbrowse_mgmt_instance.page.inc',
     'type' => MENU_CALLBACK,
   ];
@@ -65,7 +65,7 @@ function tripal_jbrowse_mgmt_menu() {
     'description' => 'Confirm deleting an instance.',
     'page callback' => 'drupal_get_form',
     'page arguments' => ['tripal_jbrowse_mgmt_delete_instance_form', 3],
-    'access arguments' => ['administer hardwoods jbrowse'],
+    'access arguments' => ['administer tripal_jbrowse_mgmt'],
     'file' => 'includes/tripal_jbrowse_mgmt_delete_instance.form.inc',
     'type' => MENU_LOCAL_ACTION,
   ];
@@ -75,7 +75,7 @@ function tripal_jbrowse_mgmt_menu() {
     'description' => 'Add new track to a jbrowse instance.',
     'page callback' => 'drupal_get_form',
     'page arguments' => ['tripal_jbrowse_mgmt_add_track_form', 3],
-    'access arguments' => ['administer hardwoods jbrowse'],
+    'access arguments' => ['administer tripal_jbrowse_mgmt'],
     'file' => 'includes/tripal_jbrowse_mgmt_tracks.form.inc',
     'type' => MENU_LOCAL_ACTION,
   ];
@@ -85,7 +85,7 @@ function tripal_jbrowse_mgmt_menu() {
     'description' => 'Edit tracks.',
     'page callback' => 'drupal_get_form',
     'page arguments' => ['tripal_jbrowse_mgmt_json_editor_form', 3],
-    'access arguments' => ['administer hardwoods jbrowse'],
+    'access arguments' => ['administer tripal_jbrowse_mgmt'],
     'file' => 'includes/tripal_jbrowse_mgmt_json_editor.form.inc',
     'type' => MENU_CALLBACK,
   ];
@@ -94,7 +94,7 @@ function tripal_jbrowse_mgmt_menu() {
       'title' => 'Delete Track',
       'page callback' => 'drupal_get_form',
       'page arguments' => ['tripal_jbrowse_mgmt_delete_track_form', 3],
-      'access arguments' => ['administer hardwoods jbrowse'],
+      'access arguments' => ['administer tripal_jbrowse_mgmt'],
       'file' => 'includes/tripal_jbrowse_mgmt_tracks.form.inc',
       'type' => MENU_LOCAL_ACTION,
     ];
@@ -108,11 +108,11 @@ function tripal_jbrowse_mgmt_menu() {
 function tripal_jbrowse_mgmt_permission() {
   $items = [];
 
-  $items['configure hardwoods jbrowse'] = [
-    'title' => t('Configure Hardwoods JBrowse'),
+  $items['configure tripal_jbrowse_mgmt'] = [
+    'title' => t('Configure Tripal JBrowse Management'),
   ];
 
-  $items['administer hardwoods jbrowse'] = [
+  $items['administer tripal_jbrowse_mgmt'] = [
     'title' => t('Create, edit and delete JBrowse instances'),
   ];
 

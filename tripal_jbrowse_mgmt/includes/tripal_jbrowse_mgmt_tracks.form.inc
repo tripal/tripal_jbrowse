@@ -37,7 +37,7 @@ function tripal_jbrowse_mgmt_add_track_form($form, &$form_state, $instance_id) {
     '#description' => t('See http://gmod.org/wiki/JBrowse_Configuration_Guide#flatfile-to-json.pl for more info.'),
     '#required' => TRUE,
     '#title' => t('Track Type'),
-    '#options' => drupal_map_assoc(hardwoods_get_track_types()),
+    '#options' => drupal_map_assoc(tripal_jbrowse_mgmt_get_track_types()),
   ];
 
   $form['data']['file_type'] = [
