@@ -14,7 +14,7 @@ function tripal_jbrowse_mgmt_add_form($form, &$form_state) {
       '#suffix' => '</div>',
     ];
 
-    return;
+    return $form;
   }
 
   $organisms = tripal_jbrowse_mgmt_get_organisms_list();
@@ -183,7 +183,7 @@ function tripal_jbrowse_mgmt_add_form_submit($form, &$form_state) {
       [$instance_id],
       $user->uid
     );
-    drupal_goto("admin/tripal_jbrowse_mgmt/instances/$instance_id");
+    drupal_goto("admin/tripal/extension/tripal_jbrowse/management/instances/$instance_id");
     return $form;
   }
 

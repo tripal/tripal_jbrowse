@@ -269,7 +269,7 @@ function tripal_jbrowse_mgmt_add_track_form_submit($form, &$form_state) {
     'tripal_jbrowse_mgmt', 'tripal_jbrowse_mgmt_add_track_to_instance', [$track_id],
     $user->uid);
 
-  drupal_goto('admin/tripal_jbrowse_mgmt/instances/' . $instance->id);
+  drupal_goto('admin/tripal/extension/tripal_jbrowse/management/instances/' . $instance->id);
 }
 
 /**
@@ -311,7 +311,7 @@ function tripal_jbrowse_mgmt_delete_track_form($form, &$form_state, $track_id) {
   $form['cancel'] = [
     '#type' => 'markup',
     '#markup' => l('Cancel',
-      'admin/tripal_jbrowse_mgmt/instances/' . $track->instance_id),
+      'admin/tripal/extension/tripal_jbrowse/management/instances/' . $track->instance_id),
   ];
 
   return $form;
@@ -335,5 +335,5 @@ function tripal_jbrowse_mgmt_delete_track_form_submit($form, &$form_state) {
 
   tripal_jbrowse_mgmt_update_track($track, ['is_deleted' => 1]);
 
-  drupal_goto('admin/tripal_jbrowse_mgmt/instances/' . $track->instance_id);
+  drupal_goto('admin/tripal/extension/tripal_jbrowse/management/instances/' . $track->instance_id);
 }

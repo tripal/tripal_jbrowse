@@ -33,17 +33,17 @@ function tripal_jbrowse_mgmt_instances_page() {
     $rows[] = [
       l(
         $instance->title,
-        'admin/tripal_jbrowse_mgmt/instances/' . $instance->id
+        'admin/tripal/extension/tripal_jbrowse/management/instances/' . $instance->id
       ),
       $instance->user->name,
       $instance->description ?: 'Not provided',
-      l('Manage Tracks', 'admin/tripal_jbrowse_mgmt/instances/' . $instance->id),
+      l('Manage Tracks', 'admin/tripal/extension/tripal_jbrowse/management/instances/' . $instance->id),
       l(
         'Launch',
         $settings['link'],
         ['query' => tripal_jbrowse_mgmt_build_http_query($instance)]
       ),
-      l('Delete Instance', 'admin/tripal_jbrowse_mgmt/instances/'.$instance->id.'/delete'),
+      l('Delete Instance', 'admin/tripal/extension/tripal_jbrowse/management/instances/'.$instance->id.'/delete'),
 
     ];
   }
