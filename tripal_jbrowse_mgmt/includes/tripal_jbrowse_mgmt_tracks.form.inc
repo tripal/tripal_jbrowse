@@ -1,17 +1,26 @@
 <?php
 
 /**
+ * @file tripal_jbrowse_mgmt_tracks.form.inc
+ */
+
+/**
  * Add a track to an instance form.
  *
- * @param $form
- * @param $form_state
- * @param $instance_id
+ * @param array $form
+ *   The drupal form.
+ * @param array $form_state
+ *   The form state array.
+ * @param int $instance_id
+ *   The parent instance ID to add the new track to.
  *
  * @return array
+ *   The modified form array.
  */
 function tripal_jbrowse_mgmt_add_track_form($form, &$form_state, $instance_id) {
   if (empty(tripal_jbrowse_mgmt_get_instance($instance_id))) {
     drupal_not_found();
+
     return [];
   }
 
@@ -96,8 +105,13 @@ function tripal_jbrowse_mgmt_add_track_form($form, &$form_state, $instance_id) {
 /**
  * Validate the add track form.
  *
+ * This function also takes care of the uploading of files.
+ * TODO: If the file is invalid, delete it!
+ *
  * @param array $form
+ *   The Drupal form.
  * @param array $form_state
+ *   The form state.
  */
 function tripal_jbrowse_mgmt_add_track_form_validate($form, &$form_state) {
   $values = $form_state['values'];
@@ -108,13 +122,13 @@ function tripal_jbrowse_mgmt_add_track_form_validate($form, &$form_state) {
   $file_type = $values['file_type'];
   $path = NULL;
 
-  switch ($file_type) {
-    case 'vcf':
-      $path = $data . '/' . tripal_jbrowse_mgmt_make_slug($instance->title) . '/data/vcf';
-      break;
-    case 'bw':
-      $path = $data . '/' . tripal_jbrowse_mgmt_make_slug($instance->title) . '/data/wig';
-      break;
+  $base_path = $data . '/' . tripal_jbrowse_mgmt_make_slug($instance->title) . '/data';
+
+  if ($file_type === 'vcf') {
+    $path = $base_path . '/vcf';
+  }
+  elseif ($file === 'bw') {
+    $path = $base_path . '/wig';
   }
 
   switch ($file_type) {
@@ -148,7 +162,8 @@ function tripal_jbrowse_mgmt_add_track_form_validate($form, &$form_state) {
                 form_set_error('Failed to copy file' . $file_gz[0] . ' to ' . $path);
               }
               else {
-                if (!tripal_jbrowse_mgmt_copy_file($file_tbi[0], $path)) {
+                if (!tripal_jbrowse_mgmt_copy_file($file_tbi[0],
+                  $path)) {
                   form_set_error('Failed to copy file' . $file_gz[0] . ' to ' . $path);
                 }
               }
@@ -184,8 +199,7 @@ function tripal_jbrowse_mgmt_add_track_form_validate($form, &$form_state) {
         else {
           $tbi_uploaded = tripal_jbrowse_mgmt_move_file($tbi_uploaded, $path);
           if (!isset($tbi_uploaded)) {
-            form_set_error('file2',
-              'Failed to move tbi file to ' . $path . '.');
+            form_set_error('file2', 'Failed to move tbi file to ' . $path . '.');
           }
           else {
             $form_state['values']['uploaded_tbi'] = $tbi_uploaded;
@@ -265,9 +279,8 @@ function tripal_jbrowse_mgmt_add_track_form_submit($form, &$form_state) {
     'created_at' => time(),
   ]);
 
-  tripal_add_job('Add JBrowse track to ' . $instance->title,
-    'tripal_jbrowse_mgmt', 'tripal_jbrowse_mgmt_add_track_to_instance', [$track_id],
-    $user->uid);
+  tripal_add_job('Add JBrowse track to ' . $instance->title, 'tripal_jbrowse_mgmt',
+    'tripal_jbrowse_mgmt_add_track_to_instance', [$track_id], $user->uid);
 
   drupal_goto('admin/tripal/extension/tripal_jbrowse/management/instances/' . $instance->id);
 }
@@ -290,6 +303,7 @@ function tripal_jbrowse_mgmt_delete_track_form($form, &$form_state, $track_id) {
       '#type' => 'item',
       '#markup' => '<p style="color: red">Unable to find track.</p>',
     ];
+
     return $form;
   }
 

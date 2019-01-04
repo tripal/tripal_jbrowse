@@ -1,6 +1,10 @@
 <?php
 
 /**
+ * @file
+ */
+
+/**
  * Get saved settings.
  *
  * @return null
@@ -82,19 +86,20 @@ function tripal_jbrowse_mgmt_get_instances($conditions = NULL) {
  * @param $data
  *
  * @return \DatabaseStatementInterface|int
+ *
  * @throws \Exception
  */
 function tripal_jbrowse_mgmt_create_instance($data) {
   global $user;
 
   $instance_id = db_insert('tripal_jbrowse_mgmt_instances')->fields([
-      'uid' => $user->uid,
-      'organism_id' => $data['organism_id'],
-      'title' => $data['title'],
-      'description' => isset($data['description']) ? $data['description'] : '',
-      'created_at' => $data['created_at'],
-      'file' => $data['file'],
-    ])->execute();
+    'uid' => $user->uid,
+    'organism_id' => $data['organism_id'],
+    'title' => $data['title'],
+    'description' => isset($data['description']) ? $data['description'] : '',
+    'created_at' => $data['created_at'],
+    'file' => $data['file'],
+  ])->execute();
 
   if (!$instance_id) {
     return FALSE;
@@ -159,21 +164,22 @@ function tripal_jbrowse_mgmt_delete_instance($instance) {
  * @param $data
  *
  * @return bool|int Track ID or FALSE if an error occurs.
+ *
  * @throws \Exception
  */
 function tripal_jbrowse_mgmt_create_track($instance, $data) {
   global $user;
 
   $track_id = db_insert('tripal_jbrowse_mgmt_tracks')->fields([
-      'uid' => $user->uid,
-      'instance_id' => $instance->id,
-      'organism_id' => $instance->organism_id,
-      'label' => $data['label'],
-      'track_type' => $data['track_type'],
-      'file_type' => $data['file_type'],
-      'created_at' => $data['created_at'],
-      'file' => $data['file'],
-    ])->execute();
+    'uid' => $user->uid,
+    'instance_id' => $instance->id,
+    'organism_id' => $instance->organism_id,
+    'label' => $data['label'],
+    'track_type' => $data['track_type'],
+    'file_type' => $data['file_type'],
+    'created_at' => $data['created_at'],
+    'file' => $data['file'],
+  ])->execute();
 
   if (!$track_id) {
     return FALSE;
@@ -271,6 +277,15 @@ function tripal_jbrowse_mgmt_get_organisms_list() {
     ->fetchAll();
 }
 
+/**
+ * Format the name of the organism to `Genus species (Common Name)`.
+ *
+ * @param object $organism
+ *   The organism object as retrieved by
+ *   db_query()->fetchObject().
+ *
+ * @return string
+ */
 function tripal_jbrowse_mgmt_construct_organism_name($organism) {
   $name = $organism->genus;
   $name .= " $organism->species";
@@ -282,6 +297,15 @@ function tripal_jbrowse_mgmt_construct_organism_name($organism) {
   return $name;
 }
 
+/**
+ * Sanitize the string for the URL.
+ *
+ * @param string $string
+ *   The string to sanitize.
+ *
+ * @return string
+ *   The sanitized string.
+ */
 function tripal_jbrowse_mgmt_make_slug($string) {
   $slug = str_replace(' ', '_', $string);
   $slug = str_replace('(', '_', $slug);
@@ -298,27 +322,34 @@ function tripal_jbrowse_mgmt_make_slug($string) {
   return strtolower(trim($slug, '_'));
 }
 
+/**
+ * @param $field
+ *
+ * @return bool|\stdClass
+ */
 function tripal_jbrowse_mgmt_upload_file($field) {
   $file = file_save_upload($field, [
-      'file_validate_extensions' => ['fasta faa fna fastq txt gff vcf wig gz tbi bw'],
-      'file_validate_size' => [1024 * 1024 * 1024 * 20] // Make it 20 GB max
-    ]);
+    'file_validate_extensions' => ['fasta faa fna fastq txt gff vcf wig gz tbi bw'],
+    // Make it 20 GB max.
+    'file_validate_size' => [1024 * 1024 * 1024 * 20],
+  ]);
 
-  return !$file ? FALSE : $file; // drupal_realpath($file->uri);
+  // drupal_realpath($file->uri);.
+  return !$file ? FALSE : $file;
 }
 
 /**
  * Moves a file to an intermediate directory, then to the destination, if given.
  *
  * @param $file
- *  The file object.
+ *   The file object.
  *
  * @param $path
- *  The path to the directory of the new object.
- *  If the directory provided does not exist, it will be created.
+ *   The path to the directory of the new object.
+ *   If the directory provided does not exist, it will be created.
  *
  * @return
- *  The path to the moved file, or NULL on fail.
+ *   The path to the moved file, or NULL on fail.
  */
 function tripal_jbrowse_mgmt_move_file($file, $path = NULL) {
   $directory = 'public://tripal/tripal_jbrowse_mgmt';
@@ -342,9 +373,9 @@ function tripal_jbrowse_mgmt_move_file($file, $path = NULL) {
  * If the directory provided does not exist, it will be created.
  *
  * @param $source
- *  File path of the source file.
+ *   File path of the source file.
  * @param $destination
- *  File path to the destination directory.
+ *   File path to the destination directory.
  *
  * @return bool
  */
@@ -366,8 +397,8 @@ function tripal_jbrowse_mgmt_build_http_query($instance) {
   $tracks_path = '';
   if (!empty($tracks)) {
     $tracks_path = implode(',', array_map(function ($track) {
-        return tripal_jbrowse_mgmt_make_slug($track->label);
-      }, $tracks));
+      return tripal_jbrowse_mgmt_make_slug($track->label);
+    }, $tracks));
   }
 
   return [
@@ -396,6 +427,9 @@ function tripal_jbrowse_mgmt_get_json($instance) {
   return json_decode($contents, TRUE);
 }
 
+/**
+ *
+ */
 function tripal_jbrowse_mgmt_get_track_json($track) {
   if (!$track->instance) {
     $track->instance = tripal_jbrowse_mgmt_get_instance($track->instance_id);
@@ -415,8 +449,10 @@ function tripal_jbrowse_mgmt_get_track_json($track) {
 }
 
 /**
- * @param object $track Track object
- * @param array $track_json Edited track array.
+ * @param object $track
+ *   Track object.
+ * @param array $track_json
+ *   Edited track array.
  *
  * @throws \Exception
  */

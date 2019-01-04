@@ -110,7 +110,7 @@ function tripal_jbrowse_mgmt_cmd_add_track($track) {
       [
         $bin . '/flatfile-to-json.pl',
         '--' . $track->file_type,
-        $instance->file,
+        $track->file,
         '--trackLabel',
         tripal_jbrowse_mgmt_make_slug($track->label),
         '--key',
