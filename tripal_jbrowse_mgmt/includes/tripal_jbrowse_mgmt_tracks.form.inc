@@ -130,6 +130,9 @@ function tripal_jbrowse_mgmt_add_track_form_validate($form, &$form_state) {
   elseif ($file === 'bw') {
     $path = $base_path . '/wig';
   }
+  else {
+    $path = $base_path;
+  }
 
   switch ($file_type) {
     case 'vcf':
@@ -167,8 +170,7 @@ function tripal_jbrowse_mgmt_add_track_form_validate($form, &$form_state) {
                     form_set_error('file_path', 'Failed to copy file' . $file_gz[0] . ' to ' . $path);
                   }
                 }
-              }
-              catch (Exception $exception) {
+              } catch (Exception $exception) {
                 form_set_error($exception->getMessage());
               }
 
@@ -230,8 +232,7 @@ function tripal_jbrowse_mgmt_add_track_form_validate($form, &$form_state) {
             if (!tripal_jbrowse_mgmt_copy_file($local_file, $path)) {
               form_set_error('file_path', 'Failed to copy file ' . $local_file . ' to ' . $path);
             }
-          }
-          catch (Exception $exception) {
+          } catch (Exception $exception) {
             form_set_error('file_path', 'Failed to copy file ' . $local_file . ' to ' . $path);
           }
         }
