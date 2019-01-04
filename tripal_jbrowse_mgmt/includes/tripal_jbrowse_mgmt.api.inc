@@ -380,6 +380,10 @@ function tripal_jbrowse_mgmt_move_file($file, $path = NULL) {
  * @return bool
  */
 function tripal_jbrowse_mgmt_copy_file($source, $destination) {
+  if (empty($destination)) {
+    throw new Exception('Please provide a valid destination path to copy the source to.');
+  }
+
   file_prepare_directory($destination, FILE_CREATE_DIRECTORY);
   return file_unmanaged_copy($source, $destination, FILE_EXISTS_ERROR);
 }

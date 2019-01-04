@@ -158,15 +158,20 @@ function tripal_jbrowse_mgmt_add_track_form_validate($form, &$form_state) {
                 'Please provide a directory with exactly one gz and one tbi file.');
             }
             else {
-              if (!tripal_jbrowse_mgmt_copy_file($file_gz[0], $path)) {
-                form_set_error('Failed to copy file' . $file_gz[0] . ' to ' . $path);
-              }
-              else {
-                if (!tripal_jbrowse_mgmt_copy_file($file_tbi[0],
-                  $path)) {
-                  form_set_error('Failed to copy file' . $file_gz[0] . ' to ' . $path);
+              try {
+                if (!tripal_jbrowse_mgmt_copy_file($file_gz[0], $path)) {
+                  form_set_error('file_path', 'Failed to copy file' . $file_gz[0] . ' to ' . $path);
+                }
+                else {
+                  if (!tripal_jbrowse_mgmt_copy_file($file_tbi[0], $path)) {
+                    form_set_error('file_path', 'Failed to copy file' . $file_gz[0] . ' to ' . $path);
+                  }
                 }
               }
+              catch (Exception $exception) {
+                form_set_error($exception->getMessage());
+              }
+
             }
           }
         }
@@ -221,8 +226,13 @@ function tripal_jbrowse_mgmt_add_track_form_validate($form, &$form_state) {
           form_set_error('file_path', 'The file path provided does not exist.');
         }
         else {
-          if (!tripal_jbrowse_mgmt_copy_file($local_file, $path)) {
-            form_set_error('Failed to copy file ' . $local_file . ' to ' . $path);
+          try {
+            if (!tripal_jbrowse_mgmt_copy_file($local_file, $path)) {
+              form_set_error('file_path', 'Failed to copy file ' . $local_file . ' to ' . $path);
+            }
+          }
+          catch (Exception $exception) {
+            form_set_error('file_path', 'Failed to copy file ' . $local_file . ' to ' . $path);
           }
         }
       }
