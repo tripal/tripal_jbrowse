@@ -67,7 +67,6 @@ function tripal_jbrowse_mgmt_cmd_add_track($track) {
   switch ($track->track_type)
   {
     case 'HTMLVariants':
-      $instance = tripal_jbrowse_mgmt_get_instance($track->instance_id);
       $json = tripal_jbrowse_mgmt_get_json($instance);
       $directory = 'vcf';
 
@@ -89,7 +88,6 @@ function tripal_jbrowse_mgmt_cmd_add_track($track) {
       break;
 
     case 'XYPlot':
-      $instance = tripal_jbrowse_mgmt_get_instance($track->instance_id);
       $json = tripal_jbrowse_mgmt_get_json($instance);
       $basename = pathinfo($track->file)['basename'];
 

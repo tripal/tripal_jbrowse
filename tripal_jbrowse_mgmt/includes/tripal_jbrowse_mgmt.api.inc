@@ -428,7 +428,13 @@ function tripal_jbrowse_mgmt_get_json($instance) {
 }
 
 /**
+ * Get the json for a given track.
  *
+ * @param object $track
+ *    The track from the database.
+ *
+ * @return array
+ * @throws \Exception
  */
 function tripal_jbrowse_mgmt_get_track_json($track) {
   if (!$track->instance) {
