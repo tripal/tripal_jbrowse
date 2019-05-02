@@ -67,7 +67,6 @@ function tripal_jbrowse_mgmt_cmd_add_track($track) {
   switch ($track->track_type)
   {
     case 'HTMLVariants':
-      $instance = tripal_jbrowse_mgmt_get_instance($track->instance_id);
       $json = tripal_jbrowse_mgmt_get_json($instance);
       $directory = 'vcf';
 
@@ -89,7 +88,6 @@ function tripal_jbrowse_mgmt_cmd_add_track($track) {
       break;
 
     case 'XYPlot':
-      $instance = tripal_jbrowse_mgmt_get_instance($track->instance_id);
       $json = tripal_jbrowse_mgmt_get_json($instance);
       $basename = pathinfo($track->file)['basename'];
 
@@ -110,7 +108,7 @@ function tripal_jbrowse_mgmt_cmd_add_track($track) {
       [
         $bin . '/flatfile-to-json.pl',
         '--' . $track->file_type,
-        $instance->file,
+        $track->file,
         '--trackLabel',
         tripal_jbrowse_mgmt_make_slug($track->label),
         '--key',
