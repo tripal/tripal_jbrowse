@@ -122,6 +122,10 @@ function tripal_jbrowse_mgmt_permission() {
  */
 function tripal_jbrowse_mgmt_delete_instance_files($path) {
   if (!rmdir($path)) {
-    tripal_report_error('tripal_jbrowse_mgmt', TRIPAL_ERROR, 'Unable to delete instance files located at ' . $path . '. Please delete them manually.');
+    $msg = 'Unable to delete instance files located at ' . $path . '. Please delete them manually.';
+    tripal_report_error('tripal_jbrowse_mgmt', TRIPAL_ERROR, $msg);
+
+    // Throw an exception so that the job log page shows the error.
+    throw new \Exception($msg);
   }
 }

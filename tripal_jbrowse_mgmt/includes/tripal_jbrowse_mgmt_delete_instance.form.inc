@@ -72,7 +72,7 @@ function tripal_jbrowse_mgmt_delete_instance_form_submit($form, &$form_state) {
   $settings = tripal_jbrowse_mgmt_get_settings();
 
   $path = $settings['data_dir'] . '/' . tripal_jbrowse_mgmt_make_slug($instance->title);
-  drupal_set_message('Instance deleted successfully');
+  drupal_set_message('Instance deleted successfully. A job has been created to delete the instance files. ');
 
   global $user;
   tripal_add_job('Delete JBrowse Instance Files', 'tripal_jbrowse_mgmt', 'tripal_jbrowse_mgmt_delete_instance_files', [$path], $user->uid);
