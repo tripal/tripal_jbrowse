@@ -71,13 +71,16 @@ function tripal_jbrowse_mgmt_delete_instance_form_submit($form, &$form_state) {
 
   $settings = tripal_jbrowse_mgmt_get_settings();
 
+  $path = $settings['data_dir'] . '/' . tripal_jbrowse_mgmt_make_slug($instance->title);
   drupal_set_message('Instance deleted successfully');
-  drupal_set_message(
-    'Please delete data directory located at: ' . $settings['data_dir'] . '/' . tripal_jbrowse_mgmt_make_slug(
-      $instance->title
-    ),
-    'warning'
-  );
+
+
+  if (!rmdir($path)) {
+    drupal_set_message(
+      'Unable to delete data directory. You  should manually delete the directory located at: ' . $path,
+      'warning'
+    );
+  }
 
   drupal_goto('admin/tripal/extension/tripal_jbrowse/management/instance/' . $instance_id);
 }
