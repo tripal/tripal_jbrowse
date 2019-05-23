@@ -114,3 +114,14 @@ function tripal_jbrowse_mgmt_permission() {
 
   return $items;
 }
+
+/**
+ * Delete JBrowse files from disk.
+ *
+ * @param $path
+ */
+function tripal_jbrowse_mgmt_delete_instance_files($path) {
+  if (!rmdir($path)) {
+    tripal_report_error('tripal_jbrowse_mgmt', TRIPAL_ERROR, 'Unable to delete instance files located at ' . $path . '. Please delete them manually.');
+  }
+}

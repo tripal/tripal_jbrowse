@@ -74,13 +74,8 @@ function tripal_jbrowse_mgmt_delete_instance_form_submit($form, &$form_state) {
   $path = $settings['data_dir'] . '/' . tripal_jbrowse_mgmt_make_slug($instance->title);
   drupal_set_message('Instance deleted successfully');
 
-
-  if (!rmdir($path)) {
-    drupal_set_message(
-      'Unable to delete data directory. You  should manually delete the directory located at: ' . $path,
-      'warning'
-    );
-  }
+  global $user;
+  tripal_add_job('Delete JBrowse Instance Files', 'tripal_jbrowse_mgmt', 'tripal_jbrowse_mgmt_delete_instance_files', [$path], $user->uid);
 
   drupal_goto('admin/tripal/extension/tripal_jbrowse/management/instance/' . $instance_id);
 }
