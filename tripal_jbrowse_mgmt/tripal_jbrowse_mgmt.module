@@ -127,7 +127,7 @@ function tripal_jbrowse_mgmt_delete_instance_files($path) {
   }
 
   if (is_dir($path) && !rmdir($path)) {
-    $msg = 'Unable to delete instance files located at ' . $path . '. Please delete them manually.';
+    $msg = 'Unable to delete instance directory located at ' . $path . '. Please delete them manually.';
     // Throw an exception so that the job log page shows the error.
     throw new \Exception($msg);
   }
