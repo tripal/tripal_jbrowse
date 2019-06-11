@@ -4,7 +4,7 @@ Managing Instances
 Listing and Creating Instances
 ------------------------------
 
-To list all instances, visit ``/admin/hardwoods_jbrowse``.
+To list all instances, visit ``/admin/tripal_jbrowse``.
 
 .. image:: ../assets/instances.png
 
