@@ -17,6 +17,5 @@ This package of modules integrates `GMOD JBrowse <https://jbrowse.org/>`_ into y
 .. toctree::
     :maxdepth: 2
 
-    guide/installation
-    guide/instances
-    guide/tracks
+    guide/install
+    guide/jbrowse_mgmt

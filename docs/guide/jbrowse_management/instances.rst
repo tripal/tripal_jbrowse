@@ -6,7 +6,7 @@ Listing and Creating Instances
 
 To list all instances, visit ``/admin/tripal_jbrowse``.
 
-.. image:: ../assets/instances.png
+.. image:: ../../assets/instances.png
 
 
 Creating Instances
