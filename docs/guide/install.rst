@@ -6,5 +6,5 @@ Installation
    :caption: Contents:
 
    install/dependencies
-   install/management
+   install/jbrowse_mgmt
    install/instance_page

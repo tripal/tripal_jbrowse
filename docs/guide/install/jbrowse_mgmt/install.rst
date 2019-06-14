@@ -7,7 +7,7 @@ This module is available for download from github.com/tripal/tripal_jbrowse.
 2. Navigate to ``https://yourdrupalsite.com/admin/modules`` or click **Administration Toolbar > Modules**
 3. Scroll to **Tripal Extensions**, click the checkbox beside "Tripal JBrowse Integration", and click the "Save Configuration" button at the bottom of the page.
 
-.. image:: ../../assets/tripal_jbrowse.1.install.png
+.. image:: ../../../assets/tripal_jbrowse.1.install.png
 
 .. note::
 
