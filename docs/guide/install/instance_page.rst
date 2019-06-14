@@ -1,4 +1,3 @@
-
 JBrowse Page Integration
 ========================
 
