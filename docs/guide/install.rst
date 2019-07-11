@@ -1,4 +1,3 @@
-
 Installation
 =============
 
@@ -6,4 +5,6 @@ Installation
    :maxdepth: 2
    :caption: Contents:
 
-   install/tripal_jbrowse
+   install/dependencies
+   install/jbrowse_mgmt
+   install/instance_page

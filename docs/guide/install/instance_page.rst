@@ -1,6 +1,5 @@
-
-JBrowse Instance Page
-======================
+JBrowse Page Integration
+========================
 
 This guide will show you **how to create a page within your Tripal site for an existing JBrowse instance**. This ensures a *consistent user experience* by making the menu system of the Tripal site available to the user while browsing. If the user needs more space they can choose the *FullScreen option* to remove the menus.
 
@@ -14,19 +13,19 @@ This guide will show you **how to create a page within your Tripal site for an e
 
 You create a JBrowse Instance page by navigating to **Content > Add Content > JBrowse Instance** on the Administration Toolbar. Then just fill out the form and click save!
 
-.. image:: instancepage.1.addcontent.png
+.. image:: ../../assets/instancepage.1.addcontent.png
 
-.. image:: instancepage.2.addinstance.png
+.. image:: ../../assets/instancepage.2.addinstance.png
 
 The **title** will become the title of the page and the **description** will be shown above the JBrowse instances. The description is a good place to add any warnings or instructions.
 
-.. image:: instancepage.3.createtop.png
+.. image:: ../../assets/instancepage.3.createtop.png
 
 The **Existing JBrowse URL** is the URL to the JBrowse instance you want to embed. You should be able to put this URL into your browser and access the JBrowse instance directly, even in the case of local instances.
 
 The **Start Locations** allows you to specify where you want the JBrowse to navigate to for first time users. Keep in mind that JBrowse caches user location and thus all subsequent times a user accesses the instance it will start at their last browsed location.
 
-.. image:: instancepage.4.createbottom.png
+.. image:: ../../assets/instancepage.4.createbottom.png
 
 The **Tracks** allows you to set which tracks you want shown by default. You should enter the machine name of the tracks here with multiple tracks separated by comma's.
 
