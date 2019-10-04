@@ -18,6 +18,14 @@ function tripal_jbrowse_mgmt_instance_page($instance_id) {
 
   drupal_set_title("Manage $instance->title JBrowse");
 
+  $breadcrumb = array();
+  $breadcrumb[] = l('Home', '');
+  $breadcrumb[] = l('Administration', 'admin');
+  $breadcrumb[] = l('Tripal', 'admin/tripal');
+  $breadcrumb[] = l('Extensions', 'admin/tripal/extension');
+  $breadcrumb[] = l('Tripal JBrowse', 'admin/tripal/extension/tripal_jbrowse/management');
+  drupal_set_breadcrumb($breadcrumb);
+
   $content = [];
 
   $content['instance_table'] = [
