@@ -8,13 +8,13 @@
  * @return mixed
  */
 function tripal_jbrowse_mgmt_configure_form($form, &$form_state) {
+
+  $message = '<p>Before filling out this form, ensure you have downloaded and installed JBrowse on your server. At this time, JBrowse needs to be on the same server as this Tripal site. <br /><strong>This form allows you to configure the location of JBrowse.</strong></p>';
+
   $form['message'] = [
     '#type' => 'markup',
     '#prefix' => '<p>',
-    '#markup' => t(
-      'This form allows administrators to control 
-      where JBrowse lives on the server.'
-    ),
+    '#markup' => t($message),
     '#suffix' => '</p>',
   ];
 
@@ -23,7 +23,7 @@ function tripal_jbrowse_mgmt_configure_form($form, &$form_state) {
   $form['data_dir'] = [
     '#title' => t('Data Directory'),
     '#description' => t(
-      'Absolute path to where data directories should live. 
+      'Absolute path to where data directories should live.
        This directory must be accessible by the apache user.'
     ),
     '#type' => 'textfield',
@@ -59,7 +59,7 @@ function tripal_jbrowse_mgmt_configure_form($form, &$form_state) {
   $form['menu_template'] = [
     '#title' => t('Default menuTemplate'),
     '#description' => t(
-      'Default menuTemplate in the trackList.json file. See 
+      'Default menuTemplate in the trackList.json file. See
        the JBrowse documentation for more info.'
     ),
     '#type' => 'textarea',
