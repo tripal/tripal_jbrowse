@@ -97,6 +97,58 @@ function tripal_jbrowse_mgmt_add_form($form, &$form_state) {
     '#disabled' => ($edit_form) ? TRUE : FALSE,
   ];
 
+  $form['page'] = [
+    '#type' => 'fieldset',
+    '#tree' => TRUE,
+    '#title' => 'Instance Page Settings',
+    '#description' => 'The following settings pertain to link directing users to this instance (either embedded or the original).',
+  ];
+
+  $form['page']['start_loc'] = [
+    '#type' => 'textfield',
+    '#title' => 'Start Location',
+    '#description' => "<p>The initial genomic position which will be visible in
+      the viewing field. Possible input strings are:</p>\r\n
+    <strong>\"Chromosome\": \"start point\"..\"end point\"</strong>\r\n<p>A
+      chromosome name/ID followed by “:”, starting position, “..” and end
+      position of the genome to be viewed in the browser is used as an input.
+      Chromosome ID can be either a string or a mix of string and numbers.
+      “CHR” to indicate chromosome may or may not be used. Strings are not
+      case-sensitive. If the chromosome ID is found in the database reference
+      sequence (RefSeq), the chromosome will be shown from the starting
+      position to the end position given in URL.</p>\r\n
+      <pre>     ctgA:100..200</pre>\r\n
+      <p>Chromosome ctgA will be displayed from position 100 to 200.</p>\r\n
+    OR <strong>start point\"..\"end point</strong>\r\n<p>A string of
+      numerical value, “..” and another numerical value is given with the loc
+      option. JBrowse navigates through the currently selected chromosome from
+      the first numerical value, start point, to the second numerical value,
+      end point.</p>\r\n<pre>     200..600</pre>\r\n<p>Displays position 200
+      to 600 of the current chromosome.</p>\r\n
+    OR <strong>center base</strong>\r\n<p>If only one numerical value is given
+      as an input, JBrowse treats the input as the center position. Then an
+      arbitrary region of the currently selected gene is displayed in the
+      viewing field with the given input position as basepair position on
+      which to center the view.</p>\r\n
+    OR <strong>feature name/ID</strong>\r\n<p>If a string or a mix of string
+      and numbers are entered as an input, JBrowse treats the input as a
+      feature name/ID of a gene. If the ID exists in the database RefSeq,
+      JBrowser displays an arbitrary region of the feature from the the
+      position 0, starting position of the gene, to a certain end point.</p>\r\n
+      <pre>     ctgA</pre>\r\n<p>Displays an arbitrary region from the ctgA
+      reference.</p>",
+  ];
+
+  $form['page']['start_tracks'] = [
+    '#type' => 'textarea',
+    '#rows' => 2,
+    '#title' => 'Tracks to Display',
+    '#description' => "<p>A comma-delimited strings containing track names,
+      each of which should correspond to the \"label\" element of the track
+      information dictionaries that are currently viewed in the viewing field.</p>\r\n
+      <pre>     DNA,knownGene,ccdsGene,snp131,pgWatson,simpleRepeat</pre>",
+  ];
+
   $button = 'Create New Instance';
   if ($edit_form) {
     $button = 'Save Changes';
@@ -204,14 +256,12 @@ function tripal_jbrowse_mgmt_add_form_submit($form, &$form_state) {
 
     $title = tripal_jbrowse_mgmt_construct_organism_name($organism);
 
-    $success = db_update('tripal_jbrowse_mgmt_instances')
-      ->fields([
-        'organism_id' => $organism_id,
-        'title' => $title,
-        'description' => $description,
-      ])
-      ->condition('id', $instance_id)
-      ->execute();
+    $data = [
+      'organism_id' => $organism_id,
+      'title' => $title,
+      'description' => $description,
+    ];
+    $success = tripal_jbrowse_mgmt_update_instance($instance_id, $data);
 
     if ($success) {
       drupal_set_message("Successfully updated $title JBrowse instance.");
