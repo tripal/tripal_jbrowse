@@ -8,6 +8,14 @@ function tripal_jbrowse_mgmt_instances_page() {
   $instances = tripal_jbrowse_mgmt_get_instances();
   $settings = tripal_jbrowse_mgmt_get_settings();
 
+  // Ensure people set settings before adding an instance!
+  if (empty($settings['data_dir'])) {
+    drupal_set_message(t(
+      'The <a href="@url">Location of your JBrowse</a> is required before creating an instance.',
+        ['@url' => url('admin/tripal/extension/tripal_jbrowse/management/configure')]),
+      'error');
+  }
+
   $content = [];
 
   if (empty($instances)) {

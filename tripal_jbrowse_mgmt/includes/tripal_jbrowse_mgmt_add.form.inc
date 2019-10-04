@@ -3,13 +3,15 @@
 function tripal_jbrowse_mgmt_add_form($form, &$form_state) {
   $settings = tripal_jbrowse_mgmt_get_settings();
 
-  if (empty(array_values($settings))) {
+  // Ensure the module is configured.
+  if (empty(array_filter($settings))) {
     $form['incomplete'] = [
       '#type' => 'item',
-      '#prefix' => '<div style="color: red;">',
+      '#prefix' => '<div class="messages error">',
       '#markup' => t(
-        'You have not configured the module yet. Please visit the 
-                      settings page and submit the form before continuing.'
+        'You have not configured the module yet. Please visit the
+            <a href="@url">settings page</a> and submit the form before continuing.',
+        ['@url' => url('admin/tripal/extension/tripal_jbrowse/management/configure')]
       ),
       '#suffix' => '</div>',
     ];
@@ -28,7 +30,7 @@ function tripal_jbrowse_mgmt_add_form($form, &$form_state) {
   $form['description_of_form'] = [
     '#type' => 'item',
     '#markup' => t(
-      'Create a new JBrowse instance for a given organism. Submitting this form 
+      'Create a new JBrowse instance for a given organism. Submitting this form
       creates all the necessary files for a new JBrowse instance.'
     ),
   ];
