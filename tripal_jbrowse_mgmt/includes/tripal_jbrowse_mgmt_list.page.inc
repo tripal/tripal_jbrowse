@@ -31,9 +31,9 @@ function tripal_jbrowse_mgmt_instances_page() {
     'Organism',
     'Submitter',
     'Description',
-    'Manage',
+    'Tracks',
     'Launch',
-    'Delete',
+    'Instance',
   ];
 
   $rows = [];
@@ -51,7 +51,8 @@ function tripal_jbrowse_mgmt_instances_page() {
         $settings['link'],
         ['query' => tripal_jbrowse_mgmt_build_http_query($instance)]
       ),
-      l('Delete Instance', 'admin/tripal/extension/tripal_jbrowse/management/instances/'.$instance->id.'/delete'),
+      l('Edit', 'admin/tripal/extension/tripal_jbrowse/management/instances/'.$instance->id.'/edit') . ' <br /> ' .
+      l('Delete', 'admin/tripal/extension/tripal_jbrowse/management/instances/'.$instance->id.'/delete'),
 
     ];
   }

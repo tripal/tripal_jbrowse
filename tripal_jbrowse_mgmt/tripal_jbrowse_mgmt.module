@@ -66,8 +66,18 @@ function tripal_jbrowse_mgmt_menu() {
     'type' => MENU_CALLBACK,
   ];
 
+  $items['admin/tripal/extension/tripal_jbrowse/management/instances/%/edit'] = [
+    'title' => 'Edit Instance',
+    'description' => 'Edit metadata for existing JBrowse instances.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => ['tripal_jbrowse_mgmt_add_form', 6],
+    'access arguments' => ['administer tripal_jbrowse_mgmt'],
+    'file' => 'includes/tripal_jbrowse_mgmt_add.form.inc',
+    'type' => MENU_LOCAL_ACTION,
+  ];
+
   $items['admin/tripal/extension/tripal_jbrowse/management/instances/%/delete'] = [
-    'title' => 'Delete an instance',
+    'title' => 'Delete Instance',
     'description' => 'Confirm deleting an instance.',
     'page callback' => 'drupal_get_form',
     'page arguments' => ['tripal_jbrowse_mgmt_delete_instance_form', 6],
