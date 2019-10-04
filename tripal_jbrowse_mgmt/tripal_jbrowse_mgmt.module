@@ -26,6 +26,16 @@ function tripal_jbrowse_mgmt_menu() {
     'type' => MENU_NORMAL_ITEM,
   ];
 
+  $items['admin/tripal/extension/tripal_jbrowse/management/instances'] = [
+    'title' => 'List Instances',
+    'description' => 'List JBrowse settings',
+    'page callback' => 'tripal_jbrowse_mgmt_instances_page',
+    'page arguments' => ['tripal_jbrowse_mgmt_configure_form'],
+    'access arguments' => ['administer tripal_jbrowse_mgmt'],
+    'file' => 'includes/tripal_jbrowse_mgmt_list.page.inc',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+  ];
+
   $items['admin/tripal/extension/tripal_jbrowse/management/configure'] = [
     'title' => 'Settings',
     'description' => 'List and create JBrowse instances.',
