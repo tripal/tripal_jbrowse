@@ -49,7 +49,10 @@ function tripal_jbrowse_mgmt_instances_page() {
       l(
         'Launch',
         $settings['link'],
-        ['query' => tripal_jbrowse_mgmt_build_http_query($instance)]
+        [
+          'query' => tripal_jbrowse_mgmt_build_http_query($instance),
+          'attributes' => ['target' => '_blank'],
+        ]
       ),
       l('Edit', 'admin/tripal/extension/tripal_jbrowse/management/instances/'.$instance->id.'/edit') . ' <br /> ' .
       l('Delete', 'admin/tripal/extension/tripal_jbrowse/management/instances/'.$instance->id.'/delete'),

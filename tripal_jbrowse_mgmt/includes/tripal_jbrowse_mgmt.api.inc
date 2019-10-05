@@ -397,18 +397,33 @@ function tripal_jbrowse_mgmt_copy_file($source, $destination) {
  */
 function tripal_jbrowse_mgmt_build_http_query($instance) {
   $path = tripal_jbrowse_mgmt_make_slug($instance->title);
-  $tracks = tripal_jbrowse_mgmt_get_tracks($instance);
+  $added_tracks = tripal_jbrowse_mgmt_get_tracks($instance);
+  $properties = tripal_jbrowse_mgmt_get_instance_properties($instance->id);
+
+  // Determine the tracks to display.
   $tracks_path = '';
-  if (!empty($tracks)) {
-    $tracks_path = implode(',', array_map(function ($track) {
+  // If the start-tracks property is set then use that directly.
+  if (isset($properties['start-tracks'])) {
+    $tracks_path = $properties['start-tracks'];
+  }
+  // Otherwise, show all tracks that were added using this module.
+  elseif (!empty($added_tracks)) {
+    $tracks_path = implode(',', array_map(function ($added_tracks) {
       return tripal_jbrowse_mgmt_make_slug($track->label);
-    }, $tracks));
+    }, $added_tracks));
   }
 
-  return [
+  $query_params = [
     'data' => "data/$path/data",
     'tracks' => $tracks_path,
   ];
+
+  // Now we need to add start location if it's set.
+  if (isset($properties['start-loc'])) {
+    $query_params['loc'] = $properties['start-loc'];
+  }
+
+  return $query_params;
 }
 
 /**
@@ -604,4 +619,20 @@ function tripal_jbrowse_mgmt_get_instance_property($id, $type) {
     ->condition('instance_id', $id)
     ->condition('property_type', $type)
     ->execute()->fetchField();
+}
+
+/**
+ * Retrieves all properties for a given instance.
+ *
+ * @param $id
+ *   The instance ID.
+ * @return
+ *   An array of properties for the specified instance
+ *   where the key: property type and value: property value.
+ */
+function tripal_jbrowse_mgmt_get_instance_properties($id) {
+  return db_select('tripal_jbrowse_mgmt_instanceprop', 'p')
+    ->fields('p', ['property_type', 'value'])
+    ->condition('instance_id', $id)
+    ->execute()->fetchAllKeyed(0,1);
 }
