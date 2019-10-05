@@ -104,7 +104,7 @@ function tripal_jbrowse_mgmt_add_form($form, &$form_state) {
     '#description' => 'The following settings pertain to link directing users to this instance (either embedded or the original).',
   ];
 
-  $form['page']['start_loc'] = [
+  $form['page']['start-loc'] = [
     '#type' => 'textfield',
     '#title' => 'Start Location',
     '#description' => "<p>The initial genomic position which will be visible in
@@ -137,9 +137,10 @@ function tripal_jbrowse_mgmt_add_form($form, &$form_state) {
       position 0, starting position of the gene, to a certain end point.</p>\r\n
       <pre>     ctgA</pre>\r\n<p>Displays an arbitrary region from the ctgA
       reference.</p>",
+    '#default_value' => ($edit_form) ? tripal_jbrowse_mgmt_get_instance_property($instance_id, 'start-loc') : NULL,
   ];
 
-  $form['page']['start_tracks'] = [
+  $form['page']['start-tracks'] = [
     '#type' => 'textarea',
     '#rows' => 2,
     '#title' => 'Tracks to Display',
@@ -147,6 +148,7 @@ function tripal_jbrowse_mgmt_add_form($form, &$form_state) {
       each of which should correspond to the \"label\" element of the track
       information dictionaries that are currently viewed in the viewing field.</p>\r\n
       <pre>     DNA,knownGene,ccdsGene,snp131,pgWatson,simpleRepeat</pre>",
+    '#default_value' => ($edit_form) ? tripal_jbrowse_mgmt_get_instance_property($instance_id, 'start-tracks') : NULL,
   ];
 
   $button = 'Create New Instance';
@@ -308,8 +310,13 @@ function tripal_jbrowse_mgmt_add_form_submit($form, &$form_state) {
         $user->uid
       );
       $form_state['redirect'] = "admin/tripal/extension/tripal_jbrowse/management/instances/$instance_id";
-      return $form;
     }
     drupal_set_message('Failed to create instance!', 'error');
   }
+
+  // Now save the instance properties.
+  tripal_jbrowse_mgmt_save_instance_properties(
+    $instance_id,
+    $form_state['values']['page']
+  );
 }
