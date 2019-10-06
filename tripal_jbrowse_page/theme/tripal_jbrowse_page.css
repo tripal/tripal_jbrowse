@@ -1,3 +1,5 @@
+
+/** JBrowse Listing **/
 .jbrowse-list {
   border-top: 1px solid #d0d0d0;
   margin-top: 20px;
@@ -9,4 +11,9 @@
 }
 .jbrowse-list .jbrowse-instance .jbrowse-launch-link {
   float: right;
+}
+
+/** Embedded Page **/
+#JBrowseInstance iframe {
+  min-height: 700px;
 }

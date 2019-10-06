@@ -5,6 +5,7 @@ require_once 'includes/tripal_jbrowse_page.api.inc';
 
 // Include files.
 require_once 'includes/tripal_jbrowse_page.listing.inc';
+require_once 'includes/tripal_jbrowse_page.page.inc';
 
 /**
  * Implements hook_menu().
@@ -49,27 +50,13 @@ function tripal_jbrowse_page_theme($existing, $type, $theme, $path) {
       'template' =>  'theme/jbrowse-instance--public-listing',
       'variables' => array('instances' => []),
     ),
+    'jbrowse_instance_embedded_page' => array(
+      // Don't specify the path in the template name.
+      // Unless you have your template inside a directory within this module.
+      'template' =>  'theme/jbrowse-instance--embedded',
+      'variables' => array('url' => ''),
+    ),
   );
 
   return $items;
-}
-
-/**
- * Redirect to the JBrowse Instance.
- */
-function tripal_jbrowse_page_page($genus, $species) {
-
-  $instance = tripal_jbrowse_page_get_instance_id([
-    'genus' => $genus,
-    'species' => $species
-  ],
-  ['load_instance' => TRUE]);
-
-  $query_params = tripal_jbrowse_mgmt_build_http_query($instance);
-  $settings = tripal_jbrowse_mgmt_get_settings();
-
-  $url = url($settings['link'],['query' => $query_params]);
-  drupal_goto($url, array('external' => TRUE));
-
-  return '';
 }
