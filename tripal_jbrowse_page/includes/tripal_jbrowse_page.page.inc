@@ -7,8 +7,8 @@
 /**
  * Redirect to the JBrowse Instance.
  */
-function tripal_jbrowse_page_page($genus, $species) {
-
+function tripal_jbrowse_page_page($scientific_name) {
+  list($genus, $species) = explode('-', $scientific_name);
   $instance = tripal_jbrowse_page_get_instance_id([
     'genus' => $genus,
     'species' => $species

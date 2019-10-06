@@ -32,12 +32,12 @@ function tripal_jbrowse_page_menu() {
         $menu_type = MENU_NORMAL_ITEM;
       }
       // Create the menu item.
-      $path = 'jbrowse/'.$instance->organism->genus . '/' . $instance->organism->species;
+      $path = 'jbrowse/'.$instance->organism->genus . '-' . $instance->organism->species;
       $items[$path] = [
         'title' => $instance->title,
         'description' => $instance->description,
         'page callback' => 'tripal_jbrowse_page_page',
-        'page arguments' => [1, 2],
+        'page arguments' => [1],
         'access arguments' => ['access content'],
         'file' => 'includes/tripal_jbrowse_page.page.inc',
         'type' => $menu_type,
