@@ -1,0 +1,75 @@
+<?php
+
+// API.
+require_once 'includes/tripal_jbrowse_page.api.inc';
+
+// Include files.
+require_once 'includes/tripal_jbrowse_page.listing.inc';
+
+/**
+ * Implements hook_menu().
+ */
+function tripal_jbrowse_page_menu() {
+  $items = [];
+
+  $items['jbrowse'] = [
+    'title' => 'JBrowse',
+    'description' => 'A listing of available JBrowse instances.',
+    'page callback' => 'tripal_jbrowse_page_listing_page',
+    'access arguments' => ['access content'],
+    'type' => MENU_NORMAL_ITEM,
+  ];
+
+  $instances = tripal_jbrowse_mgmt_get_instances();
+  foreach ($instances as $instance) {
+
+    $path = 'jbrowse/'.$instance->organism->genus . '/' . $instance->organism->species;
+    $items[$path] = [
+      'title' => $instance->title,
+      'description' => $instance->description,
+      'page callback' => 'tripal_jbrowse_page_page',
+      'page arguments' => [1, 2],
+      'access arguments' => ['access content'],
+      'type' => MENU_NORMAL_ITEM,
+    ];
+  }
+
+  return $items;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function tripal_jbrowse_page_theme($existing, $type, $theme, $path) {
+
+  $items = array(
+    'jbrowse_instance_public_listing' => array(
+      // Don't specify the path in the template name.
+      // Unless you have your template inside a directory within this module.
+      'template' =>  'theme/jbrowse-instance--public-listing',
+      'variables' => array('instances' => []),
+    ),
+  );
+
+  return $items;
+}
+
+/**
+ * Redirect to the JBrowse Instance.
+ */
+function tripal_jbrowse_page_page($genus, $species) {
+
+  $instance = tripal_jbrowse_page_get_instance_id([
+    'genus' => $genus,
+    'species' => $species
+  ],
+  ['load_instance' => TRUE]);
+
+  $query_params = tripal_jbrowse_mgmt_build_http_query($instance);
+  $settings = tripal_jbrowse_mgmt_get_settings();
+
+  $url = url($settings['link'],['query' => $query_params]);
+  drupal_goto($url, array('external' => TRUE));
+
+  return '';
+}

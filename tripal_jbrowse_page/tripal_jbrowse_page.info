@@ -1,0 +1,7 @@
+name = Tripal-JBrowse Page Integration
+description = Integrates JBrowse instances into Tripal Pages.
+core = 7.x
+package = Tripal Extensions
+
+dependencies[] = tripal
+dependencies[] = tripal_jbrowse_mgmt

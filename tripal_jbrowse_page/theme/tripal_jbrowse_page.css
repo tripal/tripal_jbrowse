@@ -1,0 +1,12 @@
+.jbrowse-list {
+  border-top: 1px solid #d0d0d0;
+  margin-top: 20px;
+}
+.jbrowse-list .jbrowse-instance {
+  border-bottom: 1px solid #d0d0d0;
+  margin-bottom: 20px;
+  padding-bottom: 30px;
+}
+.jbrowse-list .jbrowse-instance .jbrowse-launch-link {
+  float: right;
+}

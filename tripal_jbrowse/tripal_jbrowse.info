@@ -1,7 +1,6 @@
-name = Tripal-JBrowse Integration
-description = Integrates existing JBrowse instances into Tripal sites.
+name = JBrowse Nodes DEPRECATED
+description = Creates nodes embedding JBrowse instances.
 core = 7.x
 package = Tripal Extensions
 
-dependencies[] = link
 dependencies[] = tripal
