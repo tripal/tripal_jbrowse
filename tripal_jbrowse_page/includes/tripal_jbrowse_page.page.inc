@@ -20,13 +20,11 @@ function tripal_jbrowse_page_page($genus, $species) {
 
   $url = url($settings['link'],['query' => $query_params]);
 
-  if (FALSE) {
-    drupal_goto($url, array('external' => TRUE));
-  }
-  else {
+  if (variable_get('trpjbrowse_page_embed', 1)) {
     drupal_add_css(drupal_get_path('module', 'tripal_jbrowse_page') . '/theme/tripal_jbrowse_page.css');
     return theme('jbrowse_instance_embedded_page', ['url' => $url]);
   }
-
-  return '';
+  else {
+    drupal_goto($url, array('external' => TRUE));
+  }
 }

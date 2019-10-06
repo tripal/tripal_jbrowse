@@ -23,6 +23,13 @@ function tripal_jbrowse_page_settings_form($form, $form_state) {
     '#default_value' => variable_get('trpjbrowse_page_create_menu_items', 1),
   ];
 
+  $form['general']['embed'] = [
+    '#type' => 'checkbox',
+    '#title' => 'Embed JBrowse in your Tripal Site',
+    '#description' => 'Check this box if you would like to embed the JBrowse in your Tripal site. Conversely, uncheck it for links to go directly to the full-screen JBrowse.',
+  '#default_value' => variable_get('trpjbrowse_page_embed', 1),
+  ];
+
   $form['exclude_fieldset'] = [
     '#type' => 'fieldset',
     '#title' => 'Exclude JBrowse Instances from Page Integration',
@@ -74,6 +81,10 @@ function tripal_jbrowse_page_settings_form_submit($form, $form_state) {
   variable_set(
     'trpjbrowse_page_create_menu_items',
     $values['create_menu_items']
+  );
+  variable_set(
+    'trpjbrowse_page_embed',
+    $values['embed']
   );
 
   // Exclude Instances.
