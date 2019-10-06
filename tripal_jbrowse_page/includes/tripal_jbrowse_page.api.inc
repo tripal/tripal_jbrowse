@@ -29,3 +29,25 @@ function tripal_jbrowse_page_get_instance_id($conditions, $options) {
   }
 
 }
+
+/**
+ * Retrieve the instance id based on the organism.
+ */
+function tripal_jbrowse_page_is_instance_public($instance_id) {
+  $excluded_instances = variable_get('trpjbrowse_page_exclude', []);
+  if (!is_array($excluded_instances)) {
+    $excluded_instances = unserialize($excluded_instances);
+  }
+
+  if (isset($excluded_instances[$instance_id])) {
+    if ($excluded_instances[$instance_id] === $instance_id) {
+      return FALSE;
+    }
+    else {
+      return TRUE;
+    }
+  }
+  else {
+    return FALSE;
+  }
+}

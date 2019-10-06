@@ -17,7 +17,12 @@ function tripal_jbrowse_page_listing_page() {
 
   // Add the URL for each to link to.
   foreach($instances as $k => $instance) {
-    $instances[$k]->url = url('jbrowse/'.$instance->organism->genus . '/' . $instance->organism->species, ['absolute' => TRUE]);
+    if (tripal_jbrowse_page_is_instance_public($instance->id)) {
+      $instances[$k]->url = url('jbrowse/'.$instance->organism->genus . '/' . $instance->organism->species, ['absolute' => TRUE]);
+    }
+    else {
+      unset($instances[$k]);
+    }
   }
 
   // Use the template to render the page.

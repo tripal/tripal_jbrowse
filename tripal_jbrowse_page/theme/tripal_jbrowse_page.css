@@ -12,6 +12,10 @@
 .jbrowse-list .jbrowse-instance .jbrowse-launch-link {
   float: right;
 }
+.jbrowse-list .empty-list {
+  margin-top: 20px;
+  font-style: italic;
+}
 
 /** Embedded Page **/
 #JBrowseInstance iframe {

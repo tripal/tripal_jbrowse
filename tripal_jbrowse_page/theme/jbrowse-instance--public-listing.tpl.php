@@ -10,5 +10,23 @@
       <span class="jbrowse-launch-link"><?php print l('Launch JBrowse', $instance->url); ?></span>
     </div>
 
+  <?php }
+    if (empty($instances)) {?>
+
+      <div class="empty-list">
+        <p>There are currently no available JBrowse instances.</p>
+      </div>
   <?php } ?>
+</div>
+
+
+<div class="jbrowse-admin-message">
+  <?php
+    print tripal_set_message(
+      'You can create or register a JBrowse Instance at '
+      .l('Administration Toolbar > Tripal > Extensions > Tripal JBrowse Management', 'admin/tripal/extension/tripal_jbrowse/management'),
+      TRIPAL_INFO,
+      ['return_html' => TRUE]
+    );
+  ?>
 </div>
