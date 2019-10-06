@@ -15,9 +15,15 @@ function tripal_jbrowse_page_page($genus, $species) {
   ],
   ['load_instance' => TRUE]);
 
+  // Determine Query paramters.
   $query_params = tripal_jbrowse_mgmt_build_http_query($instance);
-  $settings = tripal_jbrowse_mgmt_get_settings();
+  $page_q = drupal_get_query_parameters();
+  foreach ($page_q as $qkey => $qvalue) {
+    $query_params[$qkey] = $qvalue;
+  }
 
+  // Build the URL.
+  $settings = tripal_jbrowse_mgmt_get_settings();
   $url = url($settings['link'],['query' => $query_params]);
 
   if (variable_get('trpjbrowse_page_embed', 1)) {
