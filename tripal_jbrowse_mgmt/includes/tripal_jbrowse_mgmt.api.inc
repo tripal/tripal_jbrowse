@@ -409,7 +409,7 @@ function tripal_jbrowse_mgmt_build_http_query($instance) {
   }
   // Otherwise, show all tracks that were added using this module.
   elseif (!empty($added_tracks)) {
-    $tracks_path = implode(',', array_map(function ($added_tracks) {
+    $tracks_path = implode(',', array_map(function ($track) {
       return tripal_jbrowse_mgmt_make_slug($track->label);
     }, $added_tracks));
   }
