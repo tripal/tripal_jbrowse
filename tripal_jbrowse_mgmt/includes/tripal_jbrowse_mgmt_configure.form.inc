@@ -12,7 +12,7 @@ function tripal_jbrowse_mgmt_configure_form($form, &$form_state) {
     '#type' => 'markup',
     '#prefix' => '<p>',
     '#markup' => t(
-      'This form allows administrators to control 
+      'This form allows administrators to control
       where JBrowse lives on the server.'
     ),
     '#suffix' => '</p>',
@@ -23,12 +23,23 @@ function tripal_jbrowse_mgmt_configure_form($form, &$form_state) {
   $form['data_dir'] = [
     '#title' => t('Data Directory'),
     '#description' => t(
-      'Absolute path to where data directories should live. 
+      'Absolute path to where data directories should live.
        This directory must be accessible by the apache user.'
     ),
     '#type' => 'textfield',
     '#maxlength' => 255,
     '#default_value' => $settings['data_dir'],
+    '#required' => TRUE,
+  ];
+
+  $form['data_path'] = [
+    '#title' => t('Data Path'),
+    '#description' => t(
+      'Relative path to where data directories lives relative to the web browser root.'
+    ),
+    '#type' => 'textfield',
+    '#maxlength' => 255,
+    '#default_value' => $settings['data_path'],
     '#required' => TRUE,
   ];
 
@@ -59,7 +70,7 @@ function tripal_jbrowse_mgmt_configure_form($form, &$form_state) {
   $form['menu_template'] = [
     '#title' => t('Default menuTemplate'),
     '#description' => t(
-      'Default menuTemplate in the trackList.json file. See 
+      'Default menuTemplate in the trackList.json file. See
        the JBrowse documentation for more info.'
     ),
     '#type' => 'textarea',
@@ -146,6 +157,7 @@ function tripal_jbrowse_mgmt_configure_form_submit($form, &$form_state) {
 
   $settings = [
     'data_dir' => rtrim($values['data_dir'], '/'),
+    'data_path' => trim($values['data_path'], '/'),
     'bin_path' => $bin_path,
     'link' => $values['link'],
     'menu_template' => $menu_template,
