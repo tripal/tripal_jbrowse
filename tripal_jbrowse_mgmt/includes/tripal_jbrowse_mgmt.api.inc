@@ -14,6 +14,7 @@ function tripal_jbrowse_mgmt_get_settings() {
     'bin_path' => '',
     'link' => '',
     'data_dir' => '',
+    'data_path' => '',
     'menu_template' => [],
   ];
 
@@ -413,8 +414,11 @@ function tripal_jbrowse_mgmt_build_http_query($instance) {
     }, $added_tracks));
   }
 
-  $query_params = [
-    'data' => "data/$path/data",
+  $settings = tripal_jbrowse_mgmt_get_settings();
+  $data_path = (empty($settings['data_path'])) ? 'data' : '/' . $settings['data_path'];
+
+  return [
+    'data' => "$data_path/$path/data",
     'tracks' => $tracks_path,
   ];
 

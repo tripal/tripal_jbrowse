@@ -19,3 +19,4 @@ This package of modules integrates `GMOD JBrowse <https://jbrowse.org/>`_ into y
 
     guide/install
     guide/jbrowse_mgmt
+    guide/instance_page

@@ -1,5 +1,5 @@
-Tripal JBrowse Management
-=========================
+2) Tripal JBrowse Management
+==============================
 
 .. toctree::
    :maxdepth: 2
