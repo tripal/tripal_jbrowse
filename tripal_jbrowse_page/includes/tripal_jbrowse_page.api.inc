@@ -48,6 +48,6 @@ function tripal_jbrowse_page_is_instance_public($instance_id) {
     }
   }
   else {
-    return FALSE;
+    return TRUE;
   }
 }
