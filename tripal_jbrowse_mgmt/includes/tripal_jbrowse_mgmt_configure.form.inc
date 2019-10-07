@@ -32,6 +32,17 @@ function tripal_jbrowse_mgmt_configure_form($form, &$form_state) {
     '#required' => TRUE,
   ];
 
+  $form['data_path'] = [
+    '#title' => t('Data Path'),
+    '#description' => t(
+      'Relative path to where data directories lives relative to the web browser root.'
+    ),
+    '#type' => 'textfield',
+    '#maxlength' => 255,
+    '#default_value' => $settings['data_path'],
+    '#required' => TRUE,
+  ];
+
   $form['link'] = [
     '#title' => t('Path to JBrowse\'s Index File'),
     '#description' => t(
@@ -146,6 +157,7 @@ function tripal_jbrowse_mgmt_configure_form_submit($form, &$form_state) {
 
   $settings = [
     'data_dir' => rtrim($values['data_dir'], '/'),
+    'data_path' => trim($values['data_path'], '/'),
     'bin_path' => $bin_path,
     'link' => $values['link'],
     'menu_template' => $menu_template,
