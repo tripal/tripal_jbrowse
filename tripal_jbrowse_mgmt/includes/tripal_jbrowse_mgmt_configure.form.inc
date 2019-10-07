@@ -8,13 +8,13 @@
  * @return mixed
  */
 function tripal_jbrowse_mgmt_configure_form($form, &$form_state) {
+
+  $message = '<p>Before filling out this form, ensure you have downloaded and installed JBrowse on your server. At this time, JBrowse needs to be on the same server as this Tripal site. <br /><strong>This form allows you to configure the location of JBrowse.</strong></p>';
+
   $form['message'] = [
     '#type' => 'markup',
     '#prefix' => '<p>',
-    '#markup' => t(
-      'This form allows administrators to control
-      where JBrowse lives on the server.'
-    ),
+    '#markup' => t($message),
     '#suffix' => '</p>',
   ];
 

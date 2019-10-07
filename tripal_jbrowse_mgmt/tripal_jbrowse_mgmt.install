@@ -98,5 +98,33 @@ function tripal_jbrowse_mgmt_schema() {
     ],
   ];
 
+  $schema['tripal_jbrowse_mgmt_instanceprop'] = [
+    'description' => 'JBrowse Instance Metadata.',
+    'fields' => [
+      'instance_id' => [
+        'type' => 'int',
+        'not null' => TRUE,
+      ],
+      'property_type' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ],
+      'value' => [
+        'type' => 'text',
+      ],
+    ]
+  ];
+
   return $schema;
+}
+
+/**
+ * Create instance metadata table.
+ */
+function tripal_jbrowse_mgmt_update_7001(&$sandbox) {
+  $schema = tripal_jbrowse_mgmt_schema();
+  $name = "tripal_jbrowse_mgmt_instanceprop";
+  $table = $schema[$name];
+  db_create_table($name, $table);
 }

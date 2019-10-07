@@ -398,12 +398,20 @@ function tripal_jbrowse_mgmt_copy_file($source, $destination) {
  */
 function tripal_jbrowse_mgmt_build_http_query($instance) {
   $path = tripal_jbrowse_mgmt_make_slug($instance->title);
-  $tracks = tripal_jbrowse_mgmt_get_tracks($instance);
+  $added_tracks = tripal_jbrowse_mgmt_get_tracks($instance);
+  $properties = tripal_jbrowse_mgmt_get_instance_properties($instance->id);
+
+  // Determine the tracks to display.
   $tracks_path = '';
-  if (!empty($tracks)) {
+  // If the start-tracks property is set then use that directly.
+  if (isset($properties['start-tracks'])) {
+    $tracks_path = $properties['start-tracks'];
+  }
+  // Otherwise, show all tracks that were added using this module.
+  elseif (!empty($added_tracks)) {
     $tracks_path = implode(',', array_map(function ($track) {
       return tripal_jbrowse_mgmt_make_slug($track->label);
-    }, $tracks));
+    }, $added_tracks));
   }
 
   $settings = tripal_jbrowse_mgmt_get_settings();
@@ -413,6 +421,13 @@ function tripal_jbrowse_mgmt_build_http_query($instance) {
     'data' => "$data_path/$path/data",
     'tracks' => $tracks_path,
   ];
+
+  // Now we need to add start location if it's set.
+  if (isset($properties['start-loc'])) {
+    $query_params['loc'] = $properties['start-loc'];
+  }
+
+  return $query_params;
 }
 
 /**
@@ -532,4 +547,96 @@ function tripal_jbrowse_mgmt_get_track_types() {
     'HTMLVariants',
     'XYPlot',
   ];
+}
+
+/**
+ * Save properties for a given instance.
+ *
+ * @param $id
+ *   The instance ID that properties should be associated with.
+ * @param $data
+ *   An array of properties where each is
+ *   key: property_type, value: property value.
+ */
+function tripal_jbrowse_mgmt_save_instance_properties($id, $data) {
+
+  // For each property...
+  foreach ($data as $type => $value) {
+    tripal_jbrowse_mgmt_save_instance_property($id, $type, $value);
+  }
+
+}
+
+/**
+ * Save the details for a specific property of a given instance.
+ *
+ * @param $id
+ *   The instance ID that properties should be associated with.
+ * @param $type
+ *   The name of the property type to be saved.
+ * @param $value
+ *   The value of the property to be saved.
+ */
+function tripal_jbrowse_mgmt_save_instance_property($id, $type, $value) {
+
+  // Check to see if the property already exists.
+  $result = db_select('tripal_jbrowse_mgmt_instanceprop', 'p')
+    ->fields('p', ['value'])
+    ->condition('instance_id', $id)
+    ->condition('property_type', $type)
+    ->execute()->fetchObject();
+
+  // If the property doesn't already exist then insert it.
+  if (empty($result)) {
+    return db_insert('tripal_jbrowse_mgmt_instanceprop')
+      ->fields([
+        'instance_id' => $id,
+        'property_type' => $type,
+        'value' => $value,
+      ])->execute();
+  }
+  // Otherwise, we need to update it.
+  else {
+    return db_update('tripal_jbrowse_mgmt_instanceprop')
+      ->fields([
+        'value' => $value,
+      ])
+      ->condition('instance_id', $id)
+      ->condition('property_type', $type)
+      ->execute();
+  }
+}
+
+/**
+ * Retrieves the value for a given instance property.
+ *
+ * @param $id
+ *   The instance ID.
+ * @param $type
+ *   The name of the property type.
+ * @return
+ *   The value of the property for a given instance.
+ */
+function tripal_jbrowse_mgmt_get_instance_property($id, $type) {
+  return db_select('tripal_jbrowse_mgmt_instanceprop', 'p')
+    ->fields('p', ['value'])
+    ->condition('instance_id', $id)
+    ->condition('property_type', $type)
+    ->execute()->fetchField();
+}
+
+/**
+ * Retrieves all properties for a given instance.
+ *
+ * @param $id
+ *   The instance ID.
+ * @return
+ *   An array of properties for the specified instance
+ *   where the key: property type and value: property value.
+ */
+function tripal_jbrowse_mgmt_get_instance_properties($id) {
+  return db_select('tripal_jbrowse_mgmt_instanceprop', 'p')
+    ->fields('p', ['property_type', 'value'])
+    ->condition('instance_id', $id)
+    ->execute()->fetchAllKeyed(0,1);
 }

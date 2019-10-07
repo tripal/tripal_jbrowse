@@ -19,6 +19,15 @@ function tripal_jbrowse_mgmt_json_editor_form($form, &$form_state, $track_id) {
 
   drupal_set_title('Edit Track: ' . $track->label);
 
+  $breadcrumb = array();
+  $breadcrumb[] = l('Home', '');
+  $breadcrumb[] = l('Administration', 'admin');
+  $breadcrumb[] = l('Tripal', 'admin/tripal');
+  $breadcrumb[] = l('Extensions', 'admin/tripal/extension');
+  $breadcrumb[] = l('Tripal JBrowse', 'admin/tripal/extension/tripal_jbrowse/management');
+  $breadcrumb[] = l('Instance', 'admin/tripal/extension/tripal_jbrowse/management/instances/'.$track->instance_id);
+  drupal_set_breadcrumb($breadcrumb);
+
   $instance = tripal_jbrowse_mgmt_get_instance($track->instance_id);
   $json = tripal_jbrowse_mgmt_get_json($instance);
   $form_state['track_json'] = $json;

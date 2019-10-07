@@ -8,6 +8,14 @@ function tripal_jbrowse_mgmt_instances_page() {
   $instances = tripal_jbrowse_mgmt_get_instances();
   $settings = tripal_jbrowse_mgmt_get_settings();
 
+  // Ensure people set settings before adding an instance!
+  if (empty($settings['data_dir'])) {
+    drupal_set_message(t(
+      'The <a href="@url">Location of your JBrowse</a> is required before creating an instance.',
+        ['@url' => url('admin/tripal/extension/tripal_jbrowse/management/configure')]),
+      'error');
+  }
+
   $content = [];
 
   if (empty($instances)) {
@@ -23,9 +31,9 @@ function tripal_jbrowse_mgmt_instances_page() {
     'Organism',
     'Submitter',
     'Description',
-    'Manage',
+    'Tracks',
     'Launch',
-    'Delete',
+    'Instance',
   ];
 
   $rows = [];
@@ -41,9 +49,13 @@ function tripal_jbrowse_mgmt_instances_page() {
       l(
         'Launch',
         $settings['link'],
-        ['query' => tripal_jbrowse_mgmt_build_http_query($instance)]
+        [
+          'query' => tripal_jbrowse_mgmt_build_http_query($instance),
+          'attributes' => ['target' => '_blank'],
+        ]
       ),
-      l('Delete Instance', 'admin/tripal/extension/tripal_jbrowse/management/instances/'.$instance->id.'/delete'),
+      l('Edit', 'admin/tripal/extension/tripal_jbrowse/management/instances/'.$instance->id.'/edit') . ' <br /> ' .
+      l('Delete', 'admin/tripal/extension/tripal_jbrowse/management/instances/'.$instance->id.'/delete'),
 
     ];
   }
