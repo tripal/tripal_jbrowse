@@ -1,14 +1,10 @@
-Tripal JBrowse Installation
-============================
+Installation
+==============
 
-This module is available for download from github.com/tripal/tripal_jbrowse.
-
-1. Download and upack the module into ``[DRUPAL ROOT]/sites/all/modules`` where ``DRUPAL_ROOT`` is the path to your Drupal site.
-2. Navigate to ``https://yourdrupalsite.com/admin/modules`` or click **Administration Toolbar > Modules**
-3. Scroll to **Tripal Extensions**, click the checkbox beside "Tripal JBrowse Integration", and click the "Save Configuration" button at the bottom of the page.
-
-.. image:: ../../../assets/tripal_jbrowse.1.install.png
+1. Download the module to your Drupal modules folder
+2. Run drush en -y hardwoods_jbrowse or enable through the modules page
+3. Visit the configuration page at /admin/hardwoods_jbrowse/configure
 
 .. note::
 
-   This module is dependent upon the **Link** module. It is not mentioned above in the install instructions since you should already have installed it when installing Tripal.
+  JBrowse must be unpacked and ``./setup.sh`` run. It must be located in a directory accessible by your webserver. We recommend ``[drupalsite]/tools/jbrowse``.
