@@ -311,7 +311,9 @@ function tripal_jbrowse_mgmt_add_form_submit($form, &$form_state) {
       );
       $form_state['redirect'] = "admin/tripal/extension/tripal_jbrowse/management/instances/$instance_id";
     }
-    drupal_set_message('Failed to create instance!', 'error');
+    else {
+      drupal_set_message('Failed to create instance!', 'error');
+    }
   }
 
   // Now save the instance properties.
