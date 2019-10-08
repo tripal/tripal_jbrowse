@@ -19,21 +19,6 @@ function tripal_jbrowse_mgmt_add_form($form, &$form_state) {
     return $form;
   }
 
-  // Check to see if this is an edit form.
-  $edit_form = FALSE;
-  if (isset($form_state['build_info']['args'][0]) AND is_numeric($form_state['build_info']['args'][0])) {
-    $instance_id = $form_state['build_info']['args'][0];
-    $result = tripal_jbrowse_mgmt_get_instances(['id' => $instance_id]);
-    if (!empty($result)) {
-      $instance = $result[0];
-      $edit_form = TRUE;
-    }
-    else {
-      drupal_set_message('Unable to access the instance you would like to edit.', 'error');
-      return $form;
-    }
-  }
-
   $organisms = tripal_jbrowse_mgmt_get_organisms_list();
   $mapped_organisms = [];
   foreach ($organisms as $organism) {
@@ -44,9 +29,6 @@ function tripal_jbrowse_mgmt_add_form($form, &$form_state) {
 
   $form_description = 'Create a new JBrowse instance for a given organism. Submitting this form
   creates all the necessary files for a new JBrowse instance.';
-  if ($edit_form) {
-    $form_description = 'Edit details regarding the current JBrowse instance.';
-  }
   $form['description_of_form'] = [
     '#type' => 'item',
     '#markup' => t($form_description),
@@ -58,14 +40,12 @@ function tripal_jbrowse_mgmt_add_form($form, &$form_state) {
     '#type' => 'select',
     '#options' => $mapped_organisms,
     '#required' => TRUE,
-    '#default_value' => ($edit_form) ? $instance->organism_id : NULL,
   ];
 
   $form['description'] = [
     '#title' => t('Description'),
     '#description' => t('Optional description for the instance.'),
     '#type' => 'textarea',
-    '#default_value' => ($edit_form) ? $instance->description : NULL,
   ];
 
   $form['data'] = [
@@ -85,7 +65,6 @@ function tripal_jbrowse_mgmt_add_form($form, &$form_state) {
   $form['data']['ref_seq_file'] = [
     '#type' => 'file',
     '#title' => t('Reference Sequence FASTA File'),
-    '#disabled' => ($edit_form) ? TRUE : FALSE,
   ];
 
   $form['data']['ref_seq_path'] = [
@@ -94,7 +73,6 @@ function tripal_jbrowse_mgmt_add_form($form, &$form_state) {
     '#description' => t(
       'This path will be ignored if a file is provided above. Ex: sites/default/files/file.fasta or /data/file.fasta'
     ),
-    '#disabled' => ($edit_form) ? TRUE : FALSE,
   ];
 
   $form['page'] = [
@@ -137,7 +115,6 @@ function tripal_jbrowse_mgmt_add_form($form, &$form_state) {
       position 0, starting position of the gene, to a certain end point.</p>\r\n
       <pre>     ctgA</pre>\r\n<p>Displays an arbitrary region from the ctgA
       reference.</p>",
-    '#default_value' => ($edit_form) ? tripal_jbrowse_mgmt_get_instance_property($instance_id, 'start-loc') : NULL,
   ];
 
   $form['page']['start-tracks'] = [
@@ -148,16 +125,11 @@ function tripal_jbrowse_mgmt_add_form($form, &$form_state) {
       each of which should correspond to the \"label\" element of the track
       information dictionaries that are currently viewed in the viewing field.</p>\r\n
       <pre>     DNA,knownGene,ccdsGene,snp131,pgWatson,simpleRepeat</pre>",
-    '#default_value' => ($edit_form) ? tripal_jbrowse_mgmt_get_instance_property($instance_id, 'start-tracks') : NULL,
   ];
 
-  $button = 'Create New Instance';
-  if ($edit_form) {
-    $button = 'Save Changes';
-  }
   $form['submit'] = [
     '#type' => 'submit',
-    '#value' => $button,
+    '#value' => 'Create New Instance',
   ];
 
   return $form;
@@ -180,41 +152,38 @@ function tripal_jbrowse_mgmt_add_form_validate($form, &$form_state) {
     $edit_form = TRUE;
   }
 
-  if (!$edit_form) {
-    $file = $_FILES['files']['tmp_name']['ref_seq_file'];
-    $local_file = isset($values['ref_seq_path']) ? $values['ref_seq_path'] : NULL;
 
-    if (empty($file) && empty($local_file)) {
-      form_set_error(
-        'ref_seq_file',
-        'Please provide a local file path or upload a new file.'
-      );
+  $file = $_FILES['files']['tmp_name']['ref_seq_file'];
+  $local_file = isset($values['ref_seq_path']) ? $values['ref_seq_path'] : NULL;
+
+  if (empty($file) && empty($local_file)) {
+    form_set_error(
+      'ref_seq_file',
+      'Please provide a local file path or upload a new file.'
+    );
+  }
+  elseif (empty($file) && !empty($local_file)) {
+    if (!file_exists($local_file)) {
+      form_set_error('ref_seq_path', 'The file path provided does not exist.');
     }
-    elseif (empty($file) && !empty($local_file)) {
-      if (!file_exists($local_file)) {
-        form_set_error('ref_seq_path', 'The file path provided does not exist.');
-      }
+  }
+  else {
+    $uploaded = tripal_jbrowse_mgmt_upload_file('ref_seq_file');
+    if (!$uploaded) {
+      form_set_error('ref_seq_file', 'Unable to upload file');
     }
     else {
-      $uploaded = tripal_jbrowse_mgmt_upload_file('ref_seq_file');
-      if (!$uploaded) {
-        form_set_error('ref_seq_file', 'Unable to upload file');
-      }
-      else {
-        $uploaded = tripal_jbrowse_mgmt_move_file($uploaded);
-        $form_state['values']['uploaded_file'] = $uploaded;
-      }
+      $uploaded = tripal_jbrowse_mgmt_move_file($uploaded);
+      $form_state['values']['uploaded_file'] = $uploaded;
     }
   }
 
   $instances = tripal_jbrowse_mgmt_get_instances(['organism_id' => $organism]);
   if (!empty($instances)) {
-    if (!$edit_form OR ($edit_form AND $instances[0]->id != $instance_id)) {
-      form_set_error(
-        'organism',
-        'A JBrowse instance for the selected organism already exists. You can edit the instance from the instances page.'
-      );
-    }
+    form_set_error(
+      'organism',
+      'A JBrowse instance for the selected organism already exists. You can edit the instance from the instances page.'
+    );
   }
 
   $organism = db_select('chado.organism', 'CO')
@@ -241,79 +210,46 @@ function tripal_jbrowse_mgmt_add_form_submit($form, &$form_state) {
   $organism_id = $values['organism'];
   $description = isset($values['description']) ? $values['description'] : '';
 
-  // Check if this is an add or edit form.
-  $edit_form = FALSE;
-  if (isset($form_state['build_info']['args'][0]) AND is_numeric($form_state['build_info']['args'][0])) {
-    $instance_id = $form_state['build_info']['args'][0];
-    $edit_form = TRUE;
-  }
-
-  if ($edit_form) {
-
-    $organism = db_select('chado.organism', 'CO')
-      ->fields('CO')
-      ->condition('organism_id', $organism_id)
-      ->execute()
-      ->fetchObject();
-
-    $title = tripal_jbrowse_mgmt_construct_organism_name($organism);
-
-    $data = [
-      'organism_id' => $organism_id,
-      'title' => $title,
-      'description' => $description,
-    ];
-    $success = tripal_jbrowse_mgmt_update_instance($instance_id, $data);
-
-    if ($success) {
-      drupal_set_message("Successfully updated $title JBrowse instance.");
-      $form_state['redirect'] = 'admin/tripal/extension/tripal_jbrowse/management/instances';
-    }
-    else {
-      drupal_set_message('Failed to update the current instance!', 'error');
-    }
+  if (empty($values['uploaded_file'])) {
+    $file = $values['ref_seq_path'];
   }
   else {
-    if (empty($values['uploaded_file'])) {
-      $file = $values['ref_seq_path'];
-    }
-    else {
-      $file = $values['uploaded_file'];
-    }
+    $file = $values['uploaded_file'];
+  }
 
-    $organism = db_select('chado.organism', 'CO')
-      ->fields('CO')
-      ->condition('organism_id', $organism_id)
-      ->execute()
-      ->fetchObject();
+  $organism = db_select('chado.organism', 'CO')
+    ->fields('CO')
+    ->condition('organism_id', $organism_id)
+    ->execute()
+    ->fetchObject();
 
-    $instance_id = tripal_jbrowse_mgmt_create_instance(
-      [
-        'organism_id' => $organism_id,
-        'title' => tripal_jbrowse_mgmt_construct_organism_name($organism),
-        'description' => $description,
-        'created_at' => time(),
-        'file' => $file,
-      ]
+  $instance_id = tripal_jbrowse_mgmt_create_instance(
+    [
+      'organism_id' => $organism_id,
+      'title' => tripal_jbrowse_mgmt_construct_organism_name($organism),
+      'description' => $description,
+      'created_at' => time(),
+      'file' => $file,
+    ]
+  );
+
+  if ($instance_id) {
+    drupal_set_message('Instance created successfully!');
+    $name = 'Create JBrowse instance for ';
+    $name .= tripal_jbrowse_mgmt_construct_organism_name($organism);
+
+    tripal_add_job(
+      $name,
+      'tripal_jbrowse_mgmt',
+      'tripal_jbrowse_mgmt_create_instance_files',
+      [$instance_id],
+      $user->uid
     );
-
-    if ($instance_id) {
-      drupal_set_message('Instance created successfully!');
-      $name = 'Create JBrowse instance for ';
-      $name .= tripal_jbrowse_mgmt_construct_organism_name($organism);
-
-      tripal_add_job(
-        $name,
-        'tripal_jbrowse_mgmt',
-        'tripal_jbrowse_mgmt_create_instance_files',
-        [$instance_id],
-        $user->uid
-      );
-      $form_state['redirect'] = "admin/tripal/extension/tripal_jbrowse/management/instances/$instance_id";
-    }
-    else {
-      drupal_set_message('Failed to create instance!', 'error');
-    }
+    $form_state['redirect'] = "admin/tripal/extension/tripal_jbrowse/management/instances/$instance_id";
+  }
+  else {
+    drupal_set_message('Failed to create instance!', 'error');
+    return;
   }
 
   // Now save the instance properties.
