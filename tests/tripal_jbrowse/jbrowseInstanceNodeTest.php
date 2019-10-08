@@ -20,6 +20,10 @@ class jbrowseInstanceNodeTest extends TripalTestCase {
    */
   public function testJbrowseInstanceNodeTypeExists() {
 
+    if (!module_exists('tripal_jbrowse')) {
+      $this->markTestSkipped('No need to test if not enabled.');
+    }
+
     // Get a list of all types available.
     $types = node_type_get_types();
 
@@ -51,6 +55,10 @@ class jbrowseInstanceNodeTest extends TripalTestCase {
    */
   public function testJBrowseInstanceNodeCreate() {
     module_load_include('inc', 'node', 'node.pages');
+
+    if (!module_exists('tripal_jbrowse')) {
+      $this->markTestSkipped('No need to test if not enabled.');
+    }
 
     // Log in the god user.
     global $user;
@@ -91,6 +99,10 @@ class jbrowseInstanceNodeTest extends TripalTestCase {
   public function testJBrowseInstanceNodeUpdate() {
     module_load_include('inc', 'node', 'node.pages');
 
+    if (!module_exists('tripal_jbrowse')) {
+      $this->markTestSkipped('No need to test if not enabled.');
+    }
+    
     // Log in the god user.
     global $user;
     $user = user_load(1);

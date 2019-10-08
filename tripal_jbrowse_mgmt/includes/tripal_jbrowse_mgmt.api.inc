@@ -93,6 +93,21 @@ function tripal_jbrowse_mgmt_get_instances($conditions = NULL) {
 function tripal_jbrowse_mgmt_create_instance($data) {
   global $user;
 
+  // Check that required fields are provided.
+  $required = ['organism_id', 'created_at'];
+  foreach ($required as $key) {
+    if (!isset($data[$key])) {
+      tripal_report_error(
+        'tripal_jbrowse_mgmt',
+        TRIPAL_ERROR,
+        'Unable to create instance due to missing :key',
+        [':key' => $key]
+      );
+      return FALSE;
+    }
+  }
+
+  // If they are all present, then insert into the database.
   $instance_id = db_insert('tripal_jbrowse_mgmt_instances')->fields([
     'uid' => $user->uid,
     'organism_id' => $data['organism_id'],

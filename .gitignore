@@ -5,3 +5,5 @@ vendor/
 _build/
 
 .env
+
+tests/_build
