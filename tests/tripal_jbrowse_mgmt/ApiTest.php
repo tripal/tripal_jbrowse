@@ -102,6 +102,18 @@ class ApiTest extends TripalTestCase {
     $one_more_time = tripal_jbrowse_mgmt_get_instance($id);
     $this->assertFalse($one_more_time);
 
+    // and delete with numeric id.
+    $success = tripal_jbrowse_mgmt_delete_instance($id);
+    $this->assertNotFalse($success, 'Unable to delete this instance.');
+    // and catch an exception during delete.
+    try {
+      $success = tripal_jbrowse_mgmt_delete_instance('FAKESTRING');
+      // If we get here without an exception then this test should fail.
+      $this->assertTrue(FALSE, "Shouldn't be able to extract instance to delete.");
+    } catch (\Exception $e) {
+        // Not worried since this is expected!
+    }
+
     putenv("TRIPAL_SUPPRESS_ERRORS");
   }
   // Associated Data Provider for testing instances.

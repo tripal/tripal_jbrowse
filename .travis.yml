@@ -16,5 +16,13 @@ before_script:
 script:
   - docker run -it -d --rm --name tripal -v "$(pwd)":/modules/tripal_jbrowse statonlab/tripal3
   - sleep 30 # We pause here so postgres and apache complete booting up
+  ## Install JBrowse
+  - docker exec -it tripal bash -c 'sudo yum groupinstall "Development Tools"'
+  - docker exec -it tripal bash -c 'sudo yum install zlib-devel perl-ExtUtils-MakeMaker'
+  - docker exec -it tripal bash -c 'curl -L -O https://github.com/GMOD/jbrowse/releases/download/1.16.6-release/JBrowse-1.16.6.zip'
+  - docker exec -it tripal bash -c 'unzip JBrowse-1.16.6.zip && sudo mv JBrowse-1.16.6 /var/www/html/jbrowse && cd /var/www/html && sudo chown `whoami` jbrowse'
+  - docker exec -it tripal bash -c 'cd /var/www/html/jbrowse && ./setup.sh'
+  ## Install tripal_jbrowse package.
   - docker exec -it tripal drush pm-enable -y tripal_jbrowse tripal_jbrowse_mgmt
+  ## Run Tests.
   - docker exec -it tripal bash -c "cd /modules/tripal_jbrowse && composer install && DRUPAL_ROOT=/var/www/html ./vendor/bin/phpunit"
