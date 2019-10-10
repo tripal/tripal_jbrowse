@@ -108,7 +108,7 @@ function tripal_jbrowse_mgmt_create_instance($data) {
   }
 
   // If they are all present, then insert into the database.
-  $instance_id = db_insert('tripal_jbrowse_mgmt_instances')->fields([
+  return db_insert('tripal_jbrowse_mgmt_instances')->fields([
     'uid' => $user->uid,
     'organism_id' => $data['organism_id'],
     'title' => $data['title'],
@@ -117,11 +117,6 @@ function tripal_jbrowse_mgmt_create_instance($data) {
     'file' => $data['file'],
   ])->execute();
 
-  if (!$instance_id) {
-    return FALSE;
-  }
-
-  return $instance_id;
 }
 
 /**
@@ -186,7 +181,7 @@ function tripal_jbrowse_mgmt_delete_instance($instance) {
 function tripal_jbrowse_mgmt_create_track($instance, $data) {
   global $user;
 
-  $track_id = db_insert('tripal_jbrowse_mgmt_tracks')->fields([
+  return db_insert('tripal_jbrowse_mgmt_tracks')->fields([
     'uid' => $user->uid,
     'instance_id' => $instance->id,
     'organism_id' => $instance->organism_id,
@@ -196,12 +191,6 @@ function tripal_jbrowse_mgmt_create_track($instance, $data) {
     'created_at' => $data['created_at'],
     'file' => $data['file'],
   ])->execute();
-
-  if (!$track_id) {
-    return FALSE;
-  }
-
-  return $track_id;
 }
 
 /**

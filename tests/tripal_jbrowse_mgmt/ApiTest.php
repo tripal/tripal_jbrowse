@@ -14,10 +14,15 @@ class ApiTest extends TripalTestCase {
    *
    * Specifically tripal_jbrowse_mgmt_save_settings()
    * and tripal_jbrowse_mgmt_get_settings().
-   *
-   * @dataProvider settingsProvider
    */
-  public function testSettings($test_settings) {
+  public function testSettings() {
+
+    $test_settings = [
+      'bin_path' => 'test/fake/path',
+	    'link' => 'test/fake/path',
+	    'data_dir' => 'test/fake/path',
+	    'menu_template' => [],
+    ];
 
     tripal_jbrowse_mgmt_save_settings($test_settings);
     $retrieved = tripal_jbrowse_mgmt_get_settings();
@@ -38,32 +43,24 @@ class ApiTest extends TripalTestCase {
       }
     }
   }
-  // Associated Data Provider for testing settings.
-  public function settingsProvider() {
-    $faker = Factory::create();
-    $sets = [];
-
-    // No settings.
-    $sets[] = [[]];
-
-    // Full Fake Settings.
-    $sets[] = [[
-      'bin_path' => 'test/fake/path',
-	    'link' => 'test/fake/path',
-	    'data_dir' => 'test/fake/path',
-	    'menu_template' => [],
-    ]];
-
-    return $sets;
-  }
 
   /**
    * Test Instance Create-Retrieve-Update-Delete.
-   *
-   * @dataProvider instanceProvider
    */
-  public function testInstanceCRUD($testdata) {
+  public function testInstanceCRUD() {
     putenv("TRIPAL_SUPPRESS_ERRORS=TRUE");
+
+    $organism = factory('chado.organism')->create();
+
+    // Full Fake Instance Details.
+    $faker = Factory::create();
+    $testdata = [
+      'organism_id' => $organism->organism_id,
+      'title' => $faker->words(3, TRUE),
+      'description' => $faker->sentence(25, TRUE),
+      'created_at' => $faker->unixTime(),
+      'file' => '/path/to/fake/file',
+    ];
 
     // Check we cannot create a JBrowse instance without an organism.
     $noOrganism = $testdata;
@@ -116,23 +113,167 @@ class ApiTest extends TripalTestCase {
 
     putenv("TRIPAL_SUPPRESS_ERRORS");
   }
-  // Associated Data Provider for testing instances.
-  public function instanceProvider() {
+
+  /**
+   * Test Track Create-Retrieve-Update-Delete.
+   */
+  public function testTrackCRUD() {
+
+    // Fake Instance.
     $faker = Factory::create();
-    $sets = [];
-
     $organism = factory('chado.organism')->create();
-
-    // Full Fake Instance Details.
-    $sets[] = [[
+    $instance_details = [
       'organism_id' => $organism->organism_id,
       'title' => $faker->words(3, TRUE),
       'description' => $faker->sentence(25, TRUE),
       'created_at' => $faker->unixTime(),
       'file' => '/path/to/fake/file',
-    ]];
+    ];
+    $instance_id = tripal_jbrowse_mgmt_create_instance($instance_details);
+    $instance = tripal_jbrowse_mgmt_get_instance($instance_id);
 
-    return $sets;
+    $path = tripal_jbrowse_mgmt_get_track_list_file_path($instance);
+    $this->assertNotFalse($path,
+      "Unable to retrieve the path to the trackList.json");
+
+    // Fake track details.
+    $testdata = [
+      'label' => $faker->words(2, TRUE),
+      'track_type' => 'CanvasFeatures',
+      'file_type' => 'gff',
+      'created_at' => $faker->unixTime(),
+      'file' => '/path/to/fake/file',
+    ];
+
+    // First retrieve when there are no tracks.
+    $tracks = tripal_jbrowse_mgmt_get_tracks($instance);
+    $this->assertCount(0, $tracks,
+      "There should not be tracks as we just created this instance.");
+
+    // Create tracks.
+    $track_id = tripal_jbrowse_mgmt_create_track($instance, $testdata);
+    $this->assertNotFalse($track_id,
+      "We should have a track created successfully.");
+
+    // Retrieve our newly created track.
+    $track = tripal_jbrowse_mgmt_get_track($track_id);
+    $this->assertNotFalse($track, "Unable to create track.");
+    $this->assertEquals($testdata['label'], $track->label,
+      "The label of our new track didn't match what we submitted.");
+    $this->assertEquals($instance->id, $track->instance_id,
+      "The instance_id of our new track didn't match what we submitted.");
+    $this->assertEquals($instance->organism_id, $track->organism_id,
+      "The organism_id of our new track didn't match what we submitted.");
+
+    // Retrieve track with a condition.
+    $tracks = tripal_jbrowse_mgmt_get_tracks($instance, ['label' => $testdata['label']]);
+    $this->assertCount(1, $tracks, "We were not able to select a track we knew should exist.");
+
+    // Now update it.
+    $new_label = 'NEW LABEL ' . uniqid();
+    $success = tripal_jbrowse_mgmt_update_track($track, ['label' => $new_label]);
+    $this->assertNotFalse($success, "Unable to update track label.");
+    $new_track = tripal_jbrowse_mgmt_get_track($track_id);
+    $this->assertEquals($new_label, $new_track->label,
+      "The label of the track was not updated.");
+
+    // Finally, delete it.
+    $success = tripal_jbrowse_mgmt_delete_track($track_id);
+    $this->assertNotFalse($success, "Unable to delete track.");
+    $success = tripal_jbrowse_mgmt_delete_track($track_id);
+    $this->assertEquals(0, $success, "Deleted a track that doesn't exist?");
   }
 
+  /**
+   * Test organism-related api functions.
+   */
+  public function testOrganismAPI() {
+
+    // Fake Organism.
+    $faker = Factory::create();
+    $organism = factory('chado.organism')->create();
+
+    $organism_list = tripal_jbrowse_mgmt_get_organisms_list();
+    $this->assertNotCount(0, $organism_list, "There should be at least one organism.");
+    $this->assertArrayContainsObjectValue($organism_list, 'organism_id', $organism->organism_id);
+
+    $organism_name = tripal_jbrowse_mgmt_construct_organism_name($organism);
+    $this->assertRegexp('/'.$organism->genus.'/', $organism_name,
+      "The organism name did not contain the genus.");
+    $this->assertRegexp('/'.$organism->species.'/', $organism_name,
+      "The organism name did not contain the species.");
+
+    $slug = tripal_jbrowse_mgmt_make_slug($organism_name);
+    $this->assertNotRegexp('/ /', $slug,
+      "The organism slug should not contain spaces.");
+  }
+
+  /**
+   * Test Instance Properties Create-Retrieve-Update.
+   */
+  public function testInstanceProperyCRU() {
+
+    // Fake Instance.
+    $faker = Factory::create();
+    $organism = factory('chado.organism')->create();
+    $instance_details = [
+      'organism_id' => $organism->organism_id,
+      'title' => $faker->words(3, TRUE),
+      'description' => $faker->sentence(25, TRUE),
+      'created_at' => $faker->unixTime(),
+      'file' => '/path/to/fake/file',
+    ];
+    $instance_id = tripal_jbrowse_mgmt_create_instance($instance_details);
+
+    $testdata = [
+      $faker->word() => $faker->words(3, TRUE),
+      $faker->word() => $faker->words(2, TRUE),
+      $faker->word() => $faker->words(10, TRUE),
+    ];
+
+    // Create.
+    tripal_jbrowse_mgmt_save_instance_properties($instance_id, $testdata);
+
+    // Retrieve.
+    $properties = tripal_jbrowse_mgmt_get_instance_properties($instance_id);
+    $this->assertIsArray($properties, "Unable to retrieve newly created properties.");
+    $this->assertCount(3, $properties,
+      "There was not the expected count of properties.");
+
+    // Update single property.
+    $property_name = key($testdata);
+    $new_value = 'NEW VALUE '.uniqid();
+    tripal_jbrowse_mgmt_save_instance_property($instance_id, $property_name, $new_value);
+    $retrieved_value = tripal_jbrowse_mgmt_get_instance_property($instance_id, $property_name);
+    $this->assertEquals($new_value, $retrieved_value,
+      "We were unable to update a single property.");
+
+  }
+
+  /**
+   * Test Miscellaneous API functions.
+   */
+  public function testMiscAPI() {
+
+    $track_types = tripal_jbrowse_mgmt_get_track_types();
+    $this->assertIsArray($track_types,
+      "The track types should be an array.");
+
+  }
+  /**
+   * Provide an assertion to check properties of an array of objects.
+   *
+   * For example, if you have an array of organism objects, the following code
+   * would check that one object in the array has an organism_id of 50.
+   * @code $this->assertArrayContainsObjectValue($array, 'organism_id', 50);
+   */
+  private function assertArrayContainsObjectValue($theArray, $attribute, $value)
+  {
+      foreach($theArray as $arrayItem) {
+          if($arrayItem->$attribute == $value) {
+              return true;
+          }
+      }
+      return false;
+  }
 }

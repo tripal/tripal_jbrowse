@@ -8,7 +8,7 @@ services:
   - docker
 
 env:
-  - DRUPAL_ROOT=/var/www/html
+  - DRUPAL_ROOT=/var/www/html JBROWSE_ROOT=/var/www/html/jbrowse
 
 before_script:
   - docker pull statonlab/tripal3
