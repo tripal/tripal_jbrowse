@@ -30,7 +30,7 @@ script:
   ## Setup XDebug for Code Coverage
   - docker exec -it tripal yum install -y php-pecl-xdebug.x86_64
   ## Install tripal_jbrowse package.
-  - docker exec -it tripal drush pm-enable -y tripal_jbrowse tripal_jbrowse_mgmt
+  - docker exec -it tripal drush pm-enable -y tripal_jbrowse_page tripal_jbrowse_mgmt
   ## Run Tests.
   - docker exec -it tripal bash -c "cd /modules/tripal_jbrowse && composer install && DRUPAL_ROOT=/var/www/html ./vendor/bin/phpunit --coverage-clover ./clover.xml"
 
