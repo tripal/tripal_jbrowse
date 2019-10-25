@@ -1,0 +1,23 @@
+
+/** JBrowse Listing **/
+.jbrowse-list {
+  border-top: 1px solid #d0d0d0;
+  margin-top: 20px;
+}
+.jbrowse-list .jbrowse-instance {
+  border-bottom: 1px solid #d0d0d0;
+  margin-bottom: 20px;
+  padding-bottom: 30px;
+}
+.jbrowse-list .jbrowse-instance .jbrowse-launch-link {
+  float: right;
+}
+.jbrowse-list .empty-list {
+  margin-top: 20px;
+  font-style: italic;
+}
+
+/** Embedded Page **/
+#JBrowseInstance iframe {
+  min-height: 700px;
+}
