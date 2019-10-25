@@ -14,15 +14,6 @@ function tripal_jbrowse_page_settings_form($form, $form_state) {
     '#title' => 'General Page Integration Settings'
   ];
 
-  $form['general']['create_menu_items'] = [
-    '#type' => 'checkbox',
-    '#title' => 'Create Menu Items',
-    '#description' => 'Checking this box ensures that menu items under
-      "Navigation" will be created for each JBrowse instance. This only
-      applies to JBrowse Instances with a page.',
-    '#default_value' => variable_get('trpjbrowse_page_create_menu_items', 1),
-  ];
-
   $form['general']['embed'] = [
     '#type' => 'checkbox',
     '#title' => 'Embed JBrowse in your Tripal Site',
@@ -78,10 +69,6 @@ function tripal_jbrowse_page_settings_form_submit($form, $form_state) {
   $values = $form_state['values'];
 
   // General Settings.
-  variable_set(
-    'trpjbrowse_page_create_menu_items',
-    $values['create_menu_items']
-  );
   variable_set(
     'trpjbrowse_page_embed',
     $values['embed']

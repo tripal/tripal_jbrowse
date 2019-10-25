@@ -25,12 +25,6 @@ function tripal_jbrowse_page_menu() {
 
     if (tripal_jbrowse_page_is_instance_public($instance->id)) {
 
-      // The type of menu needs to be determined.
-      $create_links = variable_get('trpjbrowse_page_create_menu_items', 1);
-      $menu_type = MENU_CALLBACK;
-      if ($create_links) {
-        $menu_type = MENU_NORMAL_ITEM;
-      }
       // Create the menu item.
       $path = 'jbrowse/'.$instance->organism->genus . '-' . $instance->organism->species;
       $items[$path] = [
@@ -40,7 +34,7 @@ function tripal_jbrowse_page_menu() {
         'page arguments' => [1],
         'access arguments' => ['access content'],
         'file' => 'includes/tripal_jbrowse_page.page.inc',
-        'type' => $menu_type,
+        'type' => MENU_SUGGESTED_ITEM,
       ];
     }
   }
