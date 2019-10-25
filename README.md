@@ -7,11 +7,12 @@ This package of modules integrates [GMOD JBrowse](https://jbrowse.org/) into you
  This powerful combination allows you to provide seamless genome browsing to your users in an administrator-friendly manner.
 
 ## Quick Start
-1. Download and unpack this package in your Drupal modules directory (i.e `sites/all/modules`).
-2. Enable "Tripal JBrowse Management" submodule through `http://[your site]/admin/modules`.
-3. Create a JBrowse instance for your species of interest using the **Admin > Tripal > Tripal JBrowse Management** user interface.
-4. Enable "Tripal JBrowse Integration" submodule through `http://[your site]/admin/modules`.
-5. Create an embeded JBrowse page at **Add Content > JBrowse Instance** by supplying the information for the instance created in step 3.
+1. Download and install JBrowse in a web accessible location (e.g. `DRUPAL_ROOT/tools/jbrowse`).
+2. Download and unpack this package in your Drupal modules directory (i.e `sites/all/modules`).
+3. Enable "Tripal JBrowse Management" submodule through `http://[your site]/admin/modules`.
+4. Create a JBrowse instance for your species of interest using the **Admin > Tripal > Tripal JBrowse Management** user interface.
+5. Enable "Tripal JBrowse Integration" submodule through `http://[your site]/admin/modules`.
+6. Create an embeded JBrowse page at **Add Content > JBrowse Instance** by supplying the information for the instance created in step 3.
 
 ## Documentation
 
