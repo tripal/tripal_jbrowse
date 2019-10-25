@@ -8,13 +8,31 @@ services:
   - docker
 
 env:
-  - DRUPAL_ROOT=/var/www/html
+  - DRUPAL_ROOT=/var/www/html JBROWSE_ROOT=/var/www/html/jbrowse IS_TRAVIS=TRUE CC_TEST_REPORTER_ID=1a35bfa282bdb226287eee73c3eb1fdb61f1509117f55417135081624a0366be
 
 before_script:
   - docker pull statonlab/tripal3
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build --debug
+  - GIT_BRANCH=$TRAVIS_PULL_REQUEST_BRANCH
+  - GIT_COMMIT_SHA=$TRAVIS_PULL_REQUEST_SHA
 
 script:
   - docker run -it -d --rm --name tripal -v "$(pwd)":/modules/tripal_jbrowse statonlab/tripal3
   - sleep 30 # We pause here so postgres and apache complete booting up
-  - docker exec -it tripal drush pm-enable -y tripal_jbrowse
-  - docker exec -it tripal bash -c "cd /modules/tripal_jbrowse && composer install && DRUPAL_ROOT=/var/www/html ./vendor/bin/phpunit"
+  ## Install JBrowse
+  - docker exec -it tripal bash -c 'sudo yum -y groupinstall "Development Tools"'
+  - docker exec -it tripal bash -c 'sudo yum -y install zlib-devel perl-ExtUtils-MakeMaker'
+  - docker exec -it tripal bash -c 'curl -L -O https://github.com/GMOD/jbrowse/releases/download/1.16.6-release/JBrowse-1.16.6.zip'
+  - docker exec -it tripal bash -c 'unzip JBrowse-1.16.6.zip && sudo mv JBrowse-1.16.6 /var/www/html/jbrowse && cd /var/www/html && sudo chown `whoami` jbrowse'
+  - docker exec -it tripal bash -c 'cd /var/www/html/jbrowse && ./setup.sh'
+  ## Setup XDebug for Code Coverage
+  - docker exec -it tripal yum install -y php-pecl-xdebug.x86_64
+  ## Install tripal_jbrowse package.
+  - docker exec -it tripal drush pm-enable -y tripal_jbrowse tripal_jbrowse_mgmt
+  ## Run Tests.
+  - docker exec -it tripal bash -c "cd /modules/tripal_jbrowse && composer install && DRUPAL_ROOT=/var/www/html ./vendor/bin/phpunit --coverage-clover ./clover.xml"
+
+after_script:
+  - ./cc-test-reporter after-build clover.xml --debug -t clover -p /var/www/html/sites/all/modules/custom/tripal_jbrowse --exit-code $TRAVIS_TEST_RESULT
