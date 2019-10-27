@@ -12,4 +12,11 @@
       <directory suffix="Test.php">tests</directory>
     </testsuite>
   </testsuites>
+  <filter>
+     <whitelist addUncoveredFilesFromWhitelist="true">
+       <file>./tripal_jbrowse_mgmt/tripal_jbrowse_mgmt.module</file>
+       <directory suffix=".inc">./tripal_jbrowse_mgmt</directory>
+       <directory suffix=".php">./tripal_jbrowse_mgmt</directory>
+     </whitelist>
+   </filter>
 </phpunit>
