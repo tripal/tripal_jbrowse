@@ -1,6 +1,6 @@
 name = JBrowse Nodes DEPRECATED
 description = Creates nodes embedding JBrowse instances.
 core = 7.x
-package = Tripal Extensions
+package = Tripal Extensions: JBrowse Integration
 
 dependencies[] = tripal
