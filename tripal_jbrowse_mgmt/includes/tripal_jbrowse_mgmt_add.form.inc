@@ -32,6 +32,7 @@ function tripal_jbrowse_mgmt_add_form($form, &$form_state) {
   $form['description_of_form'] = [
     '#type' => 'item',
     '#markup' => t($form_description),
+    '#weight' => -10,
   ];
 
   $form['organism'] = [
@@ -40,18 +41,21 @@ function tripal_jbrowse_mgmt_add_form($form, &$form_state) {
     '#type' => 'select',
     '#options' => $mapped_organisms,
     '#required' => TRUE,
+    '#weight' => -8,
   ];
 
   $form['description'] = [
     '#title' => t('Description'),
     '#description' => t('Optional description for the instance.'),
     '#type' => 'textarea',
+    '#weight' => -7,
   ];
 
   $form['data'] = [
     '#type' => 'fieldset',
     '#title' => t('Reference Sequence File'),
     '#collabsible' => FALSE,
+    'weight' => 0
   ];
 
   $form['data']['data_desc'] = [
@@ -130,6 +134,7 @@ function tripal_jbrowse_mgmt_add_form($form, &$form_state) {
   $form['submit'] = [
     '#type' => 'submit',
     '#value' => 'Create New Instance',
+    '#weight' => 10,
   ];
 
   return $form;

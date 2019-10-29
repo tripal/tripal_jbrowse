@@ -14,14 +14,18 @@ function tripal_jbrowse_mgmt_register_form($form, &$form_state) {
   require_once 'tripal_jbrowse_mgmt_add.form.inc';
   $form = tripal_jbrowse_mgmt_add_form($form, $form_state);
 
-  $form['description_of_form']['#markup'] = t('Register an already existing JBrowse instance to be managed by this module.');
+  $settings = tripal_jbrowse_mgmt_get_settings();
+  $path = $settings['data_dir'] . '/genus_species/data/';
+
+  $msg = '<p>Register an already existing JBrowse instance to be managed by this module.</p>'
+  . '<div class="messages warning">It is expected that the data directory for the existing JBrowse instance is <code>@path</code> where <code>genus_species</code> matches what you select for the organism. If this is not the location of your JBrowse, you should create a symbolic link between the current instance location and the expected one mentioned above.</div>';
+  $form['description_of_form']['#markup'] = t($msg, ['@path' => $path]);
 
   // Remove the file upload.
   unset($form['data']);
 
-
   // Change the submit button.
-  $form['submit']['#value'] = 'Save Changes';
+  $form['submit']['#value'] = 'Register Instance';
 
   return $form;
 }
@@ -36,6 +40,7 @@ function tripal_jbrowse_mgmt_register_form_validate($form, &$form_state) {
   $values = $form_state['values'];
   $organism = isset($values['organism']) ? $values['organism'] : NULL;
 
+  // Check an instance does not already exist.
   $instances = tripal_jbrowse_mgmt_get_instances(['organism_id' => $organism]);
   if (!empty($instances)) {
     form_set_error(
@@ -44,6 +49,7 @@ function tripal_jbrowse_mgmt_register_form_validate($form, &$form_state) {
     );
   }
 
+  // Check that the organism does exist.
   $organism = db_select('chado.organism', 'CO')
     ->fields('CO')
     ->condition('organism_id', $organism)
@@ -52,6 +58,16 @@ function tripal_jbrowse_mgmt_register_form_validate($form, &$form_state) {
 
   if (empty($organism)) {
     form_set_error('organism', 'Invalid organism selected ' . $organism);
+  }
+
+  // Check that the directory we assume contains the instance does exist.
+  $title = tripal_jbrowse_mgmt_construct_organism_name($organism);
+  $settings = tripal_jbrowse_mgmt_get_settings();
+  $path = $settings['data_dir'];
+  $path .= '/' . tripal_jbrowse_mgmt_make_slug($title);
+  $path .= '/data/trackList.json';
+  if (!file_exists($path)) {
+    form_set_error('organism', "We expect there is already an existing instane at the following path: $path");
   }
 }
 
@@ -85,18 +101,7 @@ function tripal_jbrowse_mgmt_register_form_submit($form, &$form_state) {
   );
 
   if ($instance_id) {
-    $instance = tripal_jbrowse_mgmt_get_instance($instance_id);
-    $settings = tripal_jbrowse_mgmt_get_settings();
-    $slug = tripal_jbrowse_mgmt_make_slug($instance->title);
-    if (isset($settings['data_path']) and !empty($settings['data_path'])) {
-      $data_path = 'WEB_ROOT/' . $settings['data_path'] . '/' . $slug . '/data';
-    }
-    else {
-      $data_path = 'JBROWSE_ROOT/data/' . $slug . '/data';
-    }
     drupal_set_message('Instance registered successfully!');
-    drupal_set_message(t('This assumes you have an existing JBrowse set-up at @path. If the link below does not work, perhaps you need to create, rather then register, a new JBrowse Instance.',
-      ['@path' => $data_path]), 'warning');
     $form_state['redirect'] = "admin/tripal/extension/tripal_jbrowse/management/instances/$instance_id";
   }
   else {
