@@ -5,6 +5,19 @@
  */
 
 /**
+ * Implements hook_init().
+ */
+function tripal_jbrowse_init() {
+  global $user;
+
+  // Only show message to administrators.
+  if (in_array('admin', $user->roles)) {
+    $msg = t('We have detected that you still have Tripal JBrowse Nodes installed. This module is DEPRECATED! Please follow the migration instructions <a href="@url">here</a>.', ['@url' => 'https://tripal-jbrowse.readthedocs.io/en/latest/guide/install/migrate.html']);
+    drupal_set_message($msg, 'warning');
+  }
+}
+
+/**
  * Implements hook_theme().
  */
 function tripal_jbrowse_theme($existing, $type, $theme, $path) {
