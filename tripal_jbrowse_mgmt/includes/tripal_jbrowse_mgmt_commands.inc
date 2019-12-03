@@ -75,8 +75,9 @@ function tripal_jbrowse_mgmt_cmd_add_track($track) {
         $index_name = glob($track->file . '/' . '*.vcf.gz.[tci][bsd][ix]')[0];
       }
       $file_name = pathinfo($file_name)['basename'];
+
       $track_in_json = [
-        'label' => $track->label,
+        'label' => tripal_jbrowse_mgmt_make_slug($track->label),
         'key' => $track->label,
         'urlTemplate' => $directory . '/' . $file_name,
         'type' => $track->track_type,
@@ -99,9 +100,8 @@ function tripal_jbrowse_mgmt_cmd_add_track($track) {
             break;
         }
       }
-      dpm($track_in_json, '$track_in_json');
+
       $json['tracks'][] = $track_in_json;
-      dpm($json, '$json');
       tripal_jbrowse_mgmt_save_json($instance, $json);
       break;
 

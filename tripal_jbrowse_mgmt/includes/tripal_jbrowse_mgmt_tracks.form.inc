@@ -161,7 +161,6 @@ function tripal_jbrowse_mgmt_add_track_form_validate($form, &$form_state) {
           else {
             $file_gz = glob($local_dir . '/*.vcf.gz');
             $file_index = glob($local_dir . '/*.vcf.gz.[cti][sbd][ix]');
-            dpm($file_index, '$file_index');
             if (count($file_gz) != 1 || count($file_index) != 1) {
               form_set_error('file_path',
                 'Please provide a directory with exactly one gz and one index file.');
