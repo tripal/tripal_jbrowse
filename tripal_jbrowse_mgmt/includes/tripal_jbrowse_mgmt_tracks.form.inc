@@ -94,11 +94,16 @@ function tripal_jbrowse_mgmt_add_track_form($form, &$form_state, $instance_id) {
     ],
   ];
 
+  $form['data']['symbolic_link'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Symbolic Link'),
+    '#description' => t('Create a symbolic link rather than make a copy of the file. This only applies when a path on the server is supplied.'),
+  ];
+
   $form['submit'] = [
     '#type' => 'submit',
     '#value' => 'Add New Track',
   ];
-
   return $form;
 }
 
@@ -120,6 +125,7 @@ function tripal_jbrowse_mgmt_add_track_form_validate($form, &$form_state) {
   $instance = tripal_jbrowse_mgmt_get_instance($values['instance_id']);
   $data = $settings['data_dir'];
   $file_type = $values['file_type'];
+  $symbolic_link = $values['symbolic_link'];
   $path = NULL;
 
   $base_path = $data . '/' . tripal_jbrowse_mgmt_make_slug($instance->title) . '/data';
@@ -162,11 +168,11 @@ function tripal_jbrowse_mgmt_add_track_form_validate($form, &$form_state) {
             }
             else {
               try {
-                if (!tripal_jbrowse_mgmt_copy_file($file_gz[0], $path)) {
+                if (!tripal_jbrowse_mgmt_copy_file($file_gz[0], $path, $symbolic_link)) {
                   form_set_error('file_path', 'Failed to copy file' . $file_gz[0] . ' to ' . $path);
                 }
                 else {
-                  if (!tripal_jbrowse_mgmt_copy_file($file_tbi[0], $path)) {
+                  if (!tripal_jbrowse_mgmt_copy_file($file_tbi[0], $path, $symbolic_link)) {
                     form_set_error('file_path', 'Failed to copy file' . $file_gz[0] . ' to ' . $path);
                   }
                 }
@@ -229,7 +235,7 @@ function tripal_jbrowse_mgmt_add_track_form_validate($form, &$form_state) {
         }
         else {
           try {
-            if (!tripal_jbrowse_mgmt_copy_file($local_file, $path)) {
+            if (!tripal_jbrowse_mgmt_copy_file($local_file, $path, $symbolic_link)) {
               form_set_error('file_path', 'Failed to copy file ' . $local_file . ' to ' . $path);
             }
           } catch (Exception $exception) {

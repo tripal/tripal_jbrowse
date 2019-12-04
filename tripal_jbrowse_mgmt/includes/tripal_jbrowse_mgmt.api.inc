@@ -381,17 +381,26 @@ function tripal_jbrowse_mgmt_move_file($file, $path = NULL) {
  *   File path of the source file.
  * @param $destination
  *   File path to the destination directory.
- *
+ * @param $symbolic_link
+ *   bool indicates create symbolic_link or copy
  * @return bool
  */
-function tripal_jbrowse_mgmt_copy_file($source, $destination) {
+function tripal_jbrowse_mgmt_copy_file($source, $destination, $sym_link) {
   if (empty($destination)) {
     throw new Exception('Please provide a valid destination path to copy the source to.');
   }
 
   file_prepare_directory($destination, FILE_CREATE_DIRECTORY);
-  return file_unmanaged_copy($source, $destination, FILE_EXISTS_ERROR);
+  if (isset($sym_link) AND ($sym_link == true)){
+    $destination_symlink = $destination.'/'.basename($source);
+    return symlink($source, $destination_symlink);
+  }
+  else{
+    return file_unmanaged_copy($source, $destination, FILE_EXISTS_ERROR);
+  }
+
 }
+
 
 /**
  * Build the http query for a given instance to link to JBrowse.
