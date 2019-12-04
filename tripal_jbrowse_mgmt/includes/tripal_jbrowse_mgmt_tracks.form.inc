@@ -97,7 +97,7 @@ function tripal_jbrowse_mgmt_add_track_form($form, &$form_state, $instance_id) {
   $form['data']['symbolic_link'] = [
     '#type' => 'checkbox',
     '#title' => t('Symbolic Link'),
-    '#description' => t('Create a symbolic link rather than make a copy of the file.'),
+    '#description' => t('Create a symbolic link rather than make a copy of the file. This only applies when a path on the server is supplied.'),
   ];
 
   $form['submit'] = [
