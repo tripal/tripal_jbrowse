@@ -64,7 +64,7 @@ function tripal_jbrowse_mgmt_add_track_form($form, &$form_state, $instance_id) {
 
   $form['data']['file2'] = [
     '#type' => 'file',
-    '#title' => t('TBI File'),
+    '#title' => t('Index File'),
     '#states' => [
       'visible' => [
         ':input[name="file_type"]' => ['value' => 'vcf'],
@@ -142,14 +142,14 @@ function tripal_jbrowse_mgmt_add_track_form_validate($form, &$form_state) {
 
   switch ($file_type) {
     case 'vcf':
-      $tbi = $_FILES['files']['tmp_name']['file2'];
+      $index = $_FILES['files']['tmp_name']['file2'];
       $local_dir = isset($values['dir_path']) ? $values['dir_path'] : NULL;
 
-      if (empty($file) && empty($tbi) && empty($local_dir)) {
+      if (empty($file) && empty($index) && empty($local_dir)) {
         form_set_error('file',
           'Please provide a local directory path or upload files.');
       }
-      elseif (empty($file) && empty($tbi) && !empty($local_dir)) {
+      elseif (empty($file) && empty($index) && !empty($local_dir)) {
         if (!file_exists($local_dir)) {
           form_set_error('file_path', 'The directory provided does not exist.');
         }
@@ -160,11 +160,10 @@ function tripal_jbrowse_mgmt_add_track_form_validate($form, &$form_state) {
           }
           else {
             $file_gz = glob($local_dir . '/*.vcf.gz');
-            $file_tbi = glob($local_dir . '/*.vcf.gz.tbi');
-
-            if (count($file_gz) != 1 || count($file_tbi) != 1) {
+            $file_index = glob($local_dir . '/*.vcf.gz.[cti][sbd][ix]');
+            if (count($file_gz) != 1 || count($file_index) != 1) {
               form_set_error('file_path',
-                'Please provide a directory with exactly one gz and one tbi file.');
+                'Please provide a directory with exactly one gz and one index file.');
             }
             else {
               try {
@@ -172,7 +171,7 @@ function tripal_jbrowse_mgmt_add_track_form_validate($form, &$form_state) {
                   form_set_error('file_path', 'Failed to copy file' . $file_gz[0] . ' to ' . $path);
                 }
                 else {
-                  if (!tripal_jbrowse_mgmt_copy_file($file_tbi[0], $path, $symbolic_link)) {
+                  if (!tripal_jbrowse_mgmt_copy_file($file_index[0], $path, $symbolic_link)) {
                     form_set_error('file_path', 'Failed to copy file' . $file_gz[0] . ' to ' . $path);
                   }
                 }
@@ -184,11 +183,11 @@ function tripal_jbrowse_mgmt_add_track_form_validate($form, &$form_state) {
           }
         }
       }
-      elseif (empty($file) && !empty($tbi)) {
-        form_set_error('file', 'Please upload both a gz and a tbi file.');
+      elseif (empty($file) && !empty($index)) {
+        form_set_error('file', 'Please upload both a gz and an index file.');
       }
-      elseif (!empty($file) && empty($tbi)) {
-        form_set_error('file2', 'Please upload both a gz and a tbi file.');
+      elseif (!empty($file) && empty($index)) {
+        form_set_error('file2', 'Please upload both a gz and an index file.');
       }
       else {
         $gz_uploaded = tripal_jbrowse_mgmt_upload_file('file');
@@ -205,17 +204,17 @@ function tripal_jbrowse_mgmt_add_track_form_validate($form, &$form_state) {
           }
         }
 
-        $tbi_uploaded = tripal_jbrowse_mgmt_upload_file('file2');
-        if (!$tbi_uploaded) {
+        $index_uploaded = tripal_jbrowse_mgmt_upload_file('file2');
+        if (!$index_uploaded) {
           form_set_error('file2', 'Unable to upload file');
         }
         else {
-          $tbi_uploaded = tripal_jbrowse_mgmt_move_file($tbi_uploaded, $path);
-          if (!isset($tbi_uploaded)) {
-            form_set_error('file2', 'Failed to move tbi file to ' . $path . '.');
+          $index_uploaded = tripal_jbrowse_mgmt_move_file($index_uploaded, $path);
+          if (!isset($index_uploaded)) {
+            form_set_error('file2', 'Failed to move index file to ' . $path . '.');
           }
           else {
-            $form_state['values']['uploaded_tbi'] = $tbi_uploaded;
+            $form_state['values']['uploaded_tbi'] = $index_uploaded;
           }
         }
       }

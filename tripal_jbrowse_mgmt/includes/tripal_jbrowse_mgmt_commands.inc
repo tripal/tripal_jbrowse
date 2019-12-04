@@ -18,7 +18,7 @@ function tripal_jbrowse_mgmt_cmd_prepare_refseq($instance) {
   if (!file_exists($path)) {
     if (!mkdir($path)) {
       throw new Exception(
-        'Unable to make data directory! Please make sure the directory 
+        'Unable to make data directory! Please make sure the directory
       at ' . $data . ' exists and is writable by the current user.'
       );
     }
@@ -69,21 +69,39 @@ function tripal_jbrowse_mgmt_cmd_add_track($track) {
     case 'HTMLVariants':
       $json = tripal_jbrowse_mgmt_get_json($instance);
       $directory = 'vcf';
-
       $file_name = $track->file;
       if (is_dir($track->file)) {
         $file_name = glob($track->file . '/' . '*.vcf.gz')[0];
+        $index_name = glob($track->file . '/' . '*.vcf.gz.[tci][bsd][ix]')[0];
       }
       $file_name = pathinfo($file_name)['basename'];
 
-      $json['tracks'][] = [
-        'label' => $track->label,
+      $track_in_json = [
+        'label' => tripal_jbrowse_mgmt_make_slug($track->label),
         'key' => $track->label,
-        'storeClass' => 'JBrowse/Store/SeqFeature/VCFTabix',
         'urlTemplate' => $directory . '/' . $file_name,
         'type' => $track->track_type,
       ];
+      // check if index format and give specific (csi)urltemplate / storeClass
+      if ($index_name){
+        $index_name = pathinfo($index_name)['basename'];
+        $extension = pathinfo($index_name)['extension'];
+        switch ($extension)
+        {
+          case 'csi':
+            $track_in_json['storeClass'] = 'JBrowse/Store/SeqFeature/VCFTabix';
+            $track_in_json['csiUrlTemplate'] = $directory . '/' . $index_name;
+            break;
+          case 'tbi':
+            $track_in_json['storeClass'] = 'JBrowse/Store/SeqFeature/VCFTabix';
+            break;
+          case 'idx':
+            $track_in_json['storeClass'] = 'JBrowse/Store/SeqFeature/VCFTribble';
+            break;
+        }
+      }
 
+      $json['tracks'][] = $track_in_json;
       tripal_jbrowse_mgmt_save_json($instance, $json);
       break;
 
@@ -143,7 +161,7 @@ function tripal_jbrowse_mgmt_cmd_generate_names($instance) {
   if (!file_exists($path)) {
     if (!mkdir($path)) {
       throw new Exception(
-        'Unable to make data directory! Please make sure the directory 
+        'Unable to make data directory! Please make sure the directory
       at ' . $data . ' exists and is writable by the current user.'
       );
     }
