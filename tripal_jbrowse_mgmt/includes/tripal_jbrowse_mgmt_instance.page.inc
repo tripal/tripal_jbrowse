@@ -55,6 +55,7 @@ function tripal_jbrowse_mgmt_instance_page($instance_id) {
     ),
   ];
 
+  // First get tracks added by this module.
   $tracks = tripal_jbrowse_mgmt_get_tracks($instance, ['is_deleted' => 0]);
 
   $content['tracks_title'] = [
@@ -62,31 +63,61 @@ function tripal_jbrowse_mgmt_instance_page($instance_id) {
     '#markup' => '<h4>Tracks</h4>',
   ];
 
-  if (empty($tracks)) {
-    $content['no_tracks'] = [
-      '#type' => 'item',
-      '#markup' => 'No tracks found for this instance. Please use the add tracks link above to add new tracks.',
-    ];
-  }
-  else {
-    $rows = array_map(
-      function ($track) {
-        return [
-          $track->label,
-          $track->track_type,
-          $track->file_type,
-          $track->user->name,
-          date('m/d/Y', $track->created_at),
-          l('Manage Track', 'admin/tripal/extension/tripal_jbrowse/management/tracks/' . $track->id),
-          l(
-            'Delete Track',
-            'admin/tripal/extension/tripal_jbrowse/management/tracks/' . $track->id . '/delete'
-          ),
-        ];
-      },
-      $tracks
-    );
+  $managed_tracks = [];
+  $rows = [];
 
+  if (!empty($tracks)) {
+    foreach ($tracks as $track) {
+
+      // Keep track of managed tracks so they are not duplicated later.
+      $managed_tracks[] = $track->label;
+
+      // Add the current tracks to the table.
+      $rows[] = [
+        $track->label,
+        $track->track_type,
+        $track->file_type,
+        $track->user->name,
+        date('m/d/Y', $track->created_at),
+        l('Manage Track', 'admin/tripal/extension/tripal_jbrowse/management/tracks/' . $track->id),
+        l(
+          'Delete Track',
+          'admin/tripal/extension/tripal_jbrowse/management/tracks/' . $track->id . '/delete'
+        ),
+      ];
+    }
+  }
+
+  // Second grab all tracks from the JSON.
+  $trackList = tripal_jbrowse_mgmt_get_json($instance);
+  if (!empty($trackList) and isset($trackList['tracks'])) {
+
+    foreach ($trackList['tracks'] as $track) {
+
+      // Make sure we only get the readable component for the type.
+      $path_type = explode('/', $track['type']);
+      $type = end($path_type);
+
+      // Make sure this is not a managed track.
+      if (in_array($track['key'], $managed_tracks)) {
+        continue;
+      }
+
+      // Now compile our row.
+      $rows[] = [
+        $track['key'],
+        $type,
+        '',
+        '',
+        '',
+        '',
+        '',
+      ];
+    }
+  }
+
+  // Finally, if there are tracks, show them in a table.
+  if (!empty($rows)) {
     $content['tracks_table'] = [
       '#type' => 'markup',
       '#markup' => theme(
@@ -104,6 +135,13 @@ function tripal_jbrowse_mgmt_instance_page($instance_id) {
           'rows' => $rows,
         ]
       ),
+    ];
+  }
+  // Otherwise, prompt people to add tracks!
+  else {
+    $content['no_tracks'] = [
+      '#type' => 'item',
+      '#markup' => 'No tracks found for this instance. Please use the add tracks link above to add new tracks.',
     ];
   }
 

@@ -8,3 +8,4 @@ Installation
    install/dependencies
    install/jbrowse_mgmt
    install/instance_page
+   install/migrate

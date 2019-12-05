@@ -46,8 +46,18 @@ function tripal_jbrowse_mgmt_menu() {
     'type' => MENU_LOCAL_TASK,
   ];
 
+  $items['admin/tripal/extension/tripal_jbrowse/management/instances/register'] = [
+    'title' => 'Register Existing Instance',
+    'description' => 'Adds an existing JBrowse to the list of instances managed within Tripal.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => ['tripal_jbrowse_mgmt_register_form'],
+    'access arguments' => ['administer tripal_jbrowse_mgmt'],
+    'file' => 'includes/tripal_jbrowse_mgmt_register.form.inc',
+    'type' => MENU_LOCAL_ACTION,
+  ];
+
   $items['admin/tripal/extension/tripal_jbrowse/management/instances/add'] = [
-    'title' => 'Add New Instance',
+    'title' => 'Create New Instance',
     'description' => 'List and create JBrowse instances.',
     'page callback' => 'drupal_get_form',
     'page arguments' => ['tripal_jbrowse_mgmt_add_form'],
@@ -70,9 +80,9 @@ function tripal_jbrowse_mgmt_menu() {
     'title' => 'Edit Instance',
     'description' => 'Edit metadata for existing JBrowse instances.',
     'page callback' => 'drupal_get_form',
-    'page arguments' => ['tripal_jbrowse_mgmt_add_form', 6],
+    'page arguments' => ['tripal_jbrowse_mgmt_edit_form', 6],
     'access arguments' => ['administer tripal_jbrowse_mgmt'],
-    'file' => 'includes/tripal_jbrowse_mgmt_add.form.inc',
+    'file' => 'includes/tripal_jbrowse_mgmt_edit.form.inc',
     'type' => MENU_LOCAL_ACTION,
   ];
 
