@@ -55,7 +55,7 @@ function tripal_jbrowse_mgmt_add_form($form, &$form_state) {
     '#type' => 'fieldset',
     '#title' => t('Reference Sequence File'),
     '#collabsible' => FALSE,
-    'weight' => 0
+    '#weight' => 0
   ];
 
   $form['data']['data_desc'] = [
