@@ -9,8 +9,8 @@ Tripal JBrowse
 
 This package of modules integrates `GMOD JBrowse <https://jbrowse.org/>`_ into your `Tripal <http://tripal.info/>`_ site providing
 
-   - Tripal page integration via **Tripal JBrowse** and
-   - a user interface for JBrowse instance creation and management via **Tripal JBrowse Management**.
+  1. A user interface for JBrowse instance creation and management via **Tripal JBrowse Management**
+  2. Drupal menu links and pages with embedded JBrowse instances via  **Tripal-JBrowse Page Integration**
 
  This powerful combination allows you to provide seamless genome browsing to your users in an administrator-friendly manner.
 
