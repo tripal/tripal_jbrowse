@@ -2,8 +2,8 @@ Installation
 ==============
 
 1. Download the module to your Drupal modules folder
-2. Run drush en -y hardwoods_jbrowse or enable through the modules page
-3. Visit the configuration page at /admin/hardwoods_jbrowse/configure
+2. Run ``drush en -y tripal_jbrowse_mgmt`` or enable through the modules page
+3. Visit the configuration page at Administration » Tripal » Extensions » Tripal JBrowse Management » Settings
 
 .. note::
 
