@@ -203,8 +203,7 @@ function tripal_jbrowse_mgmt_json_editor_form_submit($form, &$form_state) {
   }
 
   $json['tracks'][$track_index] = $track_json;
-  //@TEST
-  dpm($json, '$json in submit form');
+
   if (tripal_jbrowse_mgmt_save_json($track->instance, $json) === FALSE) {
     drupal_set_message(
       'Unable to save JSON file. Please make sure it\'s editable.'

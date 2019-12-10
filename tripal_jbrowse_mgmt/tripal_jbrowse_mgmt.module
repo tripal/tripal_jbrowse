@@ -120,7 +120,7 @@ function tripal_jbrowse_mgmt_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => ['tripal_jbrowse_mgmt_json_editor_advance_form', 6],
     'access arguments' => ['administer tripal_jbrowse_mgmt'],
-    'file' => 'includes/tripal_jbrowse_mgmt_json_editor_advance.form.inc',
+    'file' => 'includes/tripal_jbrowse_mgmt_tracks.form.inc',
     'type' => MENU_LOCAL_ACTION,
   ];
 
