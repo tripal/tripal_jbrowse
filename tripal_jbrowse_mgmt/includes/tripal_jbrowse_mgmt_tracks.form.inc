@@ -370,7 +370,7 @@ function tripal_jbrowse_mgmt_delete_track_form_submit($form, &$form_state) {
 
 /**
  * Track json editor advance form.
- * allow user to make advanced changes
+ * allow user to make all configurations of a track
  *
  * @param array $form
  * @param array $form_state
@@ -424,7 +424,8 @@ function tripal_jbrowse_mgmt_json_editor_advance_form($form, &$form_state, $trac
     '#value' => $track->id,
   ];
 
-  $instr_detail = '<p><strong>Only use this function if wanted configuration option is not included in Track Manage.</strong></p>';
+  $instr_detail = '<strong>Only use this function if wanted configuration option is not included in Track Manage.</strong><br>Details of JBrowse track configuration can be found in '.l('JBrowse Documentation', 'http://jbrowse.org/docs/canvas_features.html').'.
+    <br><strong>Please</strong> be extra cautious while editing track configuration since it will make changes in file trackList.json directly.<br>';
 
   $form['Instruction']=[
     '#type' => 'markup',
