@@ -480,15 +480,13 @@ function tripal_jbrowse_mgmt_json_editor_advance_form_submit($form, &$form_state
   $values = $form_state['values'];
   $track_index = $values['track_index'];
   $track_all_config = $values['track_all_config'] ?? NULL;
-  //@TEST
-  dpm($form_state, '$form_state in submit');
+
   $track = tripal_jbrowse_mgmt_get_track($values['track_id']);
 
   $json = $form_state['track_json'];
   $json['tracks'][$track_index] = json_decode($track_all_config, TRUE);
   tripal_jbrowse_mgmt_update_track($track, ['label' => $json['tracks'][$track_index]['label']]);
-  //@TEST
-  dpm($json, '$json in submit');
+
   if (tripal_jbrowse_mgmt_save_json($track->instance, $json) === FALSE) {
     drupal_set_message(
       'Unable to save JSON file. Please make sure it\'s editable.'
