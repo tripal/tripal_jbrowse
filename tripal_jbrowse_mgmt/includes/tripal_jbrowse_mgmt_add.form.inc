@@ -91,6 +91,7 @@ function tripal_jbrowse_mgmt_add_form($form, &$form_state) {
   $form['data']['ref_seq_path'] = [
     '#type' => 'textfield',
     '#title' => t('OR Path to File on Server'),
+    '#maxlength' => 255,
     '#description' => t(
       'This path will be ignored if a file is provided above. Ex: sites/default/files/file.fasta or /data/file.fasta'
     ),
