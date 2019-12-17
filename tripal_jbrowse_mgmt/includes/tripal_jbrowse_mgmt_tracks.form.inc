@@ -424,7 +424,7 @@ function tripal_jbrowse_mgmt_json_editor_advance_form($form, &$form_state, $trac
     '#value' => $track->id,
   ];
 
-  $instr_detail = '<strong>Only use this function if wanted configuration option is not included in Track Manage.</strong><br>Details of JBrowse track configuration can be found in '.l('JBrowse Documentation', 'http://jbrowse.org/docs/canvas_features.html').'.
+  $instr_detail = '<p><strong>Only use this functionality if the configuration option you want is not included in the "Track Manage" form.</strong>. For more information on the JBrowse track configuration see the '.l('JBrowse Documentation', 'http://jbrowse.org/docs/canvas_features.html').'.</p>
     <br><strong>Please</strong> be extra cautious while editing track configuration since it will make changes in file trackList.json directly.<br>';
 
   $form['Instruction']=[
