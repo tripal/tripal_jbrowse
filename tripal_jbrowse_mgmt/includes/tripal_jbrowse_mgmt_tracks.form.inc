@@ -459,6 +459,7 @@ function tripal_jbrowse_mgmt_json_editor_advance_form($form, &$form_state, $trac
 function tripal_jbrowse_mgmt_json_editor_advance_form_validate($form, &$form_state) {
   $values = $form_state['values'];
   $track_all_config = $values['track_all_config'] ?? NULL;
+  $track_key = $values['track_index'];
 
   if ($track_all_config && !empty($track_all_config)) {
     if (!json_decode($track_all_config)) {
@@ -468,6 +469,12 @@ function tripal_jbrowse_mgmt_json_editor_advance_form_validate($form, &$form_sta
       );
     }
   }
+  $json_before_edit = $form_state['track_json']['tracks'][$track_key];
+  $json_after_edit = json_decode($form_state['values']['track_all_config'], TRUE);
+  if (($json_before_edit['key'] !=  $json_after_edit['key']) OR ($json_before_edit['label'] != $json_after_edit['label'])){
+    form_set_error('track_all_config', 'Key or Label changed. Please don\'t change Key or Label here. The functionality is provided in "Track Manage" form.');
+  }
+
 
 }
 
