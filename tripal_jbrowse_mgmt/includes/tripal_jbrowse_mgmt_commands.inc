@@ -10,11 +10,15 @@
  */
 function tripal_jbrowse_mgmt_cmd_prepare_refseq($instance) {
   $settings = tripal_jbrowse_mgmt_get_settings();
-
+  dpm($settings,'$settings in tripal_jbrowse_mgmt_cmd_prepare_refseq');
   $data = $settings['data_dir'];
   $bin = $settings['bin_path'];
 
   $path = $data . '/' . tripal_jbrowse_mgmt_make_slug($instance->title);
+  if(isset($instance->analysis_id)){
+    $path = $path . '_' . $instance->analysis_id;
+  }
+
   if (!file_exists($path)) {
     if (!mkdir($path)) {
       throw new Exception(
@@ -58,6 +62,10 @@ function tripal_jbrowse_mgmt_cmd_add_track($track) {
   $menu_template = $settings['menu_template'];
 
   $path = $data . '/' . tripal_jbrowse_mgmt_make_slug($instance->title);
+  if(isset($instance->analysis_id)){
+    $path = $path . '_' . $instance->analysis_id;
+  }
+
   $out = $path . '/data';
 
   if (!file_exists($out)) {
@@ -158,6 +166,10 @@ function tripal_jbrowse_mgmt_cmd_generate_names($instance) {
   $bin = $settings['bin_path'];
 
   $path = $data . '/' . tripal_jbrowse_mgmt_make_slug($instance->title);
+  if(isset($instance->analysis_id)){
+    $path = $path . '_' . $instance->analysis_id;
+  }
+
   if (!file_exists($path)) {
     if (!mkdir($path)) {
       throw new Exception(
@@ -198,6 +210,10 @@ function tripal_jbrowse_mgmt_cmd_delete_track($track) {
   $instance = $track->instance;
 
   $path = $data . '/' . tripal_jbrowse_mgmt_make_slug($instance->title);
+  if(isset($instance->analysis_id)){
+    $path = $path . '_' . $instance->analysis_id;
+  }
+
   $out = $path . '/data';
 
   if (!file_exists($out)) {

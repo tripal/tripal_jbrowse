@@ -61,6 +61,13 @@ function tripal_jbrowse_mgmt_add_form($form, &$form_state) {
     '#default_value' => ($edit_form) ? $instance->organism_id : NULL,
   ];
 
+  $form['analysis'] = [
+    '#title' => t('Analysis'),
+    '#description' => t('Select the analysis to which this instance will be related.'),
+    '#type' => 'textfield',
+    '#autocomplete_path' => 'admin/tripal/extension/tripal_jbrowse/management/instances/analysis/autocomplete',
+  ];
+
   $form['description'] = [
     '#title' => t('Description'),
     '#description' => t('Optional description for the instance.'),
@@ -170,6 +177,7 @@ function tripal_jbrowse_mgmt_add_form($form, &$form_state) {
  * @param $form_state
  */
 function tripal_jbrowse_mgmt_add_form_validate($form, &$form_state) {
+  dpm($form_state, '$form_state in validation');
   $values = $form_state['values'];
   $organism = isset($values['organism']) ? $values['organism'] : NULL;
 
@@ -207,13 +215,26 @@ function tripal_jbrowse_mgmt_add_form_validate($form, &$form_state) {
     }
   }
 
+  //  if selected organism already exist, analysis_id is required
+  //  also make sure organism+analysis does not exist
   $instances = tripal_jbrowse_mgmt_get_instances(['organism_id' => $organism]);
-  if (!empty($instances)) {
-    if (!$edit_form OR ($edit_form AND $instances[0]->id != $instance_id)) {
+  dpm($instances, '$instances after tripal_jbrowse_mgmt_get_instances([\'organism_id\' => $organism]) ');
+  if (empty($values['analysis'])) {
+    if (!empty($instances)){
       form_set_error(
-        'organism',
-        'A JBrowse instance for the selected organism already exists. You can edit the instance from the instances page.'
+        'analysis',
+        'A JBrowse instance for the selected organism already exists. Please choose one analysis for this instance.'
       );
+    }
+  }
+  else{
+    foreach ($instances as $instance){
+      if ($values['analysis'] == $instance->analysis_id){
+        form_set_error(
+          ['organism', 'analysis'],
+          'The analysis for selected organism is taken. Please choose another analysis/organism for this instance.'
+        );
+      }
     }
   }
 
@@ -236,9 +257,10 @@ function tripal_jbrowse_mgmt_add_form_validate($form, &$form_state) {
  */
 function tripal_jbrowse_mgmt_add_form_submit($form, &$form_state) {
   global $user;
-
+  dpm($form_state, '$form_state in tripal_jbrowse_mgmt_add_form_submit');
   $values = $form_state['values'];
   $organism_id = $values['organism'];
+  $analysis_id = $values['analysis_id'];
   $description = isset($values['description']) ? $values['description'] : '';
 
   // Check if this is an add or edit form.
@@ -260,6 +282,7 @@ function tripal_jbrowse_mgmt_add_form_submit($form, &$form_state) {
 
     $data = [
       'organism_id' => $organism_id,
+      'analysis_id' => $analysis_id,
       'title' => $title,
       'description' => $description,
     ];
@@ -290,6 +313,7 @@ function tripal_jbrowse_mgmt_add_form_submit($form, &$form_state) {
     $instance_id = tripal_jbrowse_mgmt_create_instance(
       [
         'organism_id' => $organism_id,
+        'analysis_id' => $analysis_id,
         'title' => tripal_jbrowse_mgmt_construct_organism_name($organism),
         'description' => $description,
         'created_at' => time(),

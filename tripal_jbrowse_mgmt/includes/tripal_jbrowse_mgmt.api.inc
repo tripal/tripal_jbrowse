@@ -92,7 +92,7 @@ function tripal_jbrowse_mgmt_get_instances($conditions = NULL) {
  */
 function tripal_jbrowse_mgmt_create_instance($data) {
   global $user;
-
+  dpm($data, '$data in tripal_jbrowse_mgmt_create_instance');
   // Check that required fields are provided.
   $required = ['organism_id', 'created_at'];
   foreach ($required as $key) {
@@ -111,6 +111,7 @@ function tripal_jbrowse_mgmt_create_instance($data) {
   return db_insert('tripal_jbrowse_mgmt_instances')->fields([
     'uid' => $user->uid,
     'organism_id' => $data['organism_id'],
+    'analysis_id' => $data['analysis_id'],
     'title' => $data['title'],
     'description' => isset($data['description']) ? $data['description'] : '',
     'created_at' => $data['created_at'],
@@ -281,6 +282,18 @@ function tripal_jbrowse_mgmt_get_organisms_list() {
     ->execute()
     ->fetchAll();
 }
+
+/**
+ * parse analysis to obtain analysis_id
+ *
+ * @return mixed
+ */
+function tripal_jbrowse_mgmt_analysis_parse_4id($name_id) {
+  
+
+  return $analysis_id;
+}
+
 
 /**
  * Format the name of the organism to `Genus species (Common Name)`.

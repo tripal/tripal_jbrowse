@@ -25,6 +25,10 @@ function tripal_jbrowse_mgmt_schema() {
         'type' => 'int',
         'not null' => TRUE,
       ],
+      'analysis_id' => [
+        'type' => 'int',
+        'not null' => FALSE,
+      ],
       'title' => [
         'type' => 'varchar',
         'length' => 255,
