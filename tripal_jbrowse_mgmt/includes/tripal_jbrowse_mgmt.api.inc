@@ -289,7 +289,7 @@ function tripal_jbrowse_mgmt_get_organisms_list() {
  * @return mixed
  */
 function tripal_jbrowse_mgmt_analysis_parse_4id($name_id) {
-  
+
 
   return $analysis_id;
 }
@@ -424,6 +424,9 @@ function tripal_jbrowse_mgmt_copy_file($source, $destination, $sym_link) {
  */
 function tripal_jbrowse_mgmt_build_http_query($instance) {
   $path = tripal_jbrowse_mgmt_make_slug($instance->title);
+  if(isset($instance->analysis_id)){
+    $path = $path . '_' . $instance->analysis_id;
+  }
   $added_tracks = tripal_jbrowse_mgmt_get_tracks($instance);
   $properties = tripal_jbrowse_mgmt_get_instance_properties($instance->id);
 
@@ -555,6 +558,9 @@ function tripal_jbrowse_mgmt_get_track_list_file_path($instance) {
 
   $path = $settings['data_dir'];
   $path .= '/' . tripal_jbrowse_mgmt_make_slug($instance->title);
+  if(isset($instance->analysis_id)){
+    $path = $path . '_' . $instance->analysis_id;
+  }
   $path .= '/data/trackList.json';
 
   return $path;

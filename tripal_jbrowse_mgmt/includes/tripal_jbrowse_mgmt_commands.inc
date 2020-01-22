@@ -65,7 +65,6 @@ function tripal_jbrowse_mgmt_cmd_add_track($track) {
   if(isset($instance->analysis_id)){
     $path = $path . '_' . $instance->analysis_id;
   }
-
   $out = $path . '/data';
 
   if (!file_exists($out)) {

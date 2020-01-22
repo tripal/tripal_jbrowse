@@ -260,7 +260,8 @@ function tripal_jbrowse_mgmt_add_form_submit($form, &$form_state) {
   dpm($form_state, '$form_state in tripal_jbrowse_mgmt_add_form_submit');
   $values = $form_state['values'];
   $organism_id = $values['organism'];
-  $analysis_id = $values['analysis_id'];
+  preg_match_all('!\d+!', $values['analysis'], $match_analysis);
+  $analysis_id = array_pop($match_analysis[0]);
   $description = isset($values['description']) ? $values['description'] : '';
 
   // Check if this is an add or edit form.
