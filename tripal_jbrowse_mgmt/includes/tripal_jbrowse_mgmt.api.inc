@@ -54,6 +54,7 @@ function tripal_jbrowse_mgmt_save_settings($settings) {
 function tripal_jbrowse_mgmt_get_instances($conditions = NULL) {
   static $users = [];
   static $organisms = [];
+  static $analysis = [];
 
   $instances = db_select('tripal_jbrowse_mgmt_instances', 'H')->fields('H');
 
@@ -76,6 +77,12 @@ function tripal_jbrowse_mgmt_get_instances($conditions = NULL) {
         [':id' => $instance->organism_id])->fetchObject();
     }
     $instance->organism = $organisms[$instance->organism_id];
+
+    if (!isset($analysis[$instance->analysis_id])){
+      $instance[$instance->analysis_id] = chado_query('SELECT * FROM {analysis} WHERE analysis_id=:id'
+        [':id' => $instance->analysis_id])->fetchObject();
+    }
+    $instance->analysis = $analysis[$instance->analysis_id];
   }
 
   return $instances;
