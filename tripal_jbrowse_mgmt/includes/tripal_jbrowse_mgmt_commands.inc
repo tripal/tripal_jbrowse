@@ -10,7 +10,6 @@
  */
 function tripal_jbrowse_mgmt_cmd_prepare_refseq($instance) {
   $settings = tripal_jbrowse_mgmt_get_settings();
-  dpm($settings,'$settings in tripal_jbrowse_mgmt_cmd_prepare_refseq');
   $data = $settings['data_dir'];
   $bin = $settings['bin_path'];
 

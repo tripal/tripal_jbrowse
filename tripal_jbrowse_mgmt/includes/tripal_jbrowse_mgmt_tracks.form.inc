@@ -276,7 +276,6 @@ function tripal_jbrowse_mgmt_add_track_form_validate($form, &$form_state) {
  */
 function tripal_jbrowse_mgmt_add_track_form_submit($form, &$form_state) {
   global $user;
-  dpm($form_state, '$form_state in tripal_jbrowse_mgmt_add_track_form_submit');
   $values = $form_state['values'];
 
   $file = isset($values['file_path']) ? $values['file_path'] : NULL;

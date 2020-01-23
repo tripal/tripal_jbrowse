@@ -78,13 +78,15 @@ function tripal_jbrowse_mgmt_get_instances($conditions = NULL) {
     }
     $instance->organism = $organisms[$instance->organism_id];
 
-    if (!isset($analysis[$instance->analysis_id])){
-      $instance[$instance->analysis_id] = chado_query('SELECT * FROM {analysis} WHERE analysis_id=:id'
-        [':id' => $instance->analysis_id])->fetchObject();
+    if($instance->analysis_id){
+      if (!isset($analysis[$instance->analysis_id])){
+        $analysis[$instance->analysis_id] = chado_query('SELECT * FROM {analysis} WHERE analysis_id=:id',
+          [':id' => $instance->analysis_id])->fetchObject();
+      }
+      $instance->analysis = $analysis[$instance->analysis_id];
     }
-    $instance->analysis = $analysis[$instance->analysis_id];
-  }
 
+  }
   return $instances;
 }
 
@@ -99,7 +101,6 @@ function tripal_jbrowse_mgmt_get_instances($conditions = NULL) {
  */
 function tripal_jbrowse_mgmt_create_instance($data) {
   global $user;
-  dpm($data, '$data in tripal_jbrowse_mgmt_create_instance');
   // Check that required fields are provided.
   $required = ['organism_id', 'created_at'];
   foreach ($required as $key) {
