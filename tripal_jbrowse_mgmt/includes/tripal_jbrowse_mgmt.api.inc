@@ -142,6 +142,20 @@ function tripal_jbrowse_mgmt_get_instance($instance_id) {
 }
 
 /**
+ * Get analysis_id from string(autocomplete analysis)
+ *
+ * @param $analysis_string (in format: ******** (###))
+ *
+ * @return int
+ */
+function tripal_jbrowse_mgmt_get_analysis_id_from_string($analysis_string){
+  preg_match_all('!\d+!', $analysis_string, $match_analysis);
+  $analysis_id =  array_pop($match_analysis[0]);
+  return $analysis_id;
+}
+
+
+/**
  * Update an instance.
  *
  * @param int $id

@@ -226,10 +226,11 @@ function tripal_jbrowse_mgmt_add_form_validate($form, &$form_state) {
     }
   }
   else{
+    $values_analysis_id = tripal_jbrowse_mgmt_get_analysis_id_from_string($values['analysis']);
     foreach ($instances as $instance){
-      if ($values['analysis'] == $instance->analysis_id){
+      if ($values_analysis_id == $instance->analysis_id){
         form_set_error(
-          ['organism', 'analysis'],
+          'analysis',
           'The analysis for selected organism is taken. Please choose another analysis/organism for this instance.'
         );
       }
@@ -257,6 +258,9 @@ function tripal_jbrowse_mgmt_add_form_submit($form, &$form_state) {
   global $user;
   $values = $form_state['values'];
   $organism_id = $values['organism'];
+  if ($values['analysis']){
+    $analysis_id = tripal_jbrowse_mgmt_get_analysis_id_from_string($values['analysis']);
+  }
   preg_match_all('!\d+!', $values['analysis'], $match_analysis);
   $analysis_id = array_pop($match_analysis[0]);
   $description = isset($values['description']) ? $values['description'] : '';
