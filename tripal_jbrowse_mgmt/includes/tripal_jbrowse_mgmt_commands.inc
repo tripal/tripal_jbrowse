@@ -116,7 +116,7 @@ function tripal_jbrowse_mgmt_cmd_add_track($track) {
       $basename = pathinfo($track->file)['basename'];
 
       $json['tracks'][] = [
-        'label' => $track->label,
+        'label' => tripal_jbrowse_mgmt_make_slug($track->label),
         'key' => $track->label,
         'storeClass' => 'JBrowse/Store/SeqFeature/BigWig',
         'urlTemplate' => 'wig/' . $basename,

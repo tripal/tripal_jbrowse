@@ -137,13 +137,12 @@ function tripal_jbrowse_mgmt_add_track_form_validate($form, &$form_state) {
   if ($file_type === 'vcf') {
     $path = $base_path . '/vcf';
   }
-  elseif ($file === 'bw') {
+  elseif ($file_type === 'bw') {
     $path = $base_path . '/wig';
   }
   else {
     $path = $base_path;
   }
-
   switch ($file_type) {
     case 'vcf':
       $index = $_FILES['files']['tmp_name']['file2'];
