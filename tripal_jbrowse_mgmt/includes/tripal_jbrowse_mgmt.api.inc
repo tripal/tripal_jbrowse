@@ -493,12 +493,17 @@ function tripal_jbrowse_mgmt_build_http_query($instance) {
 function tripal_jbrowse_mgmt_get_json($instance) {
   $path = tripal_jbrowse_mgmt_get_track_list_file_path($instance);
 
-  $contents = file_get_contents($path);
-  if (!$contents) {
-    throw new Exception('Unable to find ' . $path . ' file');
-  }
+  if (file_exists($path)) {
+    $contents = file_get_contents($path);
+    if (!$contents) {
+      throw new Exception('Unable to find ' . $path . ' file');
+    }
 
-  return json_decode($contents, TRUE);
+    return json_decode($contents, TRUE);
+  }
+  else {
+    return [];
+  }
 }
 
 /**

@@ -1,6 +1,7 @@
 name = Tripal JBrowse Management
 description = Create JBrowse instances and manage tracks.
 core = 7.x
+package = Tripal Extensions: JBrowse Integration
 
 dependecies[] = tripal
 ; Not on the drupal repository but a required dependency!
