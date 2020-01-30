@@ -76,6 +76,7 @@ function tripal_jbrowse_mgmt_add_track_form($form, &$form_state, $instance_id) {
     '#type' => 'textfield',
     '#title' => t('- OR Path to File on Server -'),
     '#description' => t('This path will be ignored if a file is provided above. Ex: sites/default/files/file.fasta or /data/file.fasta'),
+    '#maxlength' => 255,
     '#states' => [
       'invisible' => [
         ':input[name="file_type"]' => ['value' => 'vcf'],
@@ -87,6 +88,7 @@ function tripal_jbrowse_mgmt_add_track_form($form, &$form_state, $instance_id) {
     '#type' => 'textfield',
     '#title' => t('- OR Path to Directory on Server -'),
     '#description' => t('This path will be ignored if a file is provided above. ' . 'The directory must contain both the .tbi and .gz files.'),
+    '#maxlength' => 255,
     '#states' => [
       'visible' => [
         ':input[name="file_type"]' => ['value' => 'vcf'],
