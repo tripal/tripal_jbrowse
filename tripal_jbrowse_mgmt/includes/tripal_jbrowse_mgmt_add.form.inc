@@ -260,8 +260,7 @@ function tripal_jbrowse_mgmt_add_form_submit($form, &$form_state) {
     [
       'organism_id' => $organism_id,
       'analysis_id' => $analysis_id,
-      'title' => $title,
-
+      'title' => tripal_jbrowse_mgmt_construct_organism_name($organism),
       'description' => $description,
       'created_at' => time(),
       'file' => $file,
@@ -323,7 +322,6 @@ function tripal_jbrowse_mgmt_add_form_submit($form, &$form_state) {
     }
     else {
       drupal_set_message('Failed to create instance!', 'error');
-      return;
     }
   }
 
