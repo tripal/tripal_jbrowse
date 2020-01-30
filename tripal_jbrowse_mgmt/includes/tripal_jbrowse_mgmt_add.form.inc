@@ -49,6 +49,7 @@ function tripal_jbrowse_mgmt_add_form($form, &$form_state) {
     '#description' => 'Select the analysis to which this instance will be related. Analysis can be created in '.l('Add Tripal Content', 'bio_data/add/3').' if wanted analysis is not available.<br><strong>Please choose analysis carefully</strong> since it can not change once instance is created.',
     '#type' => 'textfield',
     '#autocomplete_path' => 'admin/tripal/extension/tripal_jbrowse/management/instances/analysis/autocomplete',
+    '#weight' => -6,
   ];
 
   $form['description'] = [
@@ -193,7 +194,7 @@ function tripal_jbrowse_mgmt_add_form_validate($form, &$form_state) {
   //  if selected organism already exist, analysis_id is required
   //  also make sure organism+analysis does not exist
   $instances = tripal_jbrowse_mgmt_get_instances(['organism_id' => $organism]);
-<<<<<<< HEAD
+
   if (empty($values['analysis'])) {
     if (!empty($instances)){
       form_set_error(
@@ -201,13 +202,6 @@ function tripal_jbrowse_mgmt_add_form_validate($form, &$form_state) {
         'A JBrowse instance for the selected organism already exists. Please choose one analysis for this instance.'
       );
     }
-=======
-  if (!empty($instances)) {
-    form_set_error(
-      'organism',
-      'A JBrowse instance for the selected organism already exists. You can edit the instance from the instances page.'
-    );
->>>>>>> 7.x-3.x
   }
   else{
     $values_analysis_id = tripal_jbrowse_mgmt_get_analysis_id_from_string($values['analysis']);
@@ -265,12 +259,9 @@ function tripal_jbrowse_mgmt_add_form_submit($form, &$form_state) {
   $instance_id = tripal_jbrowse_mgmt_create_instance(
     [
       'organism_id' => $organism_id,
-<<<<<<< HEAD
       'analysis_id' => $analysis_id,
       'title' => $title,
-=======
-      'title' => tripal_jbrowse_mgmt_construct_organism_name($organism),
->>>>>>> 7.x-3.x
+
       'description' => $description,
       'created_at' => time(),
       'file' => $file,
@@ -292,7 +283,6 @@ function tripal_jbrowse_mgmt_add_form_submit($form, &$form_state) {
     $form_state['redirect'] = "admin/tripal/extension/tripal_jbrowse/management/instances/$instance_id";
   }
   else {
-<<<<<<< HEAD
     if (empty($values['uploaded_file'])) {
       $file = $values['ref_seq_path'];
     }
@@ -333,11 +323,8 @@ function tripal_jbrowse_mgmt_add_form_submit($form, &$form_state) {
     }
     else {
       drupal_set_message('Failed to create instance!', 'error');
+      return;
     }
-=======
-    drupal_set_message('Failed to create instance!', 'error');
-    return;
->>>>>>> 7.x-3.x
   }
 
   // Now save the instance properties.
