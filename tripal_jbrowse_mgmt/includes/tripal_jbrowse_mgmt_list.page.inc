@@ -44,7 +44,7 @@ function tripal_jbrowse_mgmt_instances_page() {
         $instance->title,
         'admin/tripal/extension/tripal_jbrowse/management/instances/' . $instance->id
       ),
-      $instance->analysis->name,
+      $instance->analysis->name ?: 'Not provided',
       $instance->user->name,
       $instance->description ?: 'Not provided',
       l('Manage Tracks', 'admin/tripal/extension/tripal_jbrowse/management/instances/' . $instance->id),
