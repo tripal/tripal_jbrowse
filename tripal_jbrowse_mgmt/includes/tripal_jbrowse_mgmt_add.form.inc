@@ -44,8 +44,14 @@ function tripal_jbrowse_mgmt_add_form($form, &$form_state) {
     '#weight' => -8,
   ];
 
-  $analysis_term_entity = tripal_load_term_entity(['vocabulary'=>'operation', 'accession'=>'2945']);
-  $analysis_bundle_entity = tripal_load_bundle_entity(['term_id'=>$analysis_term_entity->id]);
+  $analysis_term_entity = tripal_load_term_entity([
+    'vocabulary'=>'operation',
+    'accession'=>'2945',
+  ]);
+  
+  $analysis_bundle_entity = tripal_load_bundle_entity([
+    'term_id'=>$analysis_term_entity->id,
+  ]);
 
   $form['analysis'] = [
     '#title' => t('Analysis'),
