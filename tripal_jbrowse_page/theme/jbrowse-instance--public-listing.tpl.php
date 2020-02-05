@@ -6,7 +6,11 @@
 
     <div class="jbrowse-instance">
       <h3><?php print l($instance->title, $instance->url); ?></h3>
-      <p><?php print $instance->description; ?></p>
+      <p><?php
+      if(property_exists($instance, 'analysis')) {
+        print 'Analysis: ' . $instance->analysis->name . "<br>";
+      }
+      print $instance->description; ?></p>
       <span class="jbrowse-launch-link"><?php print l('Launch JBrowse', $instance->url); ?></span>
     </div>
 
