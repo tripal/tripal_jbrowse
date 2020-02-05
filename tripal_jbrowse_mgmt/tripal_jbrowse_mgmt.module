@@ -134,6 +134,13 @@ function tripal_jbrowse_mgmt_menu() {
     'type' => MENU_LOCAL_ACTION,
   ];
 
+  $items['admin/tripal/extension/tripal_jbrowse/management/instances/analysis/autocomplete'] = [
+    'title' => 'autocomplete for JBrowse instance analysis',
+    'page callback' => '_mgmt_add_analysis_autocomplete',
+    'access arguments' => ['administer tripal_jbrowse_mgmt'],
+    'type' => MENU_CALLBACK,
+  ];
+
   return $items;
 }
 
@@ -153,3 +160,22 @@ function tripal_jbrowse_mgmt_permission() {
 
   return $items;
 }
+
+/**
+ * autocomplete helper
+ * $string = string for autocomplete search
+ * to provide analysis names for form in tripal_jbrowse_mgmt_add.form.inc
+ */
+ function _mgmt_add_analysis_autocomplete($string){
+   $analysis_4match =array();
+   $analysis = db_select('chado.analysis', 'CA')
+     ->fields('CA', ['analysis_id', 'name'])
+     ->condition('name','%'.db_like($string).'%','LIKE')
+     ->execute();
+
+    foreach($analysis as $one_analysis){
+      $key = $one_analysis->name . ' (' . $one_analysis->analysis_id . ')';
+      $analysis_4match[$key] = $one_analysis->name;
+    }
+    drupal_json_output($analysis_4match);
+ }

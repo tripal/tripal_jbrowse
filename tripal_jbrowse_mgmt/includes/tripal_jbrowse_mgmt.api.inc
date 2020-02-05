@@ -54,6 +54,7 @@ function tripal_jbrowse_mgmt_save_settings($settings) {
 function tripal_jbrowse_mgmt_get_instances($conditions = NULL) {
   static $users = [];
   static $organisms = [];
+  static $analysis = [];
 
   $instances = db_select('tripal_jbrowse_mgmt_instances', 'H')->fields('H');
 
@@ -76,8 +77,16 @@ function tripal_jbrowse_mgmt_get_instances($conditions = NULL) {
         [':id' => $instance->organism_id])->fetchObject();
     }
     $instance->organism = $organisms[$instance->organism_id];
-  }
 
+    if($instance->analysis_id){
+      if (!isset($analysis[$instance->analysis_id])){
+        $analysis[$instance->analysis_id] = chado_query('SELECT * FROM {analysis} WHERE analysis_id=:id',
+          [':id' => $instance->analysis_id])->fetchObject();
+      }
+      $instance->analysis = $analysis[$instance->analysis_id];
+    }
+
+  }
   return $instances;
 }
 
@@ -92,7 +101,6 @@ function tripal_jbrowse_mgmt_get_instances($conditions = NULL) {
  */
 function tripal_jbrowse_mgmt_create_instance($data) {
   global $user;
-
   // Check that required fields are provided.
   $required = ['organism_id', 'created_at'];
   foreach ($required as $key) {
@@ -111,6 +119,7 @@ function tripal_jbrowse_mgmt_create_instance($data) {
   return db_insert('tripal_jbrowse_mgmt_instances')->fields([
     'uid' => $user->uid,
     'organism_id' => $data['organism_id'],
+    'analysis_id' => $data['analysis_id'],
     'title' => $data['title'],
     'description' => isset($data['description']) ? $data['description'] : '',
     'created_at' => $data['created_at'],
@@ -131,6 +140,20 @@ function tripal_jbrowse_mgmt_get_instance($instance_id) {
 
   return reset($instance);
 }
+
+/**
+ * Get analysis_id from string(autocomplete analysis)
+ *
+ * @param $analysis_string (in format: ******** (###))
+ *
+ * @return int
+ */
+function tripal_jbrowse_mgmt_get_analysis_id_from_string($analysis_string){
+  preg_match_all('!\d+!', $analysis_string, $match_analysis);
+  $analysis_id =  array_pop($match_analysis[0]);
+  return $analysis_id;
+}
+
 
 /**
  * Update an instance.
@@ -283,6 +306,18 @@ function tripal_jbrowse_mgmt_get_organisms_list() {
 }
 
 /**
+ * parse analysis to obtain analysis_id
+ *
+ * @return mixed
+ */
+function tripal_jbrowse_mgmt_analysis_parse_4id($name_id) {
+
+
+  return $analysis_id;
+}
+
+
+/**
  * Format the name of the organism to `Genus species (Common Name)`.
  *
  * @param object $organism
@@ -411,6 +446,9 @@ function tripal_jbrowse_mgmt_copy_file($source, $destination, $sym_link) {
  */
 function tripal_jbrowse_mgmt_build_http_query($instance) {
   $path = tripal_jbrowse_mgmt_make_slug($instance->title);
+  if(isset($instance->analysis_id)){
+    $path = $path . '_' . $instance->analysis_id;
+  }
   $added_tracks = tripal_jbrowse_mgmt_get_tracks($instance);
   $properties = tripal_jbrowse_mgmt_get_instance_properties($instance->id);
 
@@ -547,6 +585,9 @@ function tripal_jbrowse_mgmt_get_track_list_file_path($instance) {
 
   $path = $settings['data_dir'];
   $path .= '/' . tripal_jbrowse_mgmt_make_slug($instance->title);
+  if(isset($instance->analysis_id)){
+    $path = $path . '_' . $instance->analysis_id;
+  }
   $path .= '/data/trackList.json';
 
   return $path;

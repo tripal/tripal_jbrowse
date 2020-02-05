@@ -130,18 +130,21 @@ function tripal_jbrowse_mgmt_add_track_form_validate($form, &$form_state) {
   $symbolic_link = $values['symbolic_link'];
   $path = NULL;
 
-  $base_path = $data . '/' . tripal_jbrowse_mgmt_make_slug($instance->title) . '/data';
+  $base_path = $data . '/' . tripal_jbrowse_mgmt_make_slug($instance->title);
+  if(isset($instance->analysis_id)){
+    $base_path = $base_path . '_' . $instance->analysis_id;
+  }
+  $base_path = $base_path . '/data';
 
   if ($file_type === 'vcf') {
     $path = $base_path . '/vcf';
   }
-  elseif ($file === 'bw') {
+  elseif ($file_type === 'bw') {
     $path = $base_path . '/wig';
   }
   else {
     $path = $base_path;
   }
-
   switch ($file_type) {
     case 'vcf':
       $index = $_FILES['files']['tmp_name']['file2'];

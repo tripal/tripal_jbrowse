@@ -25,6 +25,10 @@ function tripal_jbrowse_mgmt_schema() {
         'type' => 'int',
         'not null' => TRUE,
       ],
+      'analysis_id' => [
+        'type' => 'int',
+        'not null' => FALSE,
+      ],
       'title' => [
         'type' => 'varchar',
         'length' => 255,
@@ -127,4 +131,16 @@ function tripal_jbrowse_mgmt_update_7001(&$sandbox) {
   $name = "tripal_jbrowse_mgmt_instanceprop";
   $table = $schema[$name];
   db_create_table($name, $table);
+}
+
+/**
+ * adding a new column analysis_id to table tripal_jbrowse_mgmt_instances
+ */
+function tripal_jbrowse_mgmt_update_7002(&$sandbox){
+  $new_col_spec = [
+    'type' => 'int',
+    'not null' => FALSE,
+  ];
+  $schema = Database::getConnection()->schema();
+  $schema->addField('tripal_jbrowse_mgmt_instances', 'analysis_id', $new_col_spec);
 }
