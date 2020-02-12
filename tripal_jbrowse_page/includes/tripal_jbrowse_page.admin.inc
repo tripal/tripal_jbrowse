@@ -35,6 +35,8 @@ function tripal_jbrowse_page_settings_form($form, $form_state) {
     $options[$key] = [
       'genus' => $instance->organism->genus,
       'species' => $instance->organism->species,
+      'analysis' => $instance->analysis->name ?? 'Not Provided',
+      'description' => $instance->description,
     ];
   }
   // Determine the default value.
@@ -48,6 +50,8 @@ function tripal_jbrowse_page_settings_form($form, $form_state) {
     '#header' => [
       'genus' => t('Genus'),
       'species' => t('Species'),
+      'analysis' => t('Analysis'),
+      'description' => t('Description')
     ],
     '#options' => $options,
     '#empty' => t('No JBrowse Instances available. Please add one through the "List Instances" page.'),
@@ -67,7 +71,6 @@ function tripal_jbrowse_page_settings_form($form, $form_state) {
  */
 function tripal_jbrowse_page_settings_form_submit($form, $form_state) {
   $values = $form_state['values'];
-
   // General Settings.
   variable_set(
     'trpjbrowse_page_embed',
