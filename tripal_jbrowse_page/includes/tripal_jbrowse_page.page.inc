@@ -7,7 +7,7 @@
 /**
  * Redirect to the JBrowse Instance.
  */
-function tripal_jbrowse_page_page($scientific_name, $instance_id) {
+function tripal_jbrowse_page_page($scientific_name, $instance_id = NULL) {
   if($instance_id){
     $instance = tripal_jbrowse_mgmt_get_instance($instance_id);
   }
