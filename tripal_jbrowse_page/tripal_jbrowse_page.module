@@ -26,12 +26,12 @@ function tripal_jbrowse_page_menu() {
     if (tripal_jbrowse_page_is_instance_public($instance->id)) {
 
       // Create the menu item.
-      $path = 'jbrowse/'.$instance->organism->genus . '-' . $instance->organism->species . '/' . $instance->id;
+      $path = 'jbrowse/'.$instance->organism->genus . '-' . $instance->organism->species;
       $items[$path] = [
         'title' => $instance->title,
         'description' => $instance->description,
         'page callback' => 'tripal_jbrowse_page_page',
-        'page arguments' => [1, 2],
+        'page arguments' => [1, $instance->id],
         'access arguments' => ['access content'],
         'file' => 'includes/tripal_jbrowse_page.page.inc',
         'type' => MENU_SUGGESTED_ITEM,
