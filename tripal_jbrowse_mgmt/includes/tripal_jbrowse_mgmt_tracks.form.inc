@@ -387,6 +387,22 @@ function tripal_jbrowse_mgmt_delete_track_form_submit($form, &$form_state) {
 function tripal_jbrowse_mgmt_json_editor_advance_form($form, &$form_state, $track_id) {
   $track = tripal_jbrowse_mgmt_get_track($track_id);
 
+  if (empty($track)) {
+    drupal_not_found();
+    return $form;
+  }
+
+  drupal_set_title('Edit Track Json: ' . $track->label);
+
+  $breadcrumb = array();
+  $breadcrumb[] = l('Home', '');
+  $breadcrumb[] = l('Administration', 'admin');
+  $breadcrumb[] = l('Tripal', 'admin/tripal');
+  $breadcrumb[] = l('Extensions', 'admin/tripal/extension');
+  $breadcrumb[] = l('Tripal JBrowse', 'admin/tripal/extension/tripal_jbrowse/management');
+  $breadcrumb[] = l('Instance', 'admin/tripal/extension/tripal_jbrowse/management/instances/'.$track->instance_id);
+  drupal_set_breadcrumb($breadcrumb);
+
   if (!$track->id) {
     $form['error'] = [
       '#type' => 'item',

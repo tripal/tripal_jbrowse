@@ -7,13 +7,18 @@
 /**
  * Redirect to the JBrowse Instance.
  */
-function tripal_jbrowse_page_page($scientific_name) {
-  list($genus, $species) = explode('-', $scientific_name);
-  $instance = tripal_jbrowse_page_get_instance_id([
-    'genus' => $genus,
-    'species' => $species
-  ],
-  ['load_instance' => TRUE]);
+function tripal_jbrowse_page_page($scientific_name, $instance_id = NULL) {
+  if($instance_id){
+    $instance = tripal_jbrowse_mgmt_get_instance($instance_id);
+  }
+  else{
+    list($genus, $species) = explode('-', $scientific_name);
+    $instance = tripal_jbrowse_page_get_instance_id([
+      'genus' => $genus,
+      'species' => $species
+    ],
+    ['load_instance' => TRUE]);
+  }
 
   // Determine Query paramters.
   $query_params = tripal_jbrowse_mgmt_build_http_query($instance);

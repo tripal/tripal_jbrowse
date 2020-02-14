@@ -31,7 +31,7 @@ function tripal_jbrowse_page_menu() {
         'title' => $instance->title,
         'description' => $instance->description,
         'page callback' => 'tripal_jbrowse_page_page',
-        'page arguments' => [1],
+        'page arguments' => [1, 2],
         'access arguments' => ['access content'],
         'file' => 'includes/tripal_jbrowse_page.page.inc',
         'type' => MENU_SUGGESTED_ITEM,

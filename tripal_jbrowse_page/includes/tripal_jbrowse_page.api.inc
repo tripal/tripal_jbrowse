@@ -8,7 +8,6 @@
  * Retrieve the instance id based on the organism.
  */
 function tripal_jbrowse_page_get_instance_id($conditions, $options) {
-
   // First retrieve the organism_id.
   $organism_id = chado_query('SELECT organism_id FROM {organism} WHERE genus=:genus AND species=:species',
     [
