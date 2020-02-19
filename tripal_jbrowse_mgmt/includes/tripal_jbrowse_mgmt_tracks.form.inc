@@ -99,7 +99,7 @@ function tripal_jbrowse_mgmt_add_track_form($form, &$form_state, $instance_id) {
   $form['data']['symbolic_link'] = [
     '#type' => 'checkbox',
     '#title' => t('Symbolic Link'),
-    '#description' => t('Create a symbolic link rather than make a copy of the file. This only applies when a path on the server is supplied.'),
+    '#description' => t('Create a symbolic link rather than make a copy of the file. This only applies when a path on the server is supplied.<br>Please have Symbolic Link selected if the same file is used for new track.'),
   ];
 
   $form['submit'] = [
@@ -173,11 +173,11 @@ function tripal_jbrowse_mgmt_add_track_form_validate($form, &$form_state) {
             else {
               try {
                 if (!tripal_jbrowse_mgmt_copy_file($file_gz[0], $path, $symbolic_link)) {
-                  form_set_error('file_path', 'Failed to copy file' . $file_gz[0] . ' to ' . $path);
+                  form_set_error('file_path', 'Failed to copy file' . $file_gz[0] . ' to ' . $path.'. If this track is expected to create by existed file, please have Symbolic Link selected.');
                 }
                 else {
                   if (!tripal_jbrowse_mgmt_copy_file($file_index[0], $path, $symbolic_link)) {
-                    form_set_error('file_path', 'Failed to copy file' . $file_gz[0] . ' to ' . $path);
+                    form_set_error('file_path', 'Failed to copy file' . $file_gz[0] . ' to ' . $path.'. If this track is expected to create by existed file, please have Symbolic Link selected.');
                   }
                 }
               } catch (Exception $exception) {
@@ -240,10 +240,10 @@ function tripal_jbrowse_mgmt_add_track_form_validate($form, &$form_state) {
         else {
           try {
             if (!tripal_jbrowse_mgmt_copy_file($local_file, $path, $symbolic_link)) {
-              form_set_error('file_path', 'Failed to copy file ' . $local_file . ' to ' . $path);
+              form_set_error('file_path', 'Failed to copy file ' . $local_file . ' to ' . $path. '. If this track is expected to create by existed file, please have Symbolic Link selected.');
             }
           } catch (Exception $exception) {
-            form_set_error('file_path', 'Failed to copy file ' . $local_file . ' to ' . $path);
+            form_set_error('file_path', 'Failed to copy file ' . $local_file . ' to ' . $path.'. If this track is expected to create by existed file, please have Symbolic Link selected.');
           }
         }
       }

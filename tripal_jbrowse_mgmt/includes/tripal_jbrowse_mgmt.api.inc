@@ -428,7 +428,11 @@ function tripal_jbrowse_mgmt_copy_file($source, $destination, $sym_link) {
   file_prepare_directory($destination, FILE_CREATE_DIRECTORY);
   if (isset($sym_link) AND ($sym_link == true)){
     $destination_symlink = $destination.'/'.basename($source);
-    return symlink($source, $destination_symlink);
+    if (file_exists($destination_symlink)){
+      return TRUE;
+    }else{
+      return symlink($source, $destination_symlink);
+    }
   }
   else{
     return file_unmanaged_copy($source, $destination, FILE_EXISTS_ERROR);
