@@ -36,7 +36,7 @@ function tripal_jbrowse_mgmt_instance_page($instance_id) {
         'header' => ['Key', 'Value'],
         'rows' => [
           ['Instance Name', $instance->title],
-          ['Analysis Name', $instance->analysis->name ?? 'Not provided'],
+          ['Sequence Assembly', $instance->analysis->name ?? 'Not provided'],
           ['Created At', date('m/d/Y', $instance->created_at)],
           [
             'Organism',
