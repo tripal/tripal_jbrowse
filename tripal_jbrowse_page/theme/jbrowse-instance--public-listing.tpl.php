@@ -8,7 +8,12 @@
       <h3><?php print l($instance->title, $instance->url); ?></h3>
       <p><?php
       if(property_exists($instance, 'analysis')) {
-        print 'Analysis: ' . $instance->analysis->name . "<br>";
+        if ($instance->analysis->url) {
+          print 'Sequence Assembly: ' . l($instance->analysis->name, $instance->analysis->url) . "<br>";
+        }
+        else {
+          print 'Sequence Assembly: ' . $instance->analysis->name . "<br>";
+        }
       }
       print $instance->description; ?></p>
       <span class="jbrowse-launch-link"><?php print l('Launch JBrowse', $instance->url); ?></span>
