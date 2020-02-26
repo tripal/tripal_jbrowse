@@ -84,6 +84,12 @@ function tripal_jbrowse_mgmt_get_instances($conditions = NULL) {
           [':id' => $instance->analysis_id])->fetchObject();
       }
       $instance->analysis = $analysis[$instance->analysis_id];
+      $instance->analysis->entity_id = chado_get_record_entity_by_table(
+        'analysis', $instance->analysis_id);
+      $instance->analysis->url = NULL;
+      if ($instance->analysis->entity_id) {
+        $instance->analysis->url = url('/bio_data/' . $instance->analysis->entity_id);
+      }
     }
 
   }
