@@ -31,9 +31,10 @@ function tripal_jbrowse_page_page($scientific_name, $instance_id = NULL) {
   $settings = tripal_jbrowse_mgmt_get_settings();
   $url = url($settings['link'],['query' => $query_params]);
 
+  // Either embed the page or redirect to the full JBrowse based on configuration.
   if (variable_get('trpjbrowse_page_embed', 1)) {
     drupal_add_css(drupal_get_path('module', 'tripal_jbrowse_page') . '/theme/tripal_jbrowse_page.css');
-    return theme('jbrowse_instance_embedded_page', ['url' => $url]);
+    return theme('jbrowse_instance_embedded_page', ['url' => $url, 'instance' => $instance]);
   }
   else {
     drupal_goto($url, array('external' => TRUE));
