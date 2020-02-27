@@ -50,7 +50,7 @@ function tripal_jbrowse_page_settings_form($form, $form_state) {
     '#header' => [
       'genus' => t('Genus'),
       'species' => t('Species'),
-      'analysis' => t('Analysis'),
+      'analysis' => t('Sequence Assembly'),
       'description' => t('Description')
     ],
     '#options' => $options,
