@@ -48,14 +48,14 @@ function tripal_jbrowse_mgmt_add_form($form, &$form_state) {
     'vocabulary'=>'operation',
     'accession'=>'2945',
   ]);
-  
+
   $analysis_bundle_entity = tripal_load_bundle_entity([
     'term_id'=>$analysis_term_entity->id,
   ]);
 
   $form['analysis'] = [
-    '#title' => t('Analysis'),
-    '#description' => 'Select the analysis to which this instance will be related. Analysis can be created in '.l('Add Tripal Content', 'bio_data/add/' . $analysis_bundle_entity->id).' if wanted analysis is not available.<br><strong>Please choose analysis carefully</strong> since it can not change once instance is created.',
+    '#title' => t('Sequence Assembly'),
+    '#description' => 'Select the analysis which describes the sequence assembly used as the backbone for this JBrowse instance. An analysis can be created in '.l('Add Tripal Content', 'bio_data/add/' . $analysis_bundle_entity->id).' if it is not already available.<br><strong>Please choose analysis carefully</strong> since it can not change once instance is created.',
     '#type' => 'textfield',
     '#autocomplete_path' => 'admin/tripal/extension/tripal_jbrowse/management/instances/analysis/autocomplete',
     '#weight' => -6,

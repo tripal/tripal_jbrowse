@@ -29,7 +29,7 @@ function tripal_jbrowse_mgmt_instances_page() {
 
   $header = [
     'Organism',
-    'Analysis',
+    'Sequence Assembly',
     'Submitter',
     'Description',
     'Tracks',
