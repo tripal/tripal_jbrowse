@@ -111,6 +111,34 @@ function tripal_jbrowse_mgmt_cmd_add_track($track) {
       tripal_jbrowse_mgmt_save_json($instance, $json);
       break;
 
+    case 'Alignment':
+      $json = tripal_jbrowse_mgmt_get_json($instance);
+      $directory = 'bam';
+      $file_name = $track->file;
+      if (is_dir($track->file)) {
+        $file_name = glob($track->file . '/' . '*.[bam][cram]')[0];
+      }
+      $file_name = pathinfo($file_name)['basename'];
+
+      $track_in_json = [
+        'label' => tripal_jbrowse_mgmt_make_slug($track->label),
+        'key' => $track->label,
+        'urlTemplate' => $directory . '/' . $file_name,
+        'type' => 'JBrowse/View/Track/Alignment2',
+      ];
+
+      $extension = pathinfo($file_name)['extension'];
+      switch($extension){
+        case 'bam':
+          $track_in_json['storeClass'] = 'JBrowse/Store/SeqFeature/BAM';
+          break;
+        case 'cram':
+          $track_in_json['storeClass'] = 'JBrowse/Store/SeqFeature/CRAM';
+          break;
+      }
+      tripal_jbrowse_mgmt_save_json($instance, $json);
+      break;
+
     case 'XYPlot':
       $json = tripal_jbrowse_mgmt_get_json($instance);
       $basename = pathinfo($track->file)['basename'];

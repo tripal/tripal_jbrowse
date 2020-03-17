@@ -612,6 +612,7 @@ function tripal_jbrowse_mgmt_get_track_types() {
   return [
     'FeatureTrack',
     'CanvasFeatures',
+    'Alignment',
     'HTMLFeatures',
     'HTMLVariants',
     'XYPlot',
