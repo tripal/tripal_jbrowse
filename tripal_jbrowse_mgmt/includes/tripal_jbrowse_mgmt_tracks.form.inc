@@ -139,6 +139,9 @@ function tripal_jbrowse_mgmt_add_track_form_validate($form, &$form_state) {
   if ($file_type === 'vcf') {
     $path = $base_path . '/vcf';
   }
+  if (($file_type === 'bam') OR ($file_type === 'cram')){
+    $path = $base_path . '/bam';
+  }
   elseif ($file_type === 'bw') {
     $path = $base_path . '/wig';
   }

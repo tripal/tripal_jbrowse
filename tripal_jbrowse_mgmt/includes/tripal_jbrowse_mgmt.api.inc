@@ -710,3 +710,22 @@ function tripal_jbrowse_mgmt_get_instance_properties($id) {
     ->condition('instance_id', $id)
     ->execute()->fetchAllKeyed(0,1);
 }
+
+
+/**
+ * validate folder upload (file with index)
+ * eg. vcf, bam, cram
+ *
+ * @param $file
+ *   the path and file name of upload file
+ * @param $index
+ *   the path and file name of upload file
+ * @param $local_directory
+ *   the path and file name of upload file
+ * @return
+ *   warning message or NULL if no warning
+ */
+
+ function tripal_jbrowse_mgmt_validate_folder_upload($file, $index, $local_directory) {
+
+ }
