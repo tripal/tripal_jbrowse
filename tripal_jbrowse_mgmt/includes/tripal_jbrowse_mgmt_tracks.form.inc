@@ -67,7 +67,9 @@ function tripal_jbrowse_mgmt_add_track_form($form, &$form_state, $instance_id) {
     '#title' => t('Index File'),
     '#states' => [
       'visible' => [
-        ':input[name="file_type"]' => ['value' => 'vcf'],
+        [':input[name="file_type"]' => ['value' => 'vcf'],],
+        [':input[name="file_type"]' => ['value' => 'bam'],],
+        [':input[name="file_type"]' => ['value' => 'cram'],],
       ],
     ],
   ];
@@ -79,7 +81,9 @@ function tripal_jbrowse_mgmt_add_track_form($form, &$form_state, $instance_id) {
     '#maxlength' => 255,
     '#states' => [
       'invisible' => [
-        ':input[name="file_type"]' => ['value' => 'vcf'],
+        [':input[name="file_type"]' => ['value' => 'vcf'],],
+        [':input[name="file_type"]' => ['value' => 'bam'],],
+        [':input[name="file_type"]' => ['value' => 'cram'],],
       ],
     ],
   ];
@@ -91,7 +95,9 @@ function tripal_jbrowse_mgmt_add_track_form($form, &$form_state, $instance_id) {
     '#maxlength' => 255,
     '#states' => [
       'visible' => [
-        ':input[name="file_type"]' => ['value' => 'vcf'],
+        [':input[name="file_type"]' => ['value' => 'vcf'],],
+        [':input[name="file_type"]' => ['value' => 'bam'],],
+        [':input[name="file_type"]' => ['value' => 'cram'],],
       ],
     ],
   ];
