@@ -52,7 +52,7 @@ function tripal_jbrowse_mgmt_add_track_form($form, &$form_state, $instance_id) {
   $form['data']['file_type'] = [
     '#type' => 'select',
     '#title' => t('File Type'),
-    '#options' => drupal_map_assoc(['gff', 'bed', 'gbk', 'vcf', 'bw']),
+    '#options' => drupal_map_assoc(['gff', 'bed', 'gbk', 'bam', 'cram', 'vcf', 'bw']),
     '#description' => t('See http://gmod.org/wiki/JBrowse_Configuration_Guide#flatfile-to-json.pl for more info.'),
     '#required' => TRUE,
   ];
@@ -139,6 +139,9 @@ function tripal_jbrowse_mgmt_add_track_form_validate($form, &$form_state) {
   if ($file_type === 'vcf') {
     $path = $base_path . '/vcf';
   }
+  if (($file_type === 'bam') OR ($file_type === 'cram')){
+    $path = $base_path . '/bam';
+  }
   elseif ($file_type === 'bw') {
     $path = $base_path . '/wig';
   }
@@ -148,82 +151,17 @@ function tripal_jbrowse_mgmt_add_track_form_validate($form, &$form_state) {
   switch ($file_type) {
     case 'vcf':
       $index = $_FILES['files']['tmp_name']['file2'];
-      $local_dir = isset($values['dir_path']) ? $values['dir_path'] : NULL;
+      $form_state = tripal_jbrowse_mgmt_validate_folder_upload($file, $index, $path, $form_state);
+      break;
 
-      if (empty($file) && empty($index) && empty($local_dir)) {
-        form_set_error('file',
-          'Please provide a local directory path or upload files.');
-      }
-      elseif (empty($file) && empty($index) && !empty($local_dir)) {
-        if (!file_exists($local_dir)) {
-          form_set_error('file_path', 'The directory provided does not exist.');
-        }
-        else {
-          if (!is_dir($local_dir)) {
-            form_set_error('file_path',
-              'The file provided is not a directory.');
-          }
-          else {
-            $file_gz = glob($local_dir . '/*.vcf.gz');
-            $file_index = glob($local_dir . '/*.vcf.gz.[cti][sbd][ix]');
-            if (count($file_gz) != 1 || count($file_index) != 1) {
-              form_set_error('file_path',
-                'Please provide a directory with exactly one gz and one index file.');
-            }
-            else {
-              try {
-                if (!tripal_jbrowse_mgmt_copy_file($file_gz[0], $path, $symbolic_link)) {
-                  form_set_error('file_path', 'Failed to copy file' . $file_gz[0] . ' to ' . $path.'. If this track is expected to create by existed file, please have Symbolic Link selected.');
-                }
-                else {
-                  if (!tripal_jbrowse_mgmt_copy_file($file_index[0], $path, $symbolic_link)) {
-                    form_set_error('file_path', 'Failed to copy file' . $file_gz[0] . ' to ' . $path.'. If this track is expected to create by existed file, please have Symbolic Link selected.');
-                  }
-                }
-              } catch (Exception $exception) {
-                form_set_error($exception->getMessage());
-              }
+    case 'bam':
+      $index = $_FILES['files']['tmp_name']['file2'];
+      $form_state = tripal_jbrowse_mgmt_validate_folder_upload($file, $index, $path, $form_state);
+      break;
 
-            }
-          }
-        }
-      }
-      elseif (empty($file) && !empty($index)) {
-        form_set_error('file', 'Please upload both a gz and an index file.');
-      }
-      elseif (!empty($file) && empty($index)) {
-        form_set_error('file2', 'Please upload both a gz and an index file.');
-      }
-      else {
-        $gz_uploaded = tripal_jbrowse_mgmt_upload_file('file');
-        if (!$gz_uploaded) {
-          form_set_error('file', 'Unable to upload file');
-        }
-        else {
-          $gz_uploaded = tripal_jbrowse_mgmt_move_file($gz_uploaded, $path);
-          if (!isset($gz_uploaded)) {
-            form_set_error('file', 'Failed to move gz file to ' . $path . '.');
-          }
-          else {
-            $form_state['values']['uploaded_gz'] = $gz_uploaded;
-          }
-        }
-
-        $index_uploaded = tripal_jbrowse_mgmt_upload_file('file2');
-        if (!$index_uploaded) {
-          form_set_error('file2', 'Unable to upload file');
-        }
-        else {
-          $index_uploaded = tripal_jbrowse_mgmt_move_file($index_uploaded, $path);
-          if (!isset($index_uploaded)) {
-            form_set_error('file2', 'Failed to move index file to ' . $path . '.');
-          }
-          else {
-            $form_state['values']['uploaded_tbi'] = $index_uploaded;
-          }
-        }
-      }
-
+    case 'carm':
+      $index = $_FILES['files']['tmp_name']['file2'];
+      $form_state = tripal_jbrowse_mgmt_validate_folder_upload($file, $index, $path, $form_state);
       break;
 
     default:
@@ -283,11 +221,11 @@ function tripal_jbrowse_mgmt_add_track_form_submit($form, &$form_state) {
   if (!empty($values['dir_path'])) {
     $file = $values['dir_path'];
   }
-  if (!empty($values['uploaded_gz'])) {
-    $file = $values['uploaded_gz'];
+  if (!empty($values['uploaded_file_index'])) {
+    $file = $values['uploaded_file_index'];
   }
-  if (!empty($values['uploaded_file'])) {
-    $file = $values['uploaded_file'];
+  if (!empty($values['uploaded_file_data'])) {
+    $file = $values['uploaded_file_data'];
   }
 
   $instance = tripal_jbrowse_mgmt_get_instance($values['instance_id']);
