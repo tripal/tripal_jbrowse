@@ -116,14 +116,14 @@ function tripal_jbrowse_mgmt_cmd_add_track($track) {
       $directory = 'bam';
       $file_name = $track->file;
       if (is_dir($track->file)) {
-        $file_name = glob($track->file . '/' . '*.[bam][cram]')[0];
+        $file_name = glob($track->file . '/' . '*.bam')[0];
+        if (!$file_name) { $file_name = glob($track->file . '/' . '*.cram')[0]; }
       }
-      $file_name = pathinfo($file_name)['basename'];
 
       $track_in_json = [
         'label' => tripal_jbrowse_mgmt_make_slug($track->label),
         'key' => $track->label,
-        'urlTemplate' => $directory . '/' . $file_name,
+        'urlTemplate' => $directory . '/' . pathinfo($file_name)['basename'],
         'type' => 'JBrowse/View/Track/Alignment2',
       ];
 
@@ -136,6 +136,7 @@ function tripal_jbrowse_mgmt_cmd_add_track($track) {
           $track_in_json['storeClass'] = 'JBrowse/Store/SeqFeature/CRAM';
           break;
       }
+      $json['tracks'][] = $track_in_json;
       tripal_jbrowse_mgmt_save_json($instance, $json);
       break;
 

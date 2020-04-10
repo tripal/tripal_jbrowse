@@ -165,7 +165,7 @@ function tripal_jbrowse_mgmt_add_track_form_validate($form, &$form_state) {
       $form_state = tripal_jbrowse_mgmt_validate_folder_upload($file, $index, $path, $form_state);
       break;
 
-    case 'carm':
+    case 'cram':
       $index = $_FILES['files']['tmp_name']['file2'];
       $form_state = tripal_jbrowse_mgmt_validate_folder_upload($file, $index, $path, $form_state);
       break;

@@ -734,18 +734,31 @@ function tripal_jbrowse_mgmt_get_instance_properties($id) {
    if (empty($file) && empty($index) && empty($local_directory)) {
      form_set_error('Please provide a local directory path or upload files.');
    }
-   elseif (empty($file) && empty($index) && !empty($local_dir)) {
-     if (!file_exists($local_dir)) {
+   elseif (empty($file) && empty($index) && !empty($local_directory)) {
+     if (!file_exists($local_directory)) {
        form_set_error('The directory provided does not exist.');
      }
      else {
-       if (!is_dir($local_dir)) {
+       if (!is_dir($local_directory)) {
          form_set_error('file_path',
            'The file provided is not a directory.');
        }
        else {
-         $file_file = glob($local_dir . '/*.[vcf.gz][bam][cram]');
-         $file_index = glob($local_dir . '/*.[csi][tbi][idx][bai][cram][crai]');
+         // Retrieve an array of data file and index
+         // to ensure there is only one of each.
+         $file_file = [];
+         $file_index = [];
+         foreach (scandir($local_directory) as $f) {
+           $fparts = pathinfo($f);
+
+           if (in_array($fparts['extension'], ['gz', 'bam', 'cram'])) {
+             $file_file[] = $f;
+           }
+           if (in_array($fparts['extension'], ['csi','tbi','idx','bai','crai'])) {
+             $file_index[] = $f;
+           }
+         }
+         // CHECK: Only a single data file and index.
          if (count($file_file) != 1 || count($file_index) != 1) {
            form_set_error('file_path',
              'Please provide a directory with exactly one data file and one index file.');
@@ -777,7 +790,7 @@ function tripal_jbrowse_mgmt_get_instance_properties($id) {
    else {
      $file_data_uploaded = tripal_jbrowse_mgmt_upload_file('file');
      if (!$file_data_uploaded) {
-       form_set_error('file', 'Unable to upload file');
+       form_set_error('file', 'Unable to upload file.');
      }
      else {
        $file_data_uploaded = tripal_jbrowse_mgmt_move_file($file_data_uploaded, $path);
@@ -791,7 +804,7 @@ function tripal_jbrowse_mgmt_get_instance_properties($id) {
 
      $index_uploaded = tripal_jbrowse_mgmt_upload_file('file2');
      if (!$index_uploaded) {
-       form_set_error('file2', 'Unable to upload file');
+       form_set_error('file2', 'Unable to upload index.');
      }
      else {
        $index_uploaded = tripal_jbrowse_mgmt_move_file($index_uploaded, $path);
