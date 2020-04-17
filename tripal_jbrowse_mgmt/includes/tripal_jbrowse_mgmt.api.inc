@@ -766,11 +766,11 @@ function tripal_jbrowse_mgmt_get_instance_properties($id) {
          else {
            try {
              if (!tripal_jbrowse_mgmt_copy_file($file_file[0], $path, $symbolic_link)) {
-               form_set_error('file_path', 'Failed to copy file' . $file_gz[0] . ' to ' . $path.'. If this track is expected to create by existed file, please have Symbolic Link selected.');
+               form_set_error('file_path', 'Failed to copy file' . $file_file[0] . ' to ' . $path.'. If this track is expected to create by existed file, please have Symbolic Link selected.');
              }
              else {
                if (!tripal_jbrowse_mgmt_copy_file($file_index[0], $path, $symbolic_link)) {
-                 form_set_error('file_path', 'Failed to copy file' . $file_gz[0] . ' to ' . $path.'. If this track is expected to create by existed file, please have Symbolic Link selected.');
+                 form_set_error('file_path', 'Failed to copy file' . $file_index[0] . ' to ' . $path.'. If this track is expected to create by existed file, please have Symbolic Link selected.');
                }
              }
            } catch (Exception $exception) {

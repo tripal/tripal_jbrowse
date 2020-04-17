@@ -124,7 +124,7 @@ function tripal_jbrowse_mgmt_cmd_add_track($track) {
         'label' => tripal_jbrowse_mgmt_make_slug($track->label),
         'key' => $track->label,
         'urlTemplate' => $directory . '/' . pathinfo($file_name)['basename'],
-        'type' => 'JBrowse/View/Track/Alignment2',
+        'type' => 'JBrowse/View/Track/Alignments2',
       ];
 
       $extension = pathinfo($file_name)['extension'];
