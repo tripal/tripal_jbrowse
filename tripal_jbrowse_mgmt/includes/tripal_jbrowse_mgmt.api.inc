@@ -731,6 +731,8 @@ function tripal_jbrowse_mgmt_get_instance_properties($id) {
    $local_directory = isset($values['dir_path']) ? $values['dir_path'] : NULL;
    $symbolic_link = $values['symbolic_link'];
 
+   dpm($path, '$path in validation');
+
    if (empty($file) && empty($index) && empty($local_directory)) {
      form_set_error('Please provide a local directory path or upload files.');
    }
@@ -746,19 +748,19 @@ function tripal_jbrowse_mgmt_get_instance_properties($id) {
        else {
          // Retrieve an array of data file and index
          // to ensure there is only one of each.
-         $file_file = [];
-         $file_index = [];
+
          foreach (scandir($local_directory) as $f) {
            $fparts = pathinfo($f);
 
            if (in_array($fparts['extension'], ['gz', 'bam', 'cram'])) {
-             $file_file[] = $f;
+             $file_file[] = $local_directory . '/' . $f;
            }
            if (in_array($fparts['extension'], ['csi','tbi','idx','bai','crai'])) {
-             $file_index[] = $f;
+             $file_index[] = $local_directory . '/' . $f;
            }
          }
          // CHECK: Only a single data file and index.
+
          if (count($file_file) != 1 || count($file_index) != 1) {
            form_set_error('file_path',
              'Please provide a directory with exactly one data file and one index file.');
