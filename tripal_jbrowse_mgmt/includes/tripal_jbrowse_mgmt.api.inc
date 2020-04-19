@@ -731,8 +731,6 @@ function tripal_jbrowse_mgmt_get_instance_properties($id) {
    $local_directory = isset($values['dir_path']) ? $values['dir_path'] : NULL;
    $symbolic_link = $values['symbolic_link'];
 
-   dpm($path, '$path in validation');
-
    if (empty($file) && empty($index) && empty($local_directory)) {
      form_set_error('Please provide a local directory path or upload files.');
    }
