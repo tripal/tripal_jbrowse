@@ -114,10 +114,9 @@ function tripal_jbrowse_mgmt_cmd_add_track($track) {
     case 'Alignment':
       $json = tripal_jbrowse_mgmt_get_json($instance);
       $directory = 'bam';
-      $file_name = $track->file;
       if (is_dir($track->file)) {
-        $file_name = glob($track->file . '/' . '*.bam')[0];
-        if (!$file_name) { $file_name = glob($track->file . '/' . '*.cram')[0]; }
+        $file_name = glob($track->file . '/' . '*.[bam][cram]')[0];
+        $index_file_name = glob($track->file . '/' . '*.[bai][csi][crai]')[0];
       }
 
       $track_in_json = [
@@ -126,7 +125,16 @@ function tripal_jbrowse_mgmt_cmd_add_track($track) {
         'urlTemplate' => $directory . '/' . pathinfo($file_name)['basename'],
         'type' => 'JBrowse/View/Track/Alignments2',
       ];
+      $index_path_info = pathinfo($index_file_name);
+      switch($index_path_info['extension']){
+        case "bai":
+        $track_in_json['baiUrlTemplate'] = $directory . '/' . $index_path_info['basename'];
+        break;
 
+        case "csi":
+        $track_in_json['csiUrlTemplate'] = $directory . '/' . $index_path_info['basename'];
+        break;
+      }
       $extension = pathinfo($file_name)['extension'];
       switch($extension){
         case 'bam':
