@@ -78,7 +78,7 @@ function tripal_jbrowse_mgmt_cmd_add_track($track) {
       $file_name = $track->file;
       if (is_dir($track->file)) {
         $file_name = glob($track->file . '/' . '*.vcf.gz')[0];
-        $index_name = glob($track->file . '/' . '*.vcf.gz.[tci][bsd][ix]')[0];
+        $index_name = glob($track->file . '/' . '*.vcf.gz.[tbi][csi][idx]')[0];
       }
       $file_name = pathinfo($file_name)['basename'];
 
@@ -115,8 +115,12 @@ function tripal_jbrowse_mgmt_cmd_add_track($track) {
       $json = tripal_jbrowse_mgmt_get_json($instance);
       $directory = 'bam';
       if (is_dir($track->file)) {
-        $file_name = glob($track->file . '/' . '*.[bam][cram]')[0];
-        $index_file_name = glob($track->file . '/' . '*.[bai][csi][crai]')[0];
+        $file_name = glob($track->file . '/' . '*.bam')[0];
+        $index_file_name = glob($track->file . '/' . '*.bam.*')[0];
+        if (!$file_name) {
+          $file_name = glob($track->file . '/' . '*.cram')[0];
+          $index_file_name = glob($track->file . '/' . '*.cram.*')[0];
+         }
       }
 
       $track_in_json = [
