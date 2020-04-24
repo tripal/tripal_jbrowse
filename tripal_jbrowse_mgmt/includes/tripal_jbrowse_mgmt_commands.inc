@@ -78,7 +78,7 @@ function tripal_jbrowse_mgmt_cmd_add_track($track) {
       $file_name = $track->file;
       if (is_dir($track->file)) {
         $file_name = glob($track->file . '/' . '*.vcf.gz')[0];
-        $index_name = glob($track->file . '/' . '*.vcf.gz.[tbi][csi][idx]')[0];
+        $index_name = glob($track->file . '/' . '*.vcf.gz.[cti][sbd][ix]')[0];
       }
       $file_name = pathinfo($file_name)['basename'];
 

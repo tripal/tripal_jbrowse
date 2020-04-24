@@ -143,13 +143,7 @@ function tripal_jbrowse_mgmt_add_track_form_validate($form, &$form_state) {
   }
   $base_path = $base_path . '/data';
 
-  if ($file_type === 'vcf') {
-    $path = $base_path . '/vcf';
-  }
-  if (($file_type === 'bam') OR ($file_type === 'cram')){
-    $path = $base_path . '/bam';
-  }
-  elseif ($file_type === 'bw') {
+  if ($file_type === 'bw') {
     $path = $base_path . '/wig';
   }
   else {
@@ -157,16 +151,19 @@ function tripal_jbrowse_mgmt_add_track_form_validate($form, &$form_state) {
   }
   switch ($file_type) {
     case 'vcf':
+      $path = $base_path . '/vcf';
       $index = $_FILES['files']['tmp_name']['file2'];
       $form_state = tripal_jbrowse_mgmt_validate_folder_upload($file, $index, $path, $form_state);
       break;
 
     case 'bam':
+      $path = $base_path . '/bam';
       $index = $_FILES['files']['tmp_name']['file2'];
       $form_state = tripal_jbrowse_mgmt_validate_folder_upload($file, $index, $path, $form_state);
       break;
 
     case 'cram':
+      $path = $base_path . '/bam';
       $index = $_FILES['files']['tmp_name']['file2'];
       $form_state = tripal_jbrowse_mgmt_validate_folder_upload($file, $index, $path, $form_state);
       break;
