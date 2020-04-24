@@ -78,7 +78,7 @@ function tripal_jbrowse_mgmt_cmd_add_track($track) {
       $file_name = $track->file;
       if (is_dir($track->file)) {
         $file_name = glob($track->file . '/' . '*.vcf.gz')[0];
-        $index_name = glob($track->file . '/' . '*.vcf.gz.[tci][bsd][ix]')[0];
+        $index_name = glob($track->file . '/' . '*.vcf.gz.[cti][sbd][ix]')[0];
       }
       $file_name = pathinfo($file_name)['basename'];
 
@@ -107,6 +107,47 @@ function tripal_jbrowse_mgmt_cmd_add_track($track) {
         }
       }
 
+      $json['tracks'][] = $track_in_json;
+      tripal_jbrowse_mgmt_save_json($instance, $json);
+      break;
+
+    case 'Alignment':
+      $json = tripal_jbrowse_mgmt_get_json($instance);
+      $directory = 'bam';
+      if (is_dir($track->file)) {
+        $file_name = glob($track->file . '/' . '*.bam')[0];
+        $index_file_name = glob($track->file . '/' . '*.bam.*')[0];
+        if (!$file_name) {
+          $file_name = glob($track->file . '/' . '*.cram')[0];
+          $index_file_name = glob($track->file . '/' . '*.cram.*')[0];
+         }
+      }
+
+      $track_in_json = [
+        'label' => tripal_jbrowse_mgmt_make_slug($track->label),
+        'key' => $track->label,
+        'urlTemplate' => $directory . '/' . pathinfo($file_name)['basename'],
+        'type' => 'JBrowse/View/Track/Alignments2',
+      ];
+      $index_path_info = pathinfo($index_file_name);
+      switch($index_path_info['extension']){
+        case "bai":
+        $track_in_json['baiUrlTemplate'] = $directory . '/' . $index_path_info['basename'];
+        break;
+
+        case "csi":
+        $track_in_json['csiUrlTemplate'] = $directory . '/' . $index_path_info['basename'];
+        break;
+      }
+      $extension = pathinfo($file_name)['extension'];
+      switch($extension){
+        case 'bam':
+          $track_in_json['storeClass'] = 'JBrowse/Store/SeqFeature/BAM';
+          break;
+        case 'cram':
+          $track_in_json['storeClass'] = 'JBrowse/Store/SeqFeature/CRAM';
+          break;
+      }
       $json['tracks'][] = $track_in_json;
       tripal_jbrowse_mgmt_save_json($instance, $json);
       break;
