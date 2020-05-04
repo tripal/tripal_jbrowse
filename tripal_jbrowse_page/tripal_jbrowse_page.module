@@ -23,19 +23,22 @@ function tripal_jbrowse_page_menu() {
   $instances = tripal_jbrowse_mgmt_get_instances();
   foreach ($instances as $instance) {
 
-    if (tripal_jbrowse_page_is_instance_public($instance->id)) {
+    // Create the menu item.
+    $path = 'jbrowse/'.$instance->organism->genus . '-' . $instance->organism->species;
+    $items[$path] = [
+      'title' => $instance->title,
+      'description' => $instance->description,
+      'page callback' => 'tripal_jbrowse_page_page',
+      'page arguments' => [1, 2],
+      'file' => 'includes/tripal_jbrowse_page.page.inc',
+      'type' => MENU_SUGGESTED_ITEM,
+    ];
 
-      // Create the menu item.
-      $path = 'jbrowse/'.$instance->organism->genus . '-' . $instance->organism->species;
-      $items[$path] = [
-        'title' => $instance->title,
-        'description' => $instance->description,
-        'page callback' => 'tripal_jbrowse_page_page',
-        'page arguments' => [1, 2],
-        'access arguments' => ['access content'],
-        'file' => 'includes/tripal_jbrowse_page.page.inc',
-        'type' => MENU_SUGGESTED_ITEM,
-      ];
+    if (tripal_jbrowse_page_is_instance_public($instance->id)) {
+      $items[$path]['access arguments'] = ['access content'];
+    }
+    else {
+      $items[$path]['access arguments'] = ['view private jbrowse page'];
     }
   }
 
@@ -73,6 +76,20 @@ function tripal_jbrowse_page_theme($existing, $type, $theme, $path) {
       'variables' => array('url' => ''),
     ),
   );
+
+  return $items;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function tripal_jbrowse_page_permission() {
+  $items = [];
+
+  $items['view private jbrowse page'] = [
+    'title' => t('View excluded JBrowse pages'),
+    'description' => t('If users have this permission and know the link to the page, they will be able to see it. The instance will still not be included in the JBrowse instances list.'),
+  ];
 
   return $items;
 }
