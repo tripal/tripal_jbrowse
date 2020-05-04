@@ -83,7 +83,7 @@ function tripal_jbrowse_page_theme($existing, $type, $theme, $path) {
 /**
  * Implements hook_permission().
  */
-function tripal_jbrowse_page_permissions() {
+function tripal_jbrowse_page_permission() {
   $items = [];
 
   $items['view private jbrowse page'] = [
