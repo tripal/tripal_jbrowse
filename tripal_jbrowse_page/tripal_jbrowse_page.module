@@ -24,7 +24,7 @@ function tripal_jbrowse_page_menu() {
   foreach ($instances as $instance) {
 
     // Create the menu item.
-    $path = 'jbrowse/'.$instance->organism->genus . '-' . $instance->organism->species;
+    $path = 'jbrowse/'.$instance->organism->genus . '-' . $instance->organism->species . '/' . $instance->id;
     $items[$path] = [
       'title' => $instance->title,
       'description' => $instance->description,
