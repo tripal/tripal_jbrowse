@@ -375,7 +375,7 @@ function tripal_jbrowse_mgmt_make_slug($string) {
  */
 function tripal_jbrowse_mgmt_upload_file($field) {
   $file = file_save_upload($field, [
-    'file_validate_extensions' => ['fasta faa fna fastq txt gff vcf wig gz tbi bw bam bai cram'],
+    'file_validate_extensions' => ['fasta faa fna fastq txt gff gff3 vcf wig gz tbi bw bam bai cram'],
     // Make it 20 GB max.
     'file_validate_size' => [1024 * 1024 * 1024 * 20],
   ]);
