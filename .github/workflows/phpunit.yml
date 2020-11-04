@@ -79,7 +79,6 @@ jobs:
         DRUPAL_ROOT: ${{ steps.tripalsetup.outputs.drupal_root }}
       run: |
         cd $DRUPAL_ROOT/sites/all/modules/tripal_jbrowse
-        composer require --dev mheap/phpunit-github-actions-printer
-        composer update
-        cp tests/.travis.env tests/.env
+        composer require --dev mheap/phpunit-github-actions-printer --quiet
+        composer update --quiet
         ./vendor/bin/phpunit --printer mheap\\GithubActionsReporter\\Printer
