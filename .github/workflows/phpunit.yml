@@ -67,6 +67,7 @@ jobs:
       run: |
         mkdir -p $DRUPAL_ROOT/sites/all/modules/tripal_jbrowse
         cp -R * $DRUPAL_ROOT/sites/all/modules/tripal_jbrowse
+        cd $DRUPAL_ROOT
         $DRUSH en -y tripal_jbrowse_mgmt tripal_jbrowse_page
 
     # Runs the PHPUnit tests.
