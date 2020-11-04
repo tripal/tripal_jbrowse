@@ -65,6 +65,7 @@ jobs:
         DRUSH: ${{ steps.tripalsetup.outputs.drush_path }}
         DRUPAL_ROOT: ${{ steps.tripalsetup.outputs.drupal_root }}
       run: |
+        mkdir -p $DRUPAL_ROOT/sites/all/modules/tripal_jbrowse
         cp -R * $DRUPAL_ROOT/sites/all/modules/tripal_jbrowse
         $DRUSH en -y tripal_jbrowse_mgmt tripal_jbrowse_page
 
