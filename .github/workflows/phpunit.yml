@@ -48,7 +48,7 @@ jobs:
         ini-values: memory_limit=2G
         coverage: xdebug
         tools: composer, phpunit
-   
+
     # Install Drush/Drupal/Tripal
     - name: Setup Drush, Drupal 7.x, Tripal 3.x
       id: tripalsetup
@@ -57,7 +57,7 @@ jobs:
         postgres_user: tripaladmin
         postgres_pass: somesupersecurepassword
         postgres_db: testdb
-  
+
     # Install Tripal Extension Module.
     - name: Install Tripal Extension Module
       id: installextension
@@ -67,7 +67,7 @@ jobs:
       run: |
         cp -R * $DRUPAL_ROOT/sites/all/modules/tripal_jbrowse
         $DRUSH en -y tripal_jbrowse_mgmt tripal_jbrowse_page
- 
+
     # Runs the PHPUnit tests.
     # https://github.com/mheap/phpunit-github-actions-printer is used
     # to report PHPUnit fails in a meaningful way to github in PRs.
