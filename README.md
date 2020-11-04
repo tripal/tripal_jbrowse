@@ -1,3 +1,9 @@
+![PHPUnit](https://github.com/tripal/tripal_jbrowse/workflows/PHPUnit/badge.svg)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/tripal/tripal_jbrowse)
+[![Documentation Status](https://readthedocs.org/projects/tripal-jbrowse/badge/?version=latest)](https://tripal-jbrowse.readthedocs.io/en/latest/?badge=latest)
+
+[![DOI](https://zenodo.org/badge/44405693.svg)](https://zenodo.org/badge/latestdoi/44405693)
+
 # Tripal JBrowse Integration
 
 This package of modules integrates [GMOD JBrowse](https://jbrowse.org/) into your [Tripal](http://tripal.info/) site providing
@@ -30,3 +36,7 @@ This module is open-source and licensed under GPLv3. [Read full license](LICENSE
 - Other contributors (https://github.com/tripal/tripal_jbrowse/graphs/contributors)
 
 *Copyright 2018 University of Saskatchewan and University of Tennessee Knoxville.*
+
+**Citation:**
+
+Lacey-Anne Sanderson, Abdullah Almsaeed, Joe West, & Yichao Shen. (2019). tripal/tripal_jbrowse: Tripal JBrowse 3.0 (Version 7.x-3.0). Zenodo. http://doi.org/10.5281/zenodo.3564724.

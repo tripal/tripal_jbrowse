@@ -226,9 +226,9 @@ class ApiTest extends TripalTestCase {
     $instance_id = tripal_jbrowse_mgmt_create_instance($instance_details);
 
     $testdata = [
-      $faker->word() => $faker->words(3, TRUE),
-      $faker->word() => $faker->words(2, TRUE),
-      $faker->word() => $faker->words(10, TRUE),
+      $faker->word() . '1' => $faker->words(3, TRUE),
+      $faker->word() . '2' => $faker->words(2, TRUE),
+      $faker->word() . '3' => $faker->words(10, TRUE),
     ];
 
     // Create.
