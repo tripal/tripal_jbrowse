@@ -30,6 +30,13 @@ function tripal_jbrowse_mgmt_edit_form($form, &$form_state) {
   // Set Default Values.
   $form['organism']['#default_value'] = $instance->organism_id;
   $form['description']['#default_value'] = $instance->description;
+
+  // Sequence Assembly field once set will keep the
+  // same value - field is disabled.
+  $analysis_name = ($instance->analysis_id) ? $instance->analysis->name : ''; 
+  $form['analysis']['#default_value'] = $analysis_name;
+  $form['analysis']['#disabled'] = TRUE;
+
   $form['page']['start-loc']['#default_value'] = tripal_jbrowse_mgmt_get_instance_property($instance_id, 'start-loc');
   $form['page']['start-tracks']['#default_value'] = tripal_jbrowse_mgmt_get_instance_property($instance_id, 'start-tracks');
 
@@ -54,11 +61,33 @@ function tripal_jbrowse_mgmt_edit_form_validate($form, &$form_state) {
 
   $instance_id = $form_state['build_info']['args'][0];
   $instances = tripal_jbrowse_mgmt_get_instances(['organism_id' => $organism]);
-  if (!empty($instances)) {
-    if ($instances[0]->id != $instance_id) {
+  
+  // Get the current instance.
+  $result = tripal_jbrowse_mgmt_get_instances(['id' => $instance_id]);
+  if (empty($result)) {
+    drupal_set_message('Unable to access the instance you would like to edit.', 'error');
+  }
+  else {
+    $current_instance = $result[0]; 
+  }
+  
+  // When saving modifications, validate organism and analysis
+  // to make sure that no instances share the same organism and analysis.
+  // When anaysis is not set, ensure the same for instances without analysis.
+  $current_instance_analysis_id = ($current_instance->analysis_id)
+    ? $current_instance->analysis_id : 0;
+  
+  foreach($instances as $instance) {
+    // Just see if there is other out there so exclude itself.
+    if ($instance->id == $instance_id) continue;
+
+    $instance_analysis_id = ($instance->analysis_id) ? $instance->analysis_id : 0;
+    if ($instance_analysis_id == $current_instance_analysis_id) {
+      // In the pools of instances (same organism), an instance was found
+      // matching the orgnism and analysis id (set or not set).
       form_set_error(
         'organism',
-        'A JBrowse instance for the selected organism already exists. You can edit the instance from the instances page.'
+        'A JBrowse instance with the same organism and sequence assembly already exits. Please select a different organism.'
       );
     }
   }
