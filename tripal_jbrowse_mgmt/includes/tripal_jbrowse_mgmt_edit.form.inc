@@ -35,7 +35,9 @@ function tripal_jbrowse_mgmt_edit_form($form, &$form_state) {
   // same value - field is disabled.
   $analysis_name = ($instance->analysis_id) ? $instance->analysis->name : ''; 
   $form['analysis']['#default_value'] = $analysis_name;
-  $form['analysis']['#disabled'] = TRUE;
+  // Allow changes only when field has not been set a value (TRUE - disabled).
+  $enable_analysis = ($analysis_name) ? TRUE : FALSE;
+  $form['analysis']['#disabled'] = $enable_analysis;
 
   $form['page']['start-loc']['#default_value'] = tripal_jbrowse_mgmt_get_instance_property($instance_id, 'start-loc');
   $form['page']['start-tracks']['#default_value'] = tripal_jbrowse_mgmt_get_instance_property($instance_id, 'start-tracks');
@@ -71,12 +73,30 @@ function tripal_jbrowse_mgmt_edit_form_validate($form, &$form_state) {
     $current_instance = $result[0]; 
   }
   
+  // Allow user to provide analysis on edit only when it was not set in create form.
+  // Analysis user is wanting to add to this instance, test this against existing
+  // instances and see if organism+this analysis matches any.
+  $analysis_id = '';
+  if ($values['analysis']) {
+    $analysis_id = tripal_jbrowse_mgmt_get_analysis_id_from_string($values['analysis']);
+
+    preg_match_all('!\d+!', $values['analysis'], $match_analysis);
+    $analysis_id = array_pop($match_analysis[0]);
+  }
+
   // When saving modifications, validate organism and analysis
   // to make sure that no instances share the same organism and analysis.
   // When anaysis is not set, ensure the same for instances without analysis.
-  $current_instance_analysis_id = ($current_instance->analysis_id)
-    ? $current_instance->analysis_id : 0;
-  
+  if ($current_instance->analysis_id) {
+    // Use analysis on record for this instance.
+    $current_instance_analysis_id = $current_instance->analysis_id;
+  }
+  else {
+    // Othwerwise, check analysis field and use it or set to 0 when
+    // neither on record nor field is available.
+    $current_instance_analysis_id = ($analysis_id) ? $analysis_id : 0;
+  }
+    
   foreach($instances as $instance) {
     // Just see if there is other out there so exclude itself.
     if ($instance->id == $instance_id) continue;
@@ -116,6 +136,14 @@ function tripal_jbrowse_mgmt_edit_form_submit($form, &$form_state) {
   $organism_id = $values['organism'];
   $description = isset($values['description']) ? $values['description'] : '';
 
+  $analysis_id = '';
+  if ($values['analysis']) {
+    $analysis_id = tripal_jbrowse_mgmt_get_analysis_id_from_string($values['analysis']);
+
+    preg_match_all('!\d+!', $values['analysis'], $match_analysis);
+    $analysis_id = array_pop($match_analysis[0]);
+  }
+
   // Check if this is an add or edit form.
   $edit_form = FALSE;
   if (isset($form_state['build_info']['args'][0]) AND is_numeric($form_state['build_info']['args'][0])) {
@@ -136,6 +164,10 @@ function tripal_jbrowse_mgmt_edit_form_submit($form, &$form_state) {
     'title' => $title,
     'description' => $description,
   ];
+
+  if ($analysis_id) {
+    $data['analysis_id'] = $analysis_id;
+  }
   $success = tripal_jbrowse_mgmt_update_instance($instance_id, $data);
 
   if ($success) {
