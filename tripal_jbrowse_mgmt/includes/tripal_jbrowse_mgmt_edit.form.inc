@@ -77,7 +77,7 @@ function tripal_jbrowse_mgmt_edit_form_validate($form, &$form_state) {
   // Analysis user is wanting to add to this instance, test this against existing
   // instances and see if organism+this analysis matches any.
   $analysis_id = '';
-  if ($values['analysis']) {
+  if ($values['analysis'] && !$form['analysis']['#disabled']) {
     $analysis_id = tripal_jbrowse_mgmt_get_analysis_id_from_string($values['analysis']);
 
     preg_match_all('!\d+!', $values['analysis'], $match_analysis);
@@ -137,7 +137,7 @@ function tripal_jbrowse_mgmt_edit_form_submit($form, &$form_state) {
   $description = isset($values['description']) ? $values['description'] : '';
 
   $analysis_id = '';
-  if ($values['analysis']) {
+  if ($values['analysis'] && !$form['analysis']['#disabled']) {
     $analysis_id = tripal_jbrowse_mgmt_get_analysis_id_from_string($values['analysis']);
 
     preg_match_all('!\d+!', $values['analysis'], $match_analysis);
