@@ -49,7 +49,7 @@ jobs:
         coverage: xdebug
         tools: composer, phpunit
 
-    # Install Drush/Drupal/Tripal
+    # Install Drush/Drupal/Tripal (uses the dev version of Tripal)
     - name: Setup Drush, Drupal 7.x, Tripal 3.x
       id: tripalsetup
       uses: tripal/setup-tripal-action@7.x-3.x-1.0
@@ -57,6 +57,7 @@ jobs:
         postgres_user: tripaladmin
         postgres_pass: somesupersecurepassword
         postgres_db: testdb
+        tripal_version: 7.x-3.x
 
     # Install Tripal Extension Module.
     - name: Install Tripal Extension Module
