@@ -336,6 +336,11 @@ function tripal_jbrowse_mgmt_construct_organism_name($organism) {
   $name = $organism->genus;
   $name .= " $organism->species";
 
+  // use chado 1.3 infraspecific nomenclature if it exists
+  if (function_exists('chado_get_organism_scientific_name')) {
+    $name = chado_get_organism_scientific_name(chado_get_organism(['organism_id' => $organism->organism_id], []));
+  }
+
   if (!empty($organism->common_name)) {
     $name .= " ($organism->common_name)";
   }
