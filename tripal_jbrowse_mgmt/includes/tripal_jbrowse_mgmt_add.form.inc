@@ -26,6 +26,7 @@ function tripal_jbrowse_mgmt_add_form($form, &$form_state) {
       $organism
     );
   }
+  asort($mapped_organisms);
 
   $form_description = 'Create a new JBrowse instance for a given organism. Submitting this form
   creates all the necessary files for a new JBrowse instance.';
