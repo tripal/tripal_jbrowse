@@ -11,6 +11,18 @@ This package of modules integrates [GMOD JBrowse](https://jbrowse.org/) into you
 
  This powerful combination allows you to provide seamless genome browsing to your users in an administrator-friendly manner.
 
+## Using the tripal_jbrowse docker
+All you need to have installed locally is [Docker or Docker Desktop](https://docs.docker.com/get-docker)!
+
+1. Build the image and start a container.
+```
+docker build . --tag=tripal_jbrowse:latest
+```
+2. The run command maps your current directory into the container so you can edit it locally. The tripal_jbrowse repository should be your current repository.
+```
+docker run -dit --publish=80:80 --volume=`pwd`:/var/www/drupal9/web/modules/contrib/tripal_jbrowse tripal_jbrowse:latest
+```
+
 ## License & Acknowledgements
 
 This module is open-source and licensed under GPLv3. [Read full license](LICENSE.txt).
