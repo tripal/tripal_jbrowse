@@ -1,0 +1,5 @@
+name: Tripal JBrowse Integration
+description: Tripal page integration and user interface for JBrowse instance creation and management
+package: Tripal Extensions
+type: module
+core_version_requirement: ^9
