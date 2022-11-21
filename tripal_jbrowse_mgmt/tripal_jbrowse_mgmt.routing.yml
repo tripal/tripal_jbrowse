@@ -1,0 +1,7 @@
+tripal_jbrowse_mgmt.configure:
+  path: 'admin/tripal/extension/tripal_jbrowse/management/configure'
+  defaults:
+    _form: '\Drupal\tripal_jbrowse_mgmt\Form\TripalJBrowseMgmtConfigureForm'
+    _title: 'Settings'
+  requirements:
+    _permission: 'tripal jbrowse management'
