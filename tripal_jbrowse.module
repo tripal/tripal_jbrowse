@@ -1,0 +1,71 @@
+<?php
+
+/**
+ * @file
+ * Provides a jbrowse instance entity type.
+ */
+
+use Drupal\Core\Render\Element;
+use Drupal\tripal_jbrowse\Entity\JbrowseInstance;
+use Drupal\user\UserInterface;
+
+/**
+ * Implements hook_theme().
+ */
+function tripal_jbrowse_theme() {
+  return [
+    'jbrowse_instance' => [
+      'render element' => 'elements',
+    ],
+  ];
+}
+
+/**
+ * Prepares variables for jbrowse instance templates.
+ *
+ * Default template: jbrowse-instance.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An associative array containing the jbrowse instance information and any
+ *     fields attached to the entity.
+ *   - attributes: HTML attributes for the containing element.
+ */
+function template_preprocess_jbrowse_instance(array &$variables) {
+  $variables['view_mode'] = $variables['elements']['#view_mode'];
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['content'][$key] = $variables['elements'][$key];
+  }
+}
+
+/**
+ * Implements hook_user_cancel().
+ */
+function tripal_jbrowse_user_cancel($edit, UserInterface $account, $method) {
+  switch ($method) {
+    case 'user_cancel_reassign':
+      // Anonymize jbrowse instances.
+      $storage = \Drupal::entityTypeManager()->getStorage('jbrowse_instance');
+      $jbrowse_instance_ids = $storage->getQuery()
+        ->condition('uid', $account->id())
+        ->execute();
+      foreach ($storage->loadMultiple($jbrowse_instance_ids) as $jbrowse_instance) {
+        $jbrowse_instance->setOwnerId(0);
+        $jbrowse_instance->save();
+      }
+      break;
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_predelete() for user entities.
+ */
+function tripal_jbrowse_user_predelete(UserInterface $account) {
+  // Delete jbrowse instances.
+  $storage = \Drupal::entityTypeManager()->getStorage('jbrowse_instance');
+  $jbrowse_instance_ids = $storage->getQuery()
+    ->condition('uid', $account->id())
+    ->execute();
+  $jbrowse_instances = $storage->loadMultiple($jbrowse_instance_ids);
+  $storage->delete($jbrowse_instances);
+}

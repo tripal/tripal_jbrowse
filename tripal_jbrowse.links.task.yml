@@ -1,0 +1,22 @@
+entity.jbrowse_instance.settings:
+  title: 'Settings'
+  route_name: entity.jbrowse_instance.settings
+  base_route: entity.jbrowse_instance.settings
+entity.jbrowse_instance.view:
+  title: 'View'
+  route_name: entity.jbrowse_instance.canonical
+  base_route: entity.jbrowse_instance.canonical
+entity.jbrowse_instance.edit_form:
+  title: 'Edit'
+  route_name: entity.jbrowse_instance.edit_form
+  base_route: entity.jbrowse_instance.canonical
+entity.jbrowse_instance.delete_form:
+  title: 'Delete'
+  route_name: entity.jbrowse_instance.delete_form
+  base_route: entity.jbrowse_instance.canonical
+  weight: 10
+entity.jbrowse_instance.collection:
+  title: 'JBrowse Instances'
+  route_name: entity.jbrowse_instance.collection
+  base_route: system.admin_content
+  weight: 10

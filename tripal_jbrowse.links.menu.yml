@@ -1,0 +1,10 @@
+entity.jbrowse_instance.settings:
+  title: 'JBrowse Instance'
+  description: 'Configure a JBrowse Instance entity type.'
+  route_name:  entity.jbrowse_instance.settings
+  parent: system.admin_structure
+entity.jbrowse_instance.collection:
+  title: 'JBrowse Instances'
+  description: 'List of jbrowse instances.'
+  route_name: entity.jbrowse_instance.collection
+  parent: system.admin_content

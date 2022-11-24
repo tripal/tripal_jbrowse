@@ -1,0 +1,11 @@
+administer jbrowse instance:
+  title: 'Administer jbrowse instance settings'
+  restrict access: true
+delete jbrowse instance:
+  title: Delete jbrowse instance
+create jbrowse instance:
+  title: Create jbrowse instance
+view jbrowse instance:
+  title: View jbrowse instance
+edit jbrowse instance:
+  title: Edit jbrowse instance

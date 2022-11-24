@@ -1,0 +1,7 @@
+entity.jbrowse_instance.settings:
+  path: 'admin/structure/jbrowse-instance'
+  defaults:
+    _form: '\Drupal\tripal_jbrowse\Form\JbrowseInstanceSettingsForm'
+    _title: 'JBrowse Instance'
+  requirements:
+    _permission: 'administer jbrowse instance'

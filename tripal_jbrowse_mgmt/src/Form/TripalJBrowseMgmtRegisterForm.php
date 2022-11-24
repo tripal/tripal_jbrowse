@@ -175,8 +175,6 @@ class TripalJBrowseMgmtRegisterForm implements FormInterface{
 
 	}
 	
-	
-	
 	/**
 	 * Save settings.
 	 *
@@ -204,7 +202,4 @@ class TripalJBrowseMgmtRegisterForm implements FormInterface{
 		
 			$this->messenger()->addStatus('JBrowse instance successfully registered.');
 	}
-}
-
-
-	
+}	

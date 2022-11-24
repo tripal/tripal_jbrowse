@@ -1,0 +1,10 @@
+entity.jbrowse_instance.edit_form:
+  route_name: entity.jbrowse_instance.edit_form
+  group: jbrowse_instance
+  title: Edit
+
+entity.jbrowse_instance.delete_form:
+  route_name: entity.jbrowse_instance.delete_form
+  group: jbrowse_instance
+  title: Delete
+  weight: 10

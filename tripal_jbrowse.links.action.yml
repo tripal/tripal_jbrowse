@@ -1,0 +1,5 @@
+jbrowse_instance.add_form:
+  title: 'Add jbrowse instance'
+  route_name: entity.jbrowse_instance.add_form
+  appears_on:
+    - entity.jbrowse_instance.collection
