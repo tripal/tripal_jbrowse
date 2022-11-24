@@ -60,6 +60,13 @@ class TripalJBrowseMgmtRegisterForm implements FormInterface{
 			'#markup' => $form_description,
 		];
 
+		$form['title'] = [
+			'#title' => 'Instance Name',
+			'#description' => 'Choose a human-readable name for this JBrowse instance.',
+			'#type' => 'textfield',
+			'#required' => TRUE,
+		];
+
 		$form['organism'] = [
 			'#title' => 'Organism',
 			'#description' => 'Select the organism',
@@ -81,19 +88,21 @@ class TripalJBrowseMgmtRegisterForm implements FormInterface{
 			'#title' => 'Description',
 			'#description' => 'Optional description for the instance.',
 			'#type' => 'textarea',
+			'#required' => TRUE,
 		];
 
-		$form['analysis'] = [
+/*		$form['analysis'] = [
 			'#title' => 'Sequence Assembly',
 			'#description' => 'Select the analysis which describes the sequence assembly used as the backbone for this JBrowse instance. An analysis can be created in (ADD LINK TO ANALYSIS PAGE HERE) if it is not already available.<br><strong>Please choose analysis carefully</strong> since it can not change once instance is created.',
 			'#type' => 'textfield',
 	/*    '#autocomplete_path' => 'admin/tripal/extension/tripal_jbrowse/management/instances/analysis/autocomplete', */
 		];
-
+*/
 		$form['jbrowse_url'] = [
 			'#title' => 'JBrowse URL',
 			'#description' => 'Enter the URL of an exisiting JBrowse instance that you want to register.',
 			'#type' => 'url',
+			'#required' => TRUE,
 		];
 	/*
 		$form['page'] = [
@@ -151,13 +160,12 @@ class TripalJBrowseMgmtRegisterForm implements FormInterface{
 		$form['submit'] = [
 			'#type' => 'submit',
 			'#value' => 'Register Instance',
-			'#weight' => 10,
 		];
 
 		return $form;
 	}
 
-	 /**
+	/**
    * Validate form.
    *
    * @param array $form
@@ -169,19 +177,32 @@ class TripalJBrowseMgmtRegisterForm implements FormInterface{
 	
 	
 	
-		/**
-		 * Save settings.
-		 *
-		 * @param array $form
-		 * @param \Drupal\Core\Form\FormStateInterface $form_state
-		 */
-		public function submitForm(array &$form, FormStateInterface $form_state) {
-	
-	
-	
+	/**
+	 * Save settings.
+	 *
+	 * @param array $form
+	 * @param \Drupal\Core\Form\FormStateInterface $form_state
+	 */
+	public function submitForm(array &$form, FormStateInterface $form_state) {
+
+		$values = [];
+		$values['title'] = $form_state->getValue('title');
+		$values['organism_id'] = $form_state->getValue('organism');
+		$values['uid'] = \Drupal::currentUser()->id();
+		$values['description'] = $form_state->getValue('description');
+/*		if (!empty($form_state->getValue('analysis'))) {
+			$values['analysis_id'] = $form_state->getValue('analysis');
+		} */
+		$values['created_at'] = \Drupal::time()->getRequestTime();
+		$values['url'] = $form_state->getValue('jbrowse_url');
+
+		$connection = \Drupal::service('database');
+
+		$result = $connection->insert('tripal_jbrowse_mgmt_instances')
+			->fields($values)
+			->execute();
+
 	}
-
-
 }
 
 
