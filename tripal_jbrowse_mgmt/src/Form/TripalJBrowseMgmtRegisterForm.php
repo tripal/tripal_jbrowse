@@ -95,7 +95,7 @@ class TripalJBrowseMgmtRegisterForm implements FormInterface{
 			'#title' => 'Sequence Assembly',
 			'#description' => 'Select the analysis which describes the sequence assembly used as the backbone for this JBrowse instance. An analysis can be created in (ADD LINK TO ANALYSIS PAGE HERE) if it is not already available.<br><strong>Please choose analysis carefully</strong> since it can not change once instance is created.',
 			'#type' => 'textfield',
-	/*    '#autocomplete_path' => 'admin/tripal/extension/tripal_jbrowse/management/instances/analysis/autocomplete', */
+	//    '#autocomplete_path' => 'admin/tripal/extension/tripal_jbrowse/management/instances/analysis/autocomplete', 
 		];
 */
 		$form['jbrowse_url'] = [
@@ -201,7 +201,8 @@ class TripalJBrowseMgmtRegisterForm implements FormInterface{
 		$result = $connection->insert('tripal_jbrowse_mgmt_instances')
 			->fields($values)
 			->execute();
-
+		
+			$this->messenger()->addStatus('JBrowse instance successfully registered.');
 	}
 }
 
