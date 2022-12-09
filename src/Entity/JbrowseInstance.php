@@ -16,11 +16,11 @@ use Drupal\user\EntityOwnerTrait;
  *   id = "jbrowse_instance",
  *   label = @Translation("JBrowse Instance"),
  *   label_collection = @Translation("JBrowse Instances"),
- *   label_singular = @Translation("jbrowse instance"),
- *   label_plural = @Translation("jbrowse instances"),
+ *   label_singular = @Translation("JBrowse instance"),
+ *   label_plural = @Translation("JBrowse instances"),
  *   label_count = @PluralTranslation(
- *     singular = "@count jbrowse instances",
- *     plural = "@count jbrowse instances",
+ *     singular = "@count JBrowse instances",
+ *     plural = "@count JBrowse instances",
  *   ),
  *   handlers = {
  *     "list_builder" = "Drupal\tripal_jbrowse\JbrowseInstanceListBuilder",
@@ -45,6 +45,10 @@ use Drupal\user\EntityOwnerTrait;
  *     "label" = "label",
  *     "uuid" = "uuid",
  *     "owner" = "uid",
+ *     "organism_page_id" = "organism_page_id",
+ *     "assembly_page_id" = "assembly_page_id",
+ *     "jbrowse_url" = "jbrowse_url",
+ *     "jbrowse_version" = "jbrowse_version",
  *   },
  *   links = {
  *     "collection" = "/admin/content/jbrowse-instance",
@@ -135,7 +139,7 @@ class JbrowseInstance extends ContentEntityBase implements JbrowseInstanceInterf
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Authored on'))
       ->setTranslatable(TRUE)
-      ->setDescription(t('The time that the jbrowse instance was created.'))
+      ->setDescription(t('The time that the JBrowse instance was created.'))
       ->setDisplayOptions('view', [
         'label' => 'above',
         'type' => 'timestamp',
@@ -145,6 +149,89 @@ class JbrowseInstance extends ContentEntityBase implements JbrowseInstanceInterf
       ->setDisplayOptions('form', [
         'type' => 'datetime_timestamp',
         'weight' => 20,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    //@TODO: Replace bio_data_1 with configuration variable setting  
+    $fields['organism_page_id'] = BaseFieldDefinition::create('entity_reference')
+      ->setTranslatable(TRUE)
+      ->setLabel(t('Organism'))
+      ->setSetting('target_type', 'tripal_entity')
+      ->setSetting('handler_settings', ['target_bundles' => ['bio_data_1' => 'bio_data_1']])
+      ->setDisplayOptions('form', [
+        'type' => 'entity_reference_autocomplete',
+        'settings' => [
+          'match_operator' => 'CONTAINS',
+          'size' => 60,
+          'placeholder' => '',
+        ],
+        'weight' => 15,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayOptions('view', [
+        'label' => 'above',
+        'type' => 'tripal_entity',
+        'weight' => 15,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    //@TODO: Replace bio_data_13 with configuration variable setting  
+    $fields['assembly_page_id'] = BaseFieldDefinition::create('entity_reference')
+      ->setTranslatable(TRUE)
+      ->setLabel(t('Genome Assembly'))
+      ->setSetting('target_type', 'tripal_entity')
+      ->setSetting('handler_settings', ['target_bundles' => ['bio_data_13' => 'bio_data_13']])
+      ->setDisplayOptions('form', [
+        'type' => 'entity_reference_autocomplete',
+        'settings' => [
+          'match_operator' => 'CONTAINS',
+          'size' => 60,
+          'placeholder' => '',
+        ],
+        'weight' => 15,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayOptions('view', [
+        'label' => 'above',
+        'type' => 'tripal_entity',
+        'weight' => 15,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    $fields['jbrowse_url'] = BaseFieldDefinition::create('uri')
+      ->setTranslatable(TRUE)
+      ->setLabel(t('JBrowse URL'))
+      ->setRequired(TRUE)
+      ->setSetting('max_length', 255)
+      ->setDisplayOptions('form', [
+        'type' => 'url',
+        'weight' => -5,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'type' => 'string',
+        'weight' => -5,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    $fields['jbrowse_version'] = BaseFieldDefinition::create('list_string')
+      ->setTranslatable(TRUE)
+      ->setLabel(t('JBrowse Version'))
+      ->setRequired(TRUE)
+      ->setSettings([
+        'allowed_values' => ['1' => '1.x', '2' => '2.x']
+      ])
+      ->setDefaultValue(['2' => '2.x'])
+      ->setDisplayOptions('form', [
+        'type' => 'options_select',
+        'weight' => -5,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'type' => 'string',
+        'weight' => -5,
       ])
       ->setDisplayConfigurable('view', TRUE);
 
