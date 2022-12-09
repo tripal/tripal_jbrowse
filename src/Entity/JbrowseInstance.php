@@ -82,6 +82,7 @@ class JbrowseInstance extends ContentEntityBase implements JbrowseInstanceInterf
 
     $fields = parent::baseFieldDefinitions($entity_type);
 
+    // @TODO: Add help text to these
     $fields['label'] = BaseFieldDefinition::create('string')
       ->setTranslatable(TRUE)
       ->setLabel(t('Label'))
@@ -222,7 +223,8 @@ class JbrowseInstance extends ContentEntityBase implements JbrowseInstanceInterf
       ->setSettings([
         'allowed_values' => ['1' => '1.x', '2' => '2.x']
       ])
-      ->setDefaultValue(['2' => '2.x'])
+      // @TODO: Not working. Why?
+      ->setDefaultValue('2')
       ->setDisplayOptions('form', [
         'type' => 'options_select',
         'weight' => -5,
