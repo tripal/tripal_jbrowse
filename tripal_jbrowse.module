@@ -36,6 +36,31 @@ function template_preprocess_jbrowse_instance(array &$variables) {
   foreach (Element::children($variables['elements']) as $key) {
     $variables['content'][$key] = $variables['elements'][$key];
   }
+  /* The following code is in javascript and needs to be Drupalized.
+
+  <script language='javascript' src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+  <script language='javascript' src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+  <script language='javascript' src="https://s3.amazonaws.com/jbrowse.org/jb2_releases/jbrowse-linear-genome-view/jbrowse-linear-genome-view%40v1.6.7_custom/umd/react-linear-genome-view.umd.development.js" crossorigin></script>
+
+  <script type="module">
+      import assembly from '/assembly.js'
+      import tracks from '/tracks.js'
+      const { createViewState, JBrowseLinearGenomeView } =
+        JBrowseReactLinearGenomeView
+      const { createElement } = React
+      const { render } = ReactDOM
+      const state = new createViewState({
+        assembly,
+        tracks,
+        location: '1:100,987,269..100,987,368',
+      })
+      render(
+        createElement(JBrowseLinearGenomeView, { viewState: state }),
+        document.getElementById('jbrowse_linear_genome_view'),
+      )
+  </script>
+  */
+
 }
 
 /**
