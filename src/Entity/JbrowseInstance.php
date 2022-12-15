@@ -82,7 +82,6 @@ class JbrowseInstance extends ContentEntityBase implements JbrowseInstanceInterf
 
     $fields = parent::baseFieldDefinitions($entity_type);
 
-    // @TODO: Add help text to these
     $fields['label'] = BaseFieldDefinition::create('string')
       ->setTranslatable(TRUE)
       ->setLabel(t('Title'))

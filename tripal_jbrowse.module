@@ -36,6 +36,10 @@ function template_preprocess_jbrowse_instance(array &$variables) {
   foreach (Element::children($variables['elements']) as $key) {
     $variables['content'][$key] = $variables['elements'][$key];
   }
+
+  $variables['#attached']['library'][] = 'tripal_jbrowse/react';
+  $variables['#attached']['library'][] = 'tripal_jbrowse/jbrowse';
+
   /* The following code is in javascript and needs to be Drupalized.
 
   <script language='javascript' src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
