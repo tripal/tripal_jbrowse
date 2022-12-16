@@ -8,3 +8,9 @@ jbrowse:
   version: latest
   js:
     https://unpkg.com/@jbrowse/react-linear-genome-view/dist/react-linear-genome-view.umd.development.js: { type: external, minified: true }
+
+createJBrowseLinearGenomeView:
+  version: 1.x
+  js:
+    js/createJBrowseLinearGenomeView.js: { attributes: { type: module }, preprocess: false }
+    
