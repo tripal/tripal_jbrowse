@@ -106,12 +106,12 @@ class JbrowseInstance extends ContentEntityBase implements JbrowseInstanceInterf
       ->setDescription(t('Optional description for the instance.'))
       ->setDisplayOptions('form', [
         'type' => 'text_textarea',
-        'weight' => 10,
+        'weight' => -5,
       ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayOptions('view', [
         'type' => 'text_default',
-        'label' => 'above',
+        'label' => 'hidden',
         'weight' => 10,
       ])
       ->setDisplayConfigurable('view', TRUE);
@@ -132,22 +132,22 @@ class JbrowseInstance extends ContentEntityBase implements JbrowseInstanceInterf
         'weight' => 15,
       ])
       ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayOptions('view', [
-        'label' => 'above',
-        'type' => 'author',
-        'weight' => 15,
-      ])
+//      ->setDisplayOptions('view', [
+//        'label' => 'above',
+//        'type' => 'author',
+//        'weight' => 15,
+//      ])
       ->setDisplayConfigurable('view', TRUE);
 
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Authored on'))
       ->setTranslatable(TRUE)
       ->setDescription(t('The time that the JBrowse instance was created.'))
-      ->setDisplayOptions('view', [
-        'label' => 'above',
-        'type' => 'timestamp',
-        'weight' => 20,
-      ])
+//      ->setDisplayOptions('view', [
+//        'label' => 'above',
+//        'type' => 'hidden',
+//        'weight' => 20,
+//      ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayOptions('form', [
         'type' => 'datetime_timestamp',
@@ -173,11 +173,11 @@ class JbrowseInstance extends ContentEntityBase implements JbrowseInstanceInterf
         'weight' => 10,
       ])
       ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayOptions('view', [
-        'label' => 'above',
-        'type' => 'tripal_entity',
-        'weight' => 10,
-      ])
+//      ->setDisplayOptions('view', [
+//        'label' => 'inline',
+//        'type' => 'tripal_entity',
+//        'weight' => 10,
+//      ])
       ->setDisplayConfigurable('view', TRUE);
 
     //@TODO: Replace bio_data_13 with configuration variable setting  
@@ -199,9 +199,9 @@ class JbrowseInstance extends ContentEntityBase implements JbrowseInstanceInterf
       ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayOptions('view', [
-        'label' => 'above',
+        'label' => 'inline',
         'type' => 'tripal_entity',
-        'weight' => 10,
+        'weight' => 5,
       ])
       ->setDisplayConfigurable('view', TRUE);
 
@@ -216,11 +216,11 @@ class JbrowseInstance extends ContentEntityBase implements JbrowseInstanceInterf
         'weight' => -5,
       ])
       ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-        'type' => 'string',
-        'weight' => -5,
-      ])
+//      ->setDisplayOptions('view', [
+//        'label' => 'hidden',
+//        'type' => 'string',
+//        'weight' => -5,
+//      ])
       ->setDisplayConfigurable('view', TRUE);
 
     $fields['jbrowse_version'] = BaseFieldDefinition::create('list_string')
@@ -237,14 +237,13 @@ class JbrowseInstance extends ContentEntityBase implements JbrowseInstanceInterf
         'weight' => -5,
       ])
       ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-        'type' => 'string',
-        'weight' => -5,
-      ])
+//      ->setDisplayOptions('view', [
+//        'label' => 'hidden',
+//        'type' => 'string',
+//        'weight' => -5,
+//      ])
       ->setDisplayConfigurable('view', TRUE);
 
     return $fields;
   }
-
 }
