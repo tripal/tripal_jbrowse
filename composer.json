@@ -1,0 +1,28 @@
+{
+    "name": "tripal/tripal_jbrowse",
+    "type": "drupal-module",
+    "description": "A module to integrate JBrowse instances into Tripal 4 pages.",
+    "keywords": ["tripal", "jbrowse", "biological-data", "genome browser", "visualization"],
+    "homepage": "https://github.com/tripal/tripal_jbrowse/tree/4.x",
+    "support": {
+      "issues": "https://github.com/tripal/tripal_jbrowse/issues"
+    },
+    "license": "GPL-2.0-or-later",
+    "minimum-stability": "dev",
+    "authors": [
+          {
+              "name": "Lacey-Anne Sanderson",
+              "homepage": "https://github.com/laceysanderson/",
+              "role": "Lead Developer"
+          },
+          {
+              "name": "Carolyn Caron",
+              "homepage": "https://github.com/carolyncaron",
+              "role": "Lead Developer"
+          }
+    ],
+    "require": {
+      "php": "^8.0"
+    }
+  }
+  
