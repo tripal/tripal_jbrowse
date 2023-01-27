@@ -1,5 +1,34 @@
 {
-    "require-dev": {
-        "statonlab/tripal-test-suite": "^1.5"
+  "name": "tripal/tripal_jbrowse",
+  "type": "drupal-module",
+  "description": "A module to integrate JBrowse instances into your Tripal site.",
+  "keywords": ["tripal", "jbrowse", "biological-data", "genome browser", "visualization"],
+  "homepage": "https://github.com/tripal/tripal_jbrowse",
+  "support": {
+    "issues": "https://github.com/tripal/tripal_jbrowse/issues"
+  },
+  "license": "GPL-3.0",
+  "minimum-stability": "dev",
+  "authors": [
+    {
+      "name": "Lacey-Anne Sanderson",
+      "homepage": "https://github.com/laceysanderson",
+    },
+    {
+      "name": "Abdullah Almsaeed",
+      "homepage": "https://github.com/almasaeed2010",
+    },
+    {
+      "name": "Joe West",
+      "homepage": "https://github.com/jwest60",
     }
+  ],
+  "require": {
+    "php": "^8.0",
+    "tripal/tripal": "^dev-7.x-3.x"
+  },
+  {
+  "require-dev": {
+    "statonlab/tripal-test-suite": "^1.5"
+  }
 }
