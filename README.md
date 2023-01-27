@@ -7,11 +7,37 @@
 
 This package of modules integrates [GMOD JBrowse](https://jbrowse.org/) into your [Tripal](http://tripal.info/) site providing
  - Tripal page integration via **Tripal JBrowse Page** and
- - a user interface for JBrowse instance creation and management via **Tripal JBrowse Management**.
+ - *Coming soon*: a user interface for JBrowse instance creation and management via **Tripal JBrowse Management**.
 
  This powerful combination allows you to provide seamless genome browsing to your users in an administrator-friendly manner.
 
-## Using the tripal_jbrowse docker
+## Installation Instructions
+If you do not yet have a Tripal 4 site and want to try out our module, you can use the Tripal Docker. Please see the documentation to set it up: https://tripaldoc.readthedocs.io/en/latest/install/docker.html 
+
+Assuming you have a Tripal 4 site, navigate to your site’s base directory (this is called “drupal9” in the Tripal Docker – you'll want to use `cd ../` to get there after you first enter the docker via command line). Then run: 
+`composer require tripal/tripal_jbrowse` 
+
+You can now enable the module by navigating to **Administration » Manage » Extend** and scrolling down to the “Tripal JBrowse” heading. Click the checkbox next to “Tripal JBrowse” (ignore Tripal JBrowse Management for now), scroll all the way down and click “Install”.
+
+Congratulations, you’ve now installed Tripal JBrowse! 
+
+At present, you do not need to install JBrowse2 on the same machine that your Tripal 4 site is located. Instead, a URL to an external instance is used by the module to embed that instance. There are current plans to implement path-based access to JBrowse2 instances, as was done in version 7.x-3.x of this module. 
+
+## Listing and Creating Instances 
+
+To list all instances, visit **Administration » Tripal » Content » JBrowse Instances**
+
+An alternative way to get there is **Administration » Manage » Content » JBrowse Instances** 
+
+You can create a new JBrowse instance from this page (using the “+ Add jbrowse instance” button). 
+
+## Editing or Deleting an Instance 
+
+On the JBrowse Instances listing, you can edit or delete an existing JBrowse instance by selecting “Edit” or “Delete”, respectively, in the dropdown menu under “Operations”.  
+
+You can also perform these operations from the Instance page itself, by selecting the Edit or Delete tab located next to the View tab at the top of the page.
+
+## To contribute to development using the tripal_jbrowse docker
 All you need to have installed locally is [Docker or Docker Desktop](https://docs.docker.com/get-docker)!
 
 1. Build the image and start a container.
