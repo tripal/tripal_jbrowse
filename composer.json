@@ -7,7 +7,7 @@
   "support": {
     "issues": "https://github.com/tripal/tripal_jbrowse/issues"
   },
-  "license": "GPL-3.0",
+  "license": "GPL-3.0-or-later",
   "minimum-stability": "dev",
   "authors": [
     {
@@ -24,10 +24,11 @@
     }
   ],
   "require": {
-    "php": "^8.0",
-    "tripal/tripal": "^dev-7.x-3.x"
+    "php": "^7.4",
+    "tripal/tripal": "dev-7.x-3.x"
   },
   "require-dev": {
     "statonlab/tripal-test-suite": "^1.5"
   }
 }
+
