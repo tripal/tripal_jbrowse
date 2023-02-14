@@ -29,7 +29,7 @@ To list all instances, visit **Administration » Tripal » Content » JBrowse In
 
 An alternative way to get there is **Administration » Manage » Content » JBrowse Instances** 
 
-You can create a new JBrowse instance from this page (using the “+ Add jbrowse instance” button). 
+You can create a new JBrowse instance from this page (using the “+ Add jbrowse instance” button). Note that your Tripal site will need to have an organism and genome assembly already created in order to associate it with your JBrowse instance. (Both of these can be created through **Administration » Manage » Content » Tripal Content** and clicking on **+ Add Tripal Content**)
 
 ## Editing or Deleting an Instance 
 
