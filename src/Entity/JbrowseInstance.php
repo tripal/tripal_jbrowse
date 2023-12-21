@@ -155,14 +155,13 @@ class JbrowseInstance extends ContentEntityBase implements JbrowseInstanceInterf
       ])
       ->setDisplayConfigurable('view', TRUE);
 
-    //@TODO: Replace bio_data_1 with configuration variable setting  
     $fields['organism_page_id'] = BaseFieldDefinition::create('entity_reference')
       ->setTranslatable(TRUE)
       ->setLabel(t('Organism'))
       ->setDescription(t('Select the organism.'))
       ->setRequired(TRUE)
       ->setSetting('target_type', 'tripal_entity')
-      ->setSetting('handler_settings', ['target_bundles' => ['bio_data_1' => 'bio_data_1']])
+      ->setSetting('handler_settings', ['target_bundles' => ['organism' => 'organism']])
       ->setDisplayOptions('form', [
         'type' => 'entity_reference_autocomplete',
         'settings' => [
@@ -180,14 +179,13 @@ class JbrowseInstance extends ContentEntityBase implements JbrowseInstanceInterf
 //      ])
       ->setDisplayConfigurable('view', TRUE);
 
-    //@TODO: Replace bio_data_13 with configuration variable setting  
     $fields['assembly_page_id'] = BaseFieldDefinition::create('entity_reference')
       ->setTranslatable(TRUE)
       ->setLabel(t('Genome Assembly'))
       ->setDescription(t('Select the analysis which describes the sequence assembly used as the backbone for this JBrowse instance. <br> <strong>Please choose analysis carefully</strong> since it can not change once instance is created.'))
       ->setRequired(TRUE)
       ->setSetting('target_type', 'tripal_entity')
-      ->setSetting('handler_settings', ['target_bundles' => ['bio_data_13' => 'bio_data_13']])
+      ->setSetting('handler_settings', ['target_bundles' => ['genome_project' => 'genome_project', 'genome_assembly' => 'genome_assembly']])
       ->setDisplayOptions('form', [
         'type' => 'entity_reference_autocomplete',
         'settings' => [
