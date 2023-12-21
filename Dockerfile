@@ -12,4 +12,4 @@ RUN service postgresql restart \
   && drush trp-prep-chado --schema-name=${chadoschema} \
   && drush tripal:trp-import-types --username=drupaladmin --collection_id=general_chado \
   && drush tripal:trp-import-types --username=drupaladmin --collection_id=genomic_chado \
-  && drush en tripal_jbrowse tripal_jbrowse_mgmt --yes
+  && drush en tripal_jbrowse --yes
