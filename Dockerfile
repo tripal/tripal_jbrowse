@@ -1,7 +1,7 @@
-ARG drupalversion='10.1.x-dev'
-FROM tripalproject/tripaldocker:drupal${drupalversion}-php8.1-pgsql13-noChado
-
-MAINTAINER Carolyn Caron <carolyn.caron@usask.ca>
+ARG drupalversion='10.2.x-dev'
+ARG phpversion='8.3'
+ARG postgresqlversion='16'
+FROM tripalproject/tripaldocker:drupal${drupalversion}-php${phpversion}-pgsql${postgresqlversion}-noChado
 
 COPY . /var/www/drupal/web/modules/contrib/tripal_jbrowse
 WORKDIR /var/www/drupal/web/modules/contrib/tripal_jbrowse
