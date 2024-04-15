@@ -1,7 +1,0 @@
-name: Tripal JBrowse Management
-description: Create JBrowse instances and manage tracks.
-package: Tripal JBrowse
-type: module
-core_version_requirement: ^9
-dependencies:
- - tripal
