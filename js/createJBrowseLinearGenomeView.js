@@ -12,21 +12,29 @@ Drupal.behaviors.embedJBrowse = {
     once('embedJBrowse', '#jbrowse_linear_genome_view', context).forEach(
       function (element) {
         console.log(drupalSettings.jbrowseUrl);
-//        import assembly from '/assembly.js'
-//        import tracks from '/tracks.js'
-        // const { createViewState, JBrowseLinearGenomeView } =
-        //     JBrowseReactLinearGenomeView
-        // const { createElement } = React
-        // const { render } = ReactDOM
-        // const state = new createViewState({
-        //     assembly,
-        //     tracks,
-        //     location: '1:100,987,269..100,987,368',
-        // })
-        // render(
-        //     createElement(JBrowseLinearGenomeView, { viewState: state }),
-        //     document.getElementById('jbrowse_linear_genome_view'),
-        // )
+        console.log((new Date()).toLocaleString());
+        Drupal.ajax({
+            headers: { "Content-Type": "application/json" },
+            url: drupalSettings.jbrowseUrl,
+            method: "GET",
+            success: function (data, status, xhr) {
+                console.log("Inside success!");
+                console.log(data);
+                const { createViewState, JBrowseLinearGenomeView } =
+                    JBrowseReactLinearGenomeView
+                const { createElement } = React
+                const { render } = ReactDOM
+                const state = new createViewState({
+                    assembly: data['assemblies'][0],
+                    tracks: data['tracks'],
+                    location: '1:100,987,269..100,987,368',
+                })
+                render(
+                    createElement(JBrowseLinearGenomeView, { viewState: state }),
+                    document.getElementById('jbrowse_linear_genome_view'),
+                )
+             }
+        }).execute();
       }
     );
   }

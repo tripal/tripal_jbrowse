@@ -46,6 +46,9 @@ function template_preprocess_jbrowse_instance(array &$variables) {
   $instance = $variables['elements']['#jbrowse_instance'];
   $url = $instance->get('jbrowse_url')->getValue();
   $variables['#attached']['drupalSettings']['jbrowseUrl'] = $url[0]['value'];
+
+  // Add our URL as an ajax trusted URL
+  $variables['#attached']['drupalSettings']['ajaxTrustedUrl'][$url[0]['value']] = TRUE;
 }
 
 /**
