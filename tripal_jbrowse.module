@@ -36,11 +36,16 @@ function template_preprocess_jbrowse_instance(array &$variables) {
   foreach (Element::children($variables['elements']) as $key) {
     $variables['content'][$key] = $variables['elements'][$key];
   }
-
   $variables['#attached']['library'][] = 'tripal_jbrowse/react';
   $variables['#attached']['library'][] = 'tripal_jbrowse/jbrowse';
   $variables['#attached']['library'][] = 'tripal_jbrowse/createJBrowseLinearGenomeView';
 
+  // Grab the URL of our JBrowse instance from the content entity
+  // Taking this approach rather than through content so that we are not vulnerable
+  // to a user disabling it through the managed display UI
+  $instance = $variables['elements']['#jbrowse_instance'];
+  $url = $instance->get('jbrowse_url')->getValue();
+  $variables['#attached']['drupalSettings']['jbrowseUrl'] = $url[0]['value'];
 }
 
 /**

@@ -2,18 +2,33 @@
 // https://jbrowse.org/jb2/docs/tutorials/embed_linear_genome_view/06_creating_the_view/
 // @TODO: We want to make fields for the assembly and tracks files
 //        and pull those variables in
-import assembly from '/assembly.js'
-import tracks from '/tracks.js'
-const { createViewState, JBrowseLinearGenomeView } =
-    JBrowseReactLinearGenomeView
-const { createElement } = React
-const { render } = ReactDOM
-const state = new createViewState({
-    assembly,
-    tracks,
-    location: '1:100,987,269..100,987,368',
-})
-render(
-    createElement(JBrowseLinearGenomeView, { viewState: state }),
-    document.getElementById('jbrowse_linear_genome_view'),
-)
+Drupal.behaviors.embedJBrowse = {
+  attach: function (context, settings) {
+    // Use context to filter the DOM to only the elements of interest,
+    // and use once() to guarantee that our callback function processes
+    // any given element one time at most, regardless of how many times
+    // the behaviour itself is called (it is not sufficient in general
+    // to assume an element will only ever appear in a single context).
+    once('embedJBrowse', '#jbrowse_linear_genome_view', context).forEach(
+      function (element) {
+        console.log(drupalSettings.jbrowseUrl);
+//        import assembly from '/assembly.js'
+//        import tracks from '/tracks.js'
+        // const { createViewState, JBrowseLinearGenomeView } =
+        //     JBrowseReactLinearGenomeView
+        // const { createElement } = React
+        // const { render } = ReactDOM
+        // const state = new createViewState({
+        //     assembly,
+        //     tracks,
+        //     location: '1:100,987,269..100,987,368',
+        // })
+        // render(
+        //     createElement(JBrowseLinearGenomeView, { viewState: state }),
+        //     document.getElementById('jbrowse_linear_genome_view'),
+        // )
+      }
+    );
+  }
+};
+

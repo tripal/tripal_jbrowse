@@ -13,4 +13,3 @@ createJBrowseLinearGenomeView:
   version: 1.x
   js:
     js/createJBrowseLinearGenomeView.js: { attributes: { type: module }, preprocess: false }
-    
