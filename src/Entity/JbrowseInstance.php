@@ -48,7 +48,6 @@ use Drupal\user\EntityOwnerTrait;
  *     "organism_page_id" = "organism_page_id",
  *     "assembly_page_id" = "assembly_page_id",
  *     "jbrowse_url" = "jbrowse_url",
- *     "jbrowse_version" = "jbrowse_version",
  *   },
  *   links = {
  *     "collection" = "/admin/content/jbrowse-instance",
@@ -182,7 +181,7 @@ class JbrowseInstance extends ContentEntityBase implements JbrowseInstanceInterf
     $fields['assembly_page_id'] = BaseFieldDefinition::create('entity_reference')
       ->setTranslatable(TRUE)
       ->setLabel(t('Genome Assembly'))
-      ->setDescription(t('Select the analysis which describes the sequence assembly used as the backbone for this JBrowse instance. <br> <strong>Please choose analysis carefully</strong> since it can not change once instance is created.'))
+      ->setDescription(t('Select the genome assembly which describes the sequence used as the backbone for this JBrowse instance. <br> <strong>Please choose carefully</strong> since it can not change once the instance is created.'))
       ->setRequired(TRUE)
       ->setSetting('target_type', 'tripal_entity')
       ->setSetting('handler_settings', ['target_bundles' => ['genome_project' => 'genome_project', 'genome_assembly' => 'genome_assembly']])
@@ -205,8 +204,8 @@ class JbrowseInstance extends ContentEntityBase implements JbrowseInstanceInterf
 
     $fields['jbrowse_url'] = BaseFieldDefinition::create('uri')
       ->setTranslatable(TRUE)
-      ->setLabel(t('JBrowse URL'))
-      ->setDescription(t('Specify the URL of an exisiting JBrowse instance that you want to register.'))
+      ->setLabel(t('JBrowse2 Configuration URL'))
+      ->setDescription(t('Specify the URL of a JBrowse2 configuration file (commonly referred to as config.json) in JSON format. <br>Refer to the <a href="https://jbrowse.org/jb2/docs/config_guide/">Config guide in the JBrowse2 docs</a> for instructions on how to generate your own config file.'))
       ->setRequired(TRUE)
       ->setSetting('max_length', 255)
       ->setDisplayOptions('form', [
@@ -221,17 +220,12 @@ class JbrowseInstance extends ContentEntityBase implements JbrowseInstanceInterf
 //      ])
       ->setDisplayConfigurable('view', TRUE);
 
-    $fields['jbrowse_version'] = BaseFieldDefinition::create('list_string')
-      ->setTranslatable(TRUE)
-      ->setLabel(t('JBrowse Version'))
-      ->setDescription(t('Select which JBrowse version to use for this instance.'))
-      ->setRequired(TRUE)
-      ->setSettings([
-        'allowed_values' => ['1' => '1.x', '2' => '2.x']
-      ])
-      ->setDefaultValue('2')
+    $fields['location'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Default Start Location'))
+      ->setDescription(t('Set the initial genomic location that will be made visible in the viewing field. <br> To see the list of possible input strings, please refer to the documentation. <br> If not set, then the the user will be prompted to select a chromosome and location to start with.'))
+      ->setSetting('max_length', 255)
       ->setDisplayOptions('form', [
-        'type' => 'options_select',
+        'type' => 'string_textfield',
         'weight' => -5,
       ])
       ->setDisplayConfigurable('form', TRUE)

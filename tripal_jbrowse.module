@@ -40,12 +40,18 @@ function template_preprocess_jbrowse_instance(array &$variables) {
   $variables['#attached']['library'][] = 'tripal_jbrowse/jbrowse';
   $variables['#attached']['library'][] = 'tripal_jbrowse/createJBrowseLinearGenomeView';
 
-  // Grab the URL of our JBrowse instance from the content entity
-  // Taking this approach rather than through content so that we are not vulnerable
+  // Grab the URL and the starting location (sequence coordinates) of our JBrowse instance 
+  // from the content entity
+  // We are taking this approach rather than through content so that we are not vulnerable
   // to a user disabling it through the managed display UI
   $instance = $variables['elements']['#jbrowse_instance'];
   $url = $instance->get('jbrowse_url')->getValue();
   $variables['#attached']['drupalSettings']['jbrowseUrl'] = $url[0]['value'];
+  // Location is not required so check that there is a value first
+  if ($instance->get('location')->getValue()) {
+    $location = $instance->get('location')->getValue();
+    $variables['#attached']['drupalSettings']['location'] = $location[0]['value'];
+  }
 
   // Add our URL as an ajax trusted URL
   $variables['#attached']['drupalSettings']['ajaxTrustedUrl'][$url[0]['value']] = TRUE;
