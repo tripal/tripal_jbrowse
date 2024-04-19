@@ -35,9 +35,10 @@ docker exec tripaljbrowse service postgresql restart
 ```
 5. Now you can navigate to http://localhost/ to see your Tripal JBrowse docker up and running! NOTE: If you changed the port number in step 3, you will navigate to localhost:<port #> instead (ex: http://localhost:9000).
 
-From here, if you'd like to follow a tutorial on how to embed an example JBrowse, follow the instructions here: Tutorial.md
 
-If you'd like to contribute to the module's development, refer to the contribute section below.
+From here, if you'd like to follow a tutorial on how to embed an example JBrowse, follow the instructions here: [Tutorial.md](Tutorial/Tutorial.md)
+
+If you'd like to contribute to the module's development, refer to the [contribute section below](README.md#to-contribute-to-development-using-the-tripal_jbrowse-docker).
 
 ### If you have an existing Tripal 4 site
 
