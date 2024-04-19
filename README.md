@@ -14,7 +14,7 @@ This package of modules integrates [GMOD JBrowse](https://jbrowse.org/) into you
 ## Installation Instructions
 
 ### Quickstart using Docker
-If you do not yet have a Tripal 4 site and want to try out our module, you can use the Tripal Docker (Full documentation here: https://tripaldoc.readthedocs.io/en/latest/install/docker.html). By using the Dockerfile within this repository, you will simulate a Tripal 4 website with Tripal JBrowse already enabled. All you need to have installed on your local machine is [Docker or Docker Desktop](https://docs.docker.com/get-docker)!
+If you do not yet have a Tripal 4 site and want to try out our module, you can use the [Tripal Docker](https://tripaldoc.readthedocs.io/en/latest/install/docker.html). By using the `Dockerfile` within this repository, you will simulate a Tripal 4 website with Tripal JBrowse already enabled. All you need to have installed on your local machine is [Docker or Docker Desktop](https://docs.docker.com/get-docker)!
 
 1. Clone this repository and cd into it
 ```
@@ -25,9 +25,9 @@ cd tripal_jbrowse
 ```
 docker build . --tag=tripal_jbrowse:latest
 ```
-3. Run the docker container off the image you just built. You can change port 80 to another port if you need (ex: 9000:80)
+3. Run the docker container off the image you just built. This run command maps your current directory (ie. this repository) into the container so it will be possible to edit the repository locally (this is particularly useful if you want to help contribute to this module!). You can also change port 80 to another port if you need (ex: 9000:80).
 ```
-docker run -dit --name=tripaljbrowse --publish=80:80 tripal_jbrowse:latest
+docker run -dit --name=tripaljbrowse --publish=80:80 --volume=`pwd`:/var/www/drupal/web/modules/contrib/tripal_jbrowse tripal_jbrowse:latest
 ```
 4. Restart your docker container's postgresql database
 ```
@@ -36,6 +36,8 @@ docker exec tripaljbrowse service postgresql restart
 5. Now you can navigate to http://localhost/ to see your Tripal JBrowse docker up and running! NOTE: If you changed the port number in step 3, you will navigate to localhost:<port #> instead (ex: http://localhost:9000).
 
 From here, if you'd like to follow a tutorial on how to embed an example JBrowse, follow the instructions here: Tutorial.md
+
+If you'd like to contribute to the module's development, refer to the contribute section below.
 
 ### If you have an existing Tripal 4 site
 
@@ -63,26 +65,11 @@ On the JBrowse Instances listing, you can edit or delete an existing JBrowse ins
 You can also perform these operations from the Instance page itself, by selecting the Edit or Delete tab located next to the View tab at the top of the page.
 
 ## To contribute to development using the tripal_jbrowse docker
-All you need to have installed locally is [Docker or Docker Desktop](https://docs.docker.com/get-docker)!
+Refer to the steps above in `Quickstart using Docker` to setup a docker container for development. Refer to the [Tripal Docker Documentation](https://tripaldoc.readthedocs.io/en/latest/install/docker.html) for information on how to log in and administer the site, as well as any troubleshooting.
 
-1. Clone this repository and cd into it
-```
-git clone https://github.com/tripal/tripal_jbrowse.git
-cd tripal_jbrowse
-```
-2. Build the docker image (this may take a few minutes)
-```
-docker build . --tag=tripal_jbrowse:latest
-```
-3. This run command maps your current directory (ie. this repository) into the container so you can edit it locally.
-```
-docker run -dit --name=tripaljbrowse --publish=80:80 --volume=`pwd`:/var/www/drupal/web/modules/contrib/tripal_jbrowse tripal_jbrowse:latest
-```
-4. Restart your docker container's postgresql database
-```
-docker exec tripaljbrowse service postgresql restart
-```
-5. Now any changes you make to the repository locally should show up at http://localhost. Refer to the [Tripal Docker Documentation](https://tripaldoc.readthedocs.io/en/latest/install/docker.html) for information on how to log in and administer the site. If you have trouble seeing changes you've made to the code, try running a cache rebuild on the site:
+This setup enables you to open the repository files locally in your favourite editor and any changes should show up in http://localhost. You can also setup a new docker container at any time with existing code changes to your repository (useful if you need to quickly reset any configuration changes or content added to your Tripal 4 site within the docker).
+
+If you have trouble seeing changes you've made to the code, try running a cache rebuild on the site:
 ```
 docker exec tripaljbrowse drush cr
 ```
