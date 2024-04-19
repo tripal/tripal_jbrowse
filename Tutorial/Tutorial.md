@@ -14,14 +14,14 @@ We've sourced an example JBrowse configuration file from the [repository for JBr
 ## Create an Organism
 Your first task is to make sure you have an organism page for the organism of your JBrowse instance. From the Administration toolbar at the top of the page, click on **Tripal**, then **Content** in the toolbar that drops down. Then click on the button `+Add Tripal Content` and select **Organism** under `General`.
 
-Our example JBrowse is of a human genome assembly, so in **Genus** put "Homo" and in **Species** put "sapiens". You can fill out the other fields if you'd like but they aren't required, then hit **Save** at the bottom.
-
 ![Screenshot_addTripalContent](/Tutorial/Screenshot_addTripalContent.png)
+
+Our example JBrowse is of a human genome assembly, so in **Genus** put "Homo" and in **Species** put "sapiens". You can fill out the other fields if you'd like but they aren't required, then hit **Save** at the bottom.
 
 You will be directed to an organism page for Homo sapiens - yay!
 
 ## Create a Genome Assembly
-Just as with creating an organism, navigate to the `Add Tripal Content` page. Under the `Genomic` heading, click on **Genome Assembly**. Though not required, I recommend giving a name to your genome assembly to make it easily to recognize. In this case: `hg19`. Then fill out the required fields with the following (or really, whatever you'd like!):
+Just as with creating an organism, navigate to the `Add Tripal Content` page. Under the `Genomic` heading, click on **Genome Assembly**. Though not required, I recommend giving a name to your genome assembly to make it easy to recognize. In this case: `hg19`. Then fill out the required fields with the following (or really, whatever you'd like!):
 - **Program, Pipeline, Workflow or Method Name**: `My pipeline`
 - **Program Version**: `1.0`
 
@@ -33,18 +33,18 @@ Now return to **Tripal** then **Content**. Above the blue buttons, you'll see mu
 Give your JBrowse instance a title and optional description. 
 - **JBrowse2 Configuration URL**: http://localhost/modules/contrib/tripal_jbrowse/Tutorial/example_config.json
 NOTE: If you set up your docker container on a different port than 80, then your URL will include that port number after `localhost:`. For example, for port 9000, it will be: http://localhost:9000/modules/contrib/tripal_jbrowse/Tutorial/example_config.json
-Here, you are essentially hosting the example config file on your docker directly through localhost! If you wanted to try this with a valid configuration file hosted elsewhere, you can add that URL instead. You will want to ensure the host server cross origin resource sharing (CORS) enabled in order for this to work. Refer to this page in the [JBrowse documentation here](https://jbrowse.org/docs/cors.html)
+Here, you are essentially hosting the example config file on your docker directly through localhost! If you wanted to try this with a valid configuration file hosted elsewhere, you can add that URL instead. You will want to ensure the host server has cross origin resource sharing (CORS) enabled in order for this to work. Refer to the [JBrowse documentation here for more information](https://jbrowse.org/docs/cors.html)
 
 - **Default Start Location**: This can be left empty, or you can set it using this format: `<chr>:<start pos>..<end pos>` For example, `1:1..100,000,000` will start the JBrowse session at chromosome 1 between the 1st and 100,000,000 nucelotide.
 
-- **Organism**: Begin typing "Homo sapiens" and choose it from the dropdown (it amy take a second or more to appear). It's important to select it rather than just typing it out, otherwise you'll encounter an error when submitting the form.
+- **Organism**: Begin typing "Homo sapiens" and choose it from the dropdown (it may take a second or more to appear). It's important to select it rather than just typing it out, otherwise you'll encounter an error when submitting the form.
 
 - **Genome Assembly**: Begin typing "hg19" and select it from the dropdown.
 
+Here is an example of the form filled out:
 ![Screenshot_addJBrowseInstance](/Tutorial/Screenshot_addJBrowseInstance.png)
 
-Now click **Save** 
+Now click **Save**.
 
 Hopefully, you will be rewarded with a JBrowse2 instance like the one below:
 ![Screenshot_embeddedJBrowse](/Tutorial/Screenshot_embeddedJBrowse.png)
-
