@@ -2,7 +2,7 @@ react:
   version: latest
   js:
     https://unpkg.com/react@16/umd/react.development.js: { type: external, minified: true }
-    https://unpkg.com/react-dom@16/umd/react-dom.development.js: { type: external, minified: true }
+    https://unpkg.com/react-dom@16.14.0/umd/react-dom.development.js: { type: external, minified: true }
 
 jbrowse:
   version: latest
@@ -13,4 +13,3 @@ createJBrowseLinearGenomeView:
   version: 1.x
   js:
     js/createJBrowseLinearGenomeView.js: { attributes: { type: module }, preprocess: false }
-    
