@@ -13,3 +13,8 @@ createJBrowseLinearGenomeView:
   version: 1.x
   js:
     js/createJBrowseLinearGenomeView.js: { attributes: { type: module }, preprocess: false }
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
+    - core/once
+    - tripal_jbrowse/react
