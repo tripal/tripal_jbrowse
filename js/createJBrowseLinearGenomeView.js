@@ -7,12 +7,7 @@ Drupal.behaviors.embedJBrowse = {
     // to assume an element will only ever appear in a single context).
     once('embedJBrowse', '#jbrowse_linear_genome_view', context).forEach(
       function (element) {
-        fetch(drupalSettings.jbrowseUrl, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        })
+        fetch(drupalSettings.jbrowseUrl)
         .then(response => {
           if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -20,13 +15,27 @@ Drupal.behaviors.embedJBrowse = {
           return response.json();
         })
         .then(data => {
+          // A site on a different server may be using relative URLs,
+          // so prefix with JBrowse base URL if necessary.
+          const jbrowseBase = new URL('.', drupalSettings.jbrowseUrl).href;
+          absolutizeUris(data, jbrowseBase);
+
           const { createViewState, JBrowseLinearGenomeView } = JBrowseReactLinearGenomeView;
           const { createElement } = React;
           const { render } = ReactDOM;
 
+          // Remove track types that JBrowseReactLinearGenomeView
+          // does not support.
+          const supportedTrackTypes = [
+            'FeatureTrack',
+            'VariantTrack',
+            'AlignmentsTrack',
+          ];
           const params = {
-            assembly: data['assemblies'][0],
-            tracks: data['tracks'],
+            assembly: data.assemblies[0],
+            tracks: data.tracks.filter(track =>
+              supportedTrackTypes.includes(track.type)
+            ),
           };
 
           // If a starting location was not set, the default behavior
@@ -35,7 +44,7 @@ Drupal.behaviors.embedJBrowse = {
             params.location = drupalSettings.location;
           }
 
-          const state = new createViewState(params);
+          const state = createViewState(params);
           render(
               createElement(JBrowseLinearGenomeView, { viewState: state }),
               document.getElementById('jbrowse_linear_genome_view'),
@@ -48,3 +57,28 @@ Drupal.behaviors.embedJBrowse = {
     );
   }
 };
+
+/**
+ * Recursively prefixes relative urls with a base url.
+ */
+function absolutizeUris(obj, baseUrl) {
+  if (Array.isArray(obj)) {
+    obj.forEach(item => absolutizeUris(item, baseUrl));
+    return;
+  }
+
+  if (obj && typeof obj === 'object') {
+    Object.entries(obj).forEach(([key, value]) => {
+
+      if (
+        key === 'uri' &&
+        typeof value === 'string' &&
+        !value.match(/^(https?:)?\/\//)
+      ) {
+        obj[key] = new URL(value, baseUrl).href;
+      }
+
+      absolutizeUris(value, baseUrl);
+    });
+  }
+}
